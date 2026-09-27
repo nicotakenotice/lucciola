@@ -23,3 +23,25 @@ State inherited from earlier work (commits up to `2489bf4`):
 - Added `CLAUDE.md` (resume protocol, work loop, conventions, gotchas), `docs/ROADMAP.md`,
   `docs/PROGRESS.md`, `docs/DECISIONS.md`.
 - Verification: documentation only; `npx tsc --noEmit` still passes.
+
+## 2026-09-27 — T02 tooling
+
+- ESLint 9 flat config (`eslint.config.mjs`) replaces the template's `.eslintrc.cjs`; React hook rules
+  apply to `src/` only (they misfired on Playwright fixtures).
+- Vitest 5 (jsdom) with a first i18n test; Vite bumped 6.3 → 6.4 (Vitest 5 peer requirement).
+- Playwright 1.63 with three projects: `desktop` (Chromium 1280×800), `android` (Pixel 7, touch),
+  `iphone` (iPhone 14, WebKit, touch). Tests run on port 5174, away from the owner's dev server on 8080.
+- Scripts: `typecheck` (app + tools tsconfig), `lint`, `test:unit`, `test:e2e`, `check:dist`,
+  `verify:fast`, `verify`. `check:dist` fails if the dev-only hook `__LUCCIOLA__` reaches `dist/`.
+- Git hooks in `.githooks/` enabled by `npm install` (`prepare`): `pre-commit` runs `verify:fast`,
+  `commit-msg` enforces Conventional Commits and rejects `Co-Authored-By`.
+- Repo hygiene: `.gitattributes` (LF), `.editorconfig` fixed (template said CRLF while files were LF),
+  three template files converted from CRLF, one trailing whitespace and one missing final newline fixed.
+- Verification: `npm run verify` green — typecheck, lint (0 problems), unit 2/2, build, check:dist clean,
+  e2e 3/3 (desktop, android, iphone).
+- Hook check: `commit-msg` rejected a non-conventional subject and a `Co-Authored-By` trailer, both when
+  called directly and through `git commit`.
+- Mistake during testing: a first attempt used `git commit --no-verify`, which also skips `commit-msg`,
+  and created a non-conforming commit (`f88eeff`); it was removed with `git reset --soft` before any
+  push. Lesson: never use `--no-verify` to test hooks.
+

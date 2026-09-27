@@ -27,7 +27,12 @@ const config: Phaser.Types.Core.GameConfig = {
 
 const StartGame = (parent: string) => {
 
-    return new Game({ ...config, parent });
+    const game = new Game({ ...config, parent });
+
+    // Test/debug handle, compiled out of production bundles
+    if (import.meta.env.DEV) window.__LUCCIOLA__ = { game };
+
+    return game;
 
 }
 

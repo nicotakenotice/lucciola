@@ -39,3 +39,14 @@ player-facing texts are bilingual through `src/i18n/`.
 Tuning (`TUNING`, `SHADOWS` in `src/game/constants.ts`) was adjusted from bot runs: shadow cap 12,
 Colossus without speed growth, slower energy decay growth. Bots are not humans: real playtests
 should confirm it.
+
+## D08 — Verification tooling (2026-09-27)
+
+- Unit tests with Vitest for pure logic; end-to-end tests with Playwright against the dev server.
+- Mobile is tested with Playwright device emulation (touch events, WebKit for iPhone). It catches
+  layout and input issues but is not a real device: real-phone checks remain a manual step.
+- A dev-only `window.__LUCCIOLA__` handle lets tests read and drive game state; `check:dist` proves it
+  is compiled out of production builds.
+- Git hooks keep `verify:fast` and the commit message rules from being forgotten; the slower
+  `verify` (build + e2e) runs at the end of each task.
+
