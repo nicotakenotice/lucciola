@@ -1,72 +1,70 @@
 # Lucciola
 
-Una notte nel bosco. Una piccola luce.
+*A night in the woods. A tiny light.*
 
-Sei una lucciola in un sottobosco immerso nel buio: la tua luce è sia la tua vista che la tua vita, e si consuma col passare del tempo. Sopravvivi fino all'alba.
+You are a firefly in a pitch-dark forest. Your light is both your sight and your life, and it fades
+as the night goes on. Survive until dawn.
 
-- **Polline**: raccoglilo per nutrire la luce (le raccolte in rapida successione salgono di nota e valgono di più).
-- **Lucciole smarrite**: lampeggiano nel buio. Raggiungile e si uniranno al tuo sciame: fanno più luce e ti proteggono sacrificandosi al posto tuo. Attento, le Ombre le divorano.
-- **Ombre**: nel buio vedi solo i loro occhi. La luce le rallenta e le brucia. Ne esistono tre tipi:
-  - *Ombra* (occhi rossi): la più comune;
-  - *Falena d'ombra* (occhi viola, da 25 s): piccola e fragile, ma vola a zig-zag e scatta all'improvviso;
-  - *Colosso* (occhi arancioni, da 70 s): lento e resistente, non si dissolve all'impatto, resiste al Lampo (viene solo respinto e ferito) e da vicino affievolisce la tua luce.
-- **Ondate**: a 45, 95 e 128 secondi un gruppo di Ombre arriva tutto dallo stesso lato.
-- **Rugiada lunare**: compare di tanto in tanto per pochi secondi. Raccoglila per lo *Splendore*: per 7 secondi la luce è più ampia, non si consuma e brucia le Ombre molto più in fretta.
-- **Lampo** (clic o SPAZIO, pulsante dedicato su touch): un'onda di luce che dissolve le Ombre vicine, ma costa luce.
-- **Pausa** (ESC o P): congela la partita. Scatta anche da sola se la finestra perde il focus.
-- **Audio** (M): musica ambient generativa che si fa più tesa quando le Ombre si avvicinano, più gli effetti sonori. La preferenza viene ricordata.
+- **Pollen** feeds your light; quick pickups climb a musical scale and score more.
+- **Lost fireflies** blink in the dark: reach them and they join your swarm, widen your light and
+  shield you from hits. Shadows devour them if they get there first.
+- **Shadows** are only eyes in the dark; light slows and burns them.
+  - *Shade* (red eyes): the common one.
+  - *Shadow moth* (violet eyes, from 25 s): small and fragile, zig-zags and dashes.
+  - *Colossus* (orange eyes, from 70 s): slow and tough, survives contact, resists the Flash and
+    dims your light when close.
+- **Waves** of Shadows come from one side at 45, 95 and 128 seconds.
+- **Moon dew** grants 7 seconds of *Radiance*: a wider light that does not fade and burns Shadows
+  much faster.
 
-Durante la prima partita compaiono dei suggerimenti contestuali; a fine partita un riepilogo mostra le statistiche della notte.
+Italian and English, generative music, no external assets: every texture and sound is made in code.
 
-Il gioco è in **italiano e inglese**: la lingua iniziale segue quella del browser e si cambia dal toggle IT / EN in alto a destra nel menu (accanto al volume) o nella pausa (la scelta viene ricordata).
+## Controls
 
-Tutta la grafica e l'audio sono generati via codice: il progetto non ha asset esterni.
+| | Desktop | Touch (landscape) |
+|---|---|---|
+| Move | mouse, WASD or arrow keys | tap or drag |
+| Flash | click or Space | **Flash** button |
+| Pause | Esc or P, or the pause button | pause button |
+| Sound | M, or the speaker button | speaker button |
 
-## Stack
+The game pauses by itself when the window loses focus or a phone is turned to portrait.
 
-Scaffold creato dal template ufficiale Phaser `template-react-ts` (lo stesso usato da `npm create @phaserjs/game@latest` → Client Framework → React → TypeScript).
+## Development
 
-- **Phaser 4** per il gameplay (`src/game`)
-- **React 19** per menu, HUD e schermate finali (`src/components`)
-- **Vite** + **TypeScript**
+Requires Node.js 20+.
 
-React e Phaser comunicano tramite `EventBus` (`src/game/EventBus.ts`); i nomi degli eventi e i payload sono tipizzati in `src/game/events.ts`.
-
-## Comandi
-
-| Comando | Descrizione |
-|---------|-------------|
-| `npm install` | Installa le dipendenze |
-| `npm run dev` | Avvia il dev server su http://localhost:8080 |
-| `npm run build` | Build di produzione in `dist/` |
-| `npm run dev-nolog` / `npm run build-nolog` | Come sopra, senza il ping anonimo di statistiche di Phaser (`log.js`) |
-
-## Struttura
-
-```
-src/
-├── App.tsx               # macchina a stati della UI (menu / gioco / fine)
-├── PhaserGame.tsx        # ponte React ↔ Phaser (dal template)
-├── i18n/                 # dizionari it/en, t() e hook useLang()
-├── components/           # MenuScreen, Hud, Toast, PausePanel, EndPanel, LangToggle, Rich, Icons
-└── game/
-    ├── main.ts           # configurazione Phaser
-    ├── constants.ts      # dimensioni, bilanciamento, tipi di Ombra, record
-    ├── events.ts         # eventi React ↔ Phaser
-    ├── audio.ts          # effetti sonori e musica generativa (WebAudio)
-    ├── world.ts          # generatore procedurale del sottobosco
-    └── scenes/
-        ├── Boot.ts       # genera le texture
-        ├── Menu.ts       # sfondo animato del menu
-        └── Game.ts       # gameplay
+```bash
+npm install            # also enables the git hooks in .githooks/
+npm run dev-nolog      # http://localhost:8080
+npm run verify         # typecheck, lint, unit tests, build, end-to-end tests
 ```
 
-Per ritoccare la difficoltà, modifica `TUNING` e `SHADOWS` in `src/game/constants.ts`.
+| Command | Purpose |
+|---|---|
+| `npm run dev-nolog` / `npm run build-nolog` | Dev server / production build without Phaser's usage ping |
+| `npm run dev` / `npm run build` | Same, plus the template's anonymous ping to Phaser (`log.js`) |
+| `npm run verify:fast` | Typecheck, lint, unit tests (also run by the pre-commit hook) |
+| `npm run verify` | Everything, including end-to-end tests on desktop, Android and iPhone emulation |
+| `npm run balance` | Seeded bot nights to measure difficulty ([docs/BALANCE.md](docs/BALANCE.md)) |
+| `npm run package` | `lucciola-web.zip` ready for itch.io ([docs/DEPLOY.md](docs/DEPLOY.md)) |
 
-## Traduzioni
+Built with Phaser 4 (gameplay), React 19 (interface), TypeScript and Vite, starting from the official
+`phaserjs/template-react-ts` template.
 
-I testi stanno in `src/i18n/it.ts` (fonte delle chiavi) ed `src/i18n/en.ts`: TypeScript segnala le chiavi mancanti in una traduzione. I testi possono contenere tag semplici (`<b>`, `<kbd>`, `<pollen>`, `<lost>`, `<shadow>`, `<dew>`) e parametri (`{n}`).
+## Documentation
 
-## Commit
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — modules, frame order, events, persistence
+- [docs/TESTING.md](docs/TESTING.md) — test layers, how to write tests, manual checks
+- [docs/BALANCE.md](docs/BALANCE.md) — difficulty target and measurements
+- [docs/DEPLOY.md](docs/DEPLOY.md) — publishing on itch.io and static hosts
+- [docs/ROADMAP.md](docs/ROADMAP.md), [docs/PROGRESS.md](docs/PROGRESS.md),
+  [docs/DECISIONS.md](docs/DECISIONS.md) — work tracking
+- [CLAUDE.md](CLAUDE.md) — conventions and the work loop for contributors (human or AI)
 
-I messaggi di commit seguono [Conventional Commits](https://www.conventionalcommits.org/) e sono scritti in inglese (es. `feat(i18n): add English translation`).
+Commits follow [Conventional Commits](https://www.conventionalcommits.org/) in English; the
+`commit-msg` hook enforces it.
+
+## License
+
+Not decided yet: `LICENSE` still holds the MIT license of the Phaser template (see `docs/ROADMAP.md`, T13).

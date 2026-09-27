@@ -16,7 +16,8 @@ Reason: accessible, styleable UI with CSS and simpler text handling than canvas 
 ## D03 — Everything generated in code (2026-09-27)
 
 Textures are drawn with Graphics/Canvas at boot and all audio is synthesized with WebAudio.
-Reason: no asset pipeline, tiny download (~420 KB gzipped including Phaser).
+Reason: no asset pipeline, small download (~420 KB gzipped including Phaser; ~465 KB since the
+fonts are self-hosted, see T09).
 Phaser's own sound manager is disabled (`audio.noAudio`).
 
 ## D04 — Tiny in-house i18n (2026-09-27)

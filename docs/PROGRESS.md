@@ -188,3 +188,17 @@ State inherited from earlier work (commits up to `2489bf4`):
   raised to 60 s per test and 10 s per assertion (software WebGL on a contended CPU).
 - Verification: `npm run verify` green at load average 36 — unit 173/173, e2e 35/35.
 
+## 2026-09-27 — T11 docs and T12 packaging
+
+- README rewritten in English (game, controls, commands, links); `docs/TESTING.md` (layers, how to
+  write e2e tests, manual real-device checklist) and `docs/DEPLOY.md` (itch.io, static hosts,
+  GitHub Pages) added; CLAUDE.md and ARCHITECTURE.md updated.
+- Gap closed: tests only exercised the dev server. New Playwright project `production` serves
+  `dist/` with `vite preview` and checks the shipped build starts a night, has no dev hook, loads the
+  fonts and makes no external request.
+- `npm run package` builds, runs `check:dist` and zips `dist/` to `lucciola-web.zip` (523 KB,
+  index.html at the root; built paths are relative, so it works inside itch.io's iframe). The zip is
+  git-ignored.
+- Numbers re-measured instead of reused: a browser downloads ~465 KB (gzip, woff2) — the older
+  "~420 KB" predates the self-hosted fonts; corrected in DEPLOY and DECISIONS.
+

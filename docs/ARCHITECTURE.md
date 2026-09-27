@@ -32,6 +32,9 @@ src/
     └── systems/               Darkness (night layer with light holes), Effects (particles, texts, flashes)
 ```
 
+Outside `src/`: `e2e/` (Playwright), `scripts/` (balance bot, bundle check, packaging),
+`.githooks/` (pre-commit, commit-msg), `docs/`.
+
 ## One frame of the Game scene
 
 1. `NightDirector.update()` returns spawn requests; the scene places them (`randomSpot`) and plays

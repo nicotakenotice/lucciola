@@ -16,8 +16,8 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 | T08 | End-to-end tests on mobile (touch emulation) | done |
 | T09 | Self-host fonts, drop Google Fonts | done |
 | T10 | Seeded headless balance script and baseline report | done |
-| T11 | English README and technical docs | todo |
-| T12 | Packaging for itch.io and deploy guide | todo |
+| T11 | English README and technical docs | done |
+| T12 | Packaging for itch.io and deploy guide | done |
 | T13 | Choose a license for the game | blocked |
 | T15 | Enforce code style with lint (brace style, spacing, quotes) | done |
 | T14 | Final full verification and report | todo |
