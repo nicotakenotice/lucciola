@@ -3,11 +3,10 @@ export const HEIGHT = 720;
 
 export const FONT_UI = '"Quicksand", "Trebuchet MS", sans-serif';
 
-// Parametri di bilanciamento
 export const TUNING = {
-    nightLength: 150,       // secondi fino all'alba
-    energyDecay: 3.0,       // luce persa al secondo...
-    energyDecayGrowth: 0.005, // ...più questo valore per ogni secondo di notte trascorso
+    nightLength: 150,       // seconds until dawn
+    energyDecay: 3.0,       // light lost per second...
+    energyDecayGrowth: 0.005, // ...plus this amount for every second of night elapsed
     baseRadius: 70,
     radiusPerEnergy: 1.7,
     radiusPerFollower: 7,
@@ -22,32 +21,32 @@ export const TUNING = {
     flashCooldown: 1.1,
     hitEnergy: 26,
     maxShadows: 12,
-    splendorDuration: 7,    // secondi di Splendore dopo la Rugiada lunare
-    splendorRadius: 0.5,    // +50% di raggio di luce durante lo Splendore
-    splendorBurn: 2.5,      // le Ombre bruciano 2.5 volte più in fretta
+    splendorDuration: 7,    // seconds of Radiance after collecting Moon dew
+    splendorRadius: 0.5,    // +50% light radius during Radiance
+    splendorBurn: 2.5,      // Shadows burn 2.5 times faster
     dewEnergy: 15,
-    dewFirst: 28,           // la prima Rugiada compare dopo 28 secondi
+    dewFirst: 28,           // the first Moon dew appears after 28 seconds
     dewInterval: [ 35, 50 ],
     dewLifetime: 12,
-    waves: [ 45, 95, 128 ], // secondi in cui arriva un'ondata di Ombre
+    waves: [ 45, 95, 128 ], // seconds at which a wave of Shadows arrives
     colossusFrom: 70,
     colossusInterval: 40,
-    colossusDimRange: 260,  // entro questa distanza il Colosso affievolisce la luce
-    colossusDim: 0.35       // fino al -35% di raggio
+    colossusDimRange: 260,  // within this distance the Colossus dims the light
+    colossusDim: 0.35       // up to -35% of the radius
 } as const;
 
 export type ShadowKind = 'shade' | 'moth' | 'colossus';
 
 export interface ShadowSpec
 {
-    hp: number;             // per le Ombre comuni viene moltiplicato per la taglia
+    hp: number;             // multiplied by size for common Shadows
     speed: [ number, number ];
     size: [ number, number ];
-    lightSlow: number;      // moltiplicatore di velocità dentro la luce
-    burn: number;           // moltiplicatore di danno dalla luce
-    points: number;         // punti se bruciata dalla luce
-    flashPoints: number;    // punti se dissolta dal Lampo
-    hitEnergy: number;      // luce persa al contatto (senza sciame)
+    lightSlow: number;      // speed multiplier inside the light
+    burn: number;           // damage multiplier from the light
+    points: number;         // points when burned by the light
+    flashPoints: number;    // points when dissolved by a Flash
+    hitEnergy: number;      // light lost on contact (with no swarm)
     eye: number;
 }
 
@@ -81,7 +80,7 @@ export function saveBest (score: number): number
     }
     catch
     {
-        // storage non disponibile: il record vale solo per questa sessione
+        // storage unavailable: the best score only lasts for this session
     }
 
     return best;

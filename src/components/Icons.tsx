@@ -1,5 +1,3 @@
-// Icone SVG minime, colorate con currentColor
-
 export function PauseIcon ()
 {
     return (

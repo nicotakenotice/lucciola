@@ -5,7 +5,7 @@ interface IProps
     hint: Hint & { id: number };
 }
 
-// Suggerimento temporaneo: la key sull'id fa ripartire l'animazione a ogni nuovo messaggio
+// Temporary hint: keying on the id restarts the animation for every new message
 export function Toast ({ hint }: IProps)
 {
     return (

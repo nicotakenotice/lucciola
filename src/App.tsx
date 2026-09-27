@@ -9,12 +9,11 @@ import { EndPanel } from './components/EndPanel';
 import { PausePanel } from './components/PausePanel';
 import { Toast } from './components/Toast';
 
-// 'transition' copre i cambi di scena, così i comandi non partono due volte
+// 'transition' covers scene changes, so commands are not triggered twice
 type Screen = 'loading' | 'menu' | 'game' | 'paused' | 'end' | 'transition';
 
 function App()
 {
-    //  References to the PhaserGame component (game and scene are exposed)
     const phaserRef = useRef<IRefPhaserGame | null>(null);
 
     const [screen, setScreen] = useState<Screen>('loading');
@@ -24,7 +23,6 @@ function App()
     const [muted, setMutedState] = useState(isMuted);
     const [touch] = useState(() => window.matchMedia('(pointer: coarse)').matches);
 
-    // Event emitted from the PhaserGame component
     const currentScene = useCallback((scene: Phaser.Scene) => {
 
         const key = scene.scene.key;
@@ -67,7 +65,7 @@ function App()
 
     const start = useCallback(() => {
 
-        // Il primo gesto dell'utente sblocca l'audio del browser
+        // The user's first gesture unlocks browser audio
         sfx.unlock();
         sfx.start();
         music.start();
@@ -95,8 +93,8 @@ function App()
 
     const toggleMute = useCallback(() => {
 
-        // Se l'audio non è ancora partito (il browser aspetta un gesto) e non era silenziato,
-        // il primo clic lo avvia invece di spegnerlo
+        // If audio has not started yet (the browser waits for a gesture) and it was not muted,
+        // the first click starts it instead of muting it
         const wasRunning = audioReady();
         sfx.unlock();
         music.start();
@@ -105,8 +103,8 @@ function App()
 
     }, []);
 
-    // I browser avviano l'audio solo dopo un gesto: la musica parte al primo clic o tasto,
-    // già nel menu. Il pulsante audio gestisce da sé il proprio clic.
+    // Browsers only start audio after a user gesture: music starts on the first click or key press,
+    // already in the menu. The audio button handles its own click.
     useEffect(() => {
 
         const unlock = (e: Event) => {
@@ -175,7 +173,6 @@ function App()
 
     }, [ screen, start, restart, toMenu, pause, resume, toggleMute ]);
 
-    // Pausa automatica se la finestra perde il focus o la scheda viene nascosta
     useEffect(() => {
 
         if (screen !== 'game') return;

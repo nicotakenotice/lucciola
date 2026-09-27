@@ -2,7 +2,6 @@ import { getLang, setLang, t } from '../i18n';
 import { useLang } from '../i18n/useLang';
 import { keepFocus } from './keepFocus';
 
-// Interruttore di lingua: una piccola lucciola scivola sulla lingua attiva
 export function LangToggle ({ className = '' }: { className?: string })
 {
     const lang = useLang();

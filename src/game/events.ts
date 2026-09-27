@@ -1,5 +1,3 @@
-// Nomi e payload degli eventi scambiati tra React e Phaser tramite l'EventBus
-
 export const Events = {
     SceneReady: 'current-scene-ready',
     Hud: 'hud',
@@ -20,14 +18,14 @@ export interface HudState
     followers: number;
     maxFollowers: number;
     score: number;
-    combo: number;          // raccolte consecutive di polline (0 = nessuna combo)
-    splendor: number;       // 0..1, tempo residuo dello Splendore
+    combo: number;          // consecutive pollen pickups (0 = no combo)
+    splendor: number;       // 0..1, remaining Radiance time
     flashReady: boolean;
     flashMin: number;
     nightProgress: number;  // 0..1
     secondsToDawn: number;
     dawn: boolean;
-    alive: boolean;         // false dopo il game over o all'alba
+    alive: boolean;         // false after game over or at dawn
 }
 
 export type HintTone = 'info' | 'danger' | 'gift';

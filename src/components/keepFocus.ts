@@ -1,6 +1,6 @@
 import type { MouseEvent } from 'react';
 
-// I controlli piccoli (audio, lingua, pausa) non prendono il fuoco al clic del mouse:
-// altrimenti SPAZIO, che nel gioco avvia la partita o lancia il Lampo, li "ricliccherebbe".
-// Con la tastiera (Tab) restano comunque raggiungibili.
+// Small controls (sound, language, pause) do not take focus on mouse click:
+// otherwise SPACE, which starts the game or fires a Flash, would "click" them again.
+// They stay reachable with the keyboard (Tab).
 export const keepFocus = (e: MouseEvent) => e.preventDefault();

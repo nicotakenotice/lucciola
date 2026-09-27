@@ -1,6 +1,6 @@
-// Testi in italiano. Le chiavi di questo dizionario sono la fonte di verità:
-// le altre lingue devono tradurle tutte (lo controlla TypeScript).
-// Tag supportati nel testo ricco: <b>, <kbd>, <pollen>, <lost>, <shadow>, <dew>. Parametri: {nome}.
+// Italian texts. The keys of this dictionary are the source of truth:
+// every other language must translate all of them (TypeScript enforces it).
+// Rich-text tags: <b>, <kbd>, <pollen>, <lost>, <shadow>, <dew>. Parameters: {name}.
 export const it = {
     'menu.subtitle': 'Una notte nel bosco. Una piccola luce.',
     'menu.move.pointer': 'Muoviti con il <b>mouse</b>, <b>WASD</b> o le <b>frecce</b>',

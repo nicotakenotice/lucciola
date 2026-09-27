@@ -1,6 +1,6 @@
 import { Scene } from 'phaser';
 
-// Genera tutte le texture via codice: il gioco non ha asset esterni.
+// Generates every texture in code: the game has no external assets.
 export class Boot extends Scene
 {
     constructor ()
@@ -10,7 +10,7 @@ export class Boot extends Scene
 
     create ()
     {
-        // Luce morbida: usata per "bucare" il buio e per i bagliori additivi
+        // Soft light: used to cut holes in the darkness and for additive glows
         this.makeRadial('light', 256, [
             [ 0, 'rgba(255,255,255,1)' ],
             [ 0.45, 'rgba(255,255,255,0.8)' ],
@@ -22,7 +22,7 @@ export class Boot extends Scene
             [ 0.5, 'rgba(255,255,255,0.25)' ],
             [ 1, 'rgba(255,255,255,0)' ]
         ]);
-        // Corpo delle Ombre
+        // Shadow body
         this.makeRadial('smoke', 96, [
             [ 0, 'rgba(6,2,14,1)' ],
             [ 0.5, 'rgba(16,6,30,0.9)' ],
@@ -40,7 +40,7 @@ export class Boot extends Scene
         g.strokeCircle(64, 64, 60);
         g.generateTexture('ring', 128, 128);
 
-        // Lucciola vista dall'alto, testa verso l'alto
+        // Firefly seen from above, head pointing up
         g.clear();
         g.fillStyle(0xd6ecff, 0.45);
         g.fillEllipse(7, 11, 11, 7);

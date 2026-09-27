@@ -35,7 +35,7 @@ html, body {
     align-items: center;
 }
 
-/* Il palco mantiene il 16:9 del gioco: gli overlay React combaciano col canvas */
+/* The stage keeps the game's 16:9 ratio so React overlays line up with the canvas */
 .stage {
     position: relative;
     width: min(100vw, calc(100dvh * 16 / 9));
@@ -118,7 +118,7 @@ html, body {
     color: var(--ink-soft);
 }
 
-/* ---------------------------------------------------------------- bottoni */
+/* ---------------------------------------------------------------- buttons */
 
 .button {
     font-family: var(--font-ui);
@@ -382,7 +382,7 @@ html, body {
     gap: 0.8cqw;
 }
 
-/* Interruttore di lingua: una pillola notturna con una lucciola che scivola sulla lingua attiva */
+/* Language toggle */
 .lang-toggle {
     --knob-inset: 3px;
     position: relative;
@@ -447,7 +447,7 @@ html, body {
     margin: 1.6cqw auto 0;
 }
 
-/* Splendore */
+/* Radiance */
 .splendor {
     display: flex;
     align-items: center;
@@ -481,7 +481,7 @@ html, body {
     animation: shimmer 1s linear infinite;
 }
 
-/* Vignetta: rossa e pulsante quando la luce sta finendo, azzurra durante lo Splendore */
+/* Vignette */
 .vignette {
     position: absolute;
     inset: 0;
@@ -499,7 +499,7 @@ html, body {
     background: radial-gradient(ellipse at center, transparent 60%, rgba(191, 232, 255, 0.16) 100%);
 }
 
-/* Suggerimenti */
+/* Hints */
 .toast-layer {
     display: flex;
     justify-content: center;
@@ -531,7 +531,7 @@ html, body {
     box-shadow: 0 0 1.4cqw rgba(191, 232, 255, 0.35);
 }
 
-/* Pulsante Lampo per i dispositivi touch */
+/* Flash button for touch devices */
 .touch-flash {
     position: absolute;
     right: 2.4cqw;
@@ -556,7 +556,7 @@ html, body {
     box-shadow: 0 0 2cqw rgba(212, 255, 90, 0.6);
 }
 
-/* ---------------------------------------------------------------- pausa */
+/* ---------------------------------------------------------------- pause */
 
 .pause {
     display: flex;
@@ -593,7 +593,7 @@ html, body {
     height: 1.4em;
 }
 
-/* ---------------------------------------------------------------- fine partita */
+/* ---------------------------------------------------------------- end of game */
 
 .end {
     display: flex;
@@ -681,7 +681,7 @@ html, body {
     margin-top: 2cqw;
 }
 
-/* ---------------------------------------------------------------- animazioni */
+/* ---------------------------------------------------------------- animations */
 
 @keyframes fade-in {
     from { opacity: 0; }

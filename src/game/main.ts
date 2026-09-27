@@ -4,15 +4,13 @@ import { Menu } from './scenes/Menu';
 import { Game as MainGame } from './scenes/Game';
 import { HEIGHT, WIDTH } from './constants';
 
-//  Find out more information about the Game Config at:
-//  https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
 const config: Phaser.Types.Core.GameConfig = {
     type: AUTO,
     width: WIDTH,
     height: HEIGHT,
     parent: 'game-container',
     backgroundColor: '#020308',
-    // L'audio è tutto sintetizzato in audio.ts: il sound manager di Phaser non serve
+    // All audio is synthesized in audio.ts: Phaser's sound manager is not needed
     audio: {
         noAudio: true
     },

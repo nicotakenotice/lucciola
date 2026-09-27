@@ -1,4 +1,4 @@
-// Effetti sonori sintetizzati con WebAudio: nessun file audio da caricare.
+// Sound effects synthesized with WebAudio: no audio files to load.
 
 const MUTE_KEY = 'lucciola.muted';
 const MASTER_VOLUME = 0.35;
@@ -114,7 +114,7 @@ export function setMuted (value: boolean)
     }
     catch
     {
-        // preferenza non salvata: vale solo per questa sessione
+        // preference not saved: it only lasts for this session
     }
     if (ctx) master.gain.setTargetAtTime(value ? 0 : MASTER_VOLUME, ctx.currentTime, 0.05);
 }
@@ -130,7 +130,7 @@ export const sfx = {
         [ 0, 7, 12, 19 ].forEach((n, i) => tone(semi(392, n), 0.6, { type: 'triangle', vol: 0.12, delay: i * 0.09 }));
     },
 
-    // Le raccolte ravvicinate salgono lungo una scala pentatonica
+    // Pickups in quick succession climb a pentatonic scale
     pickup (step = 0)
     {
         const n = PENTA[Math.min(step, PENTA.length - 1)];
@@ -235,10 +235,10 @@ export const sfx = {
     }
 };
 
-// ---------------------------------------------------------------- musica
+// ---------------------------------------------------------------- music
 
-// Musica ambient generativa: un bordone che respira, un pad di Re minore e campanelle
-// pentatoniche con eco. La tensione (0..1) apre il filtro e aggiunge un battito grave.
+// Generative ambient music: a breathing drone, a D minor pad and pentatonic bells
+// with echo. Tension (0..1) opens the filter and adds a low heartbeat.
 const D_MINOR_PENTA = [ 0, 3, 5, 7, 10, 12, 15, 17, 19, 22 ];
 const MUSIC_LEVEL = 0.8;
 const MUSIC_DUCKED = 0.3;
@@ -270,7 +270,7 @@ class Music
         this.bus.gain.setTargetAtTime(MUSIC_LEVEL, c.currentTime, 1.2);
         this.bus.connect(master);
 
-        // Eco: un delay con retroazione filtrata dà profondità alle campanelle
+        // Echo: a delay with filtered feedback gives the bells some depth
         const delay = c.createDelay(1.5);
         delay.delayTime.value = 0.46;
         const feedback = c.createGain();
@@ -283,7 +283,7 @@ class Music
         delay.connect(damp).connect(feedback).connect(delay);
         damp.connect(this.bus);
 
-        // Bordone: Re e La gravi, leggermente scordati, dentro un passa-basso che oscilla lento
+        // Drone: low D and A, slightly detuned, through a slowly swaying low-pass filter
         this.droneFilter = c.createBiquadFilter();
         this.droneFilter.type = 'lowpass';
         this.droneFilter.frequency.value = DRONE_CUTOFF;
@@ -310,8 +310,8 @@ class Music
         lfo.connect(lfoDepth).connect(this.droneFilter.frequency);
         lfo.start();
 
-        // Pad nel registro medio (Re-Fa-La): è la parte che si sente anche dagli altoparlanti piccoli.
-        // Ogni voce si gonfia e si ritrae con un respiro lento e diverso dalle altre.
+        // Mid-register pad (D-F-A): the part that is audible even on small speakers.
+        // Each voice swells and recedes with its own slow breath.
         const padFilter = c.createBiquadFilter();
         padFilter.type = 'lowpass';
         padFilter.frequency.value = 1600;
@@ -335,7 +335,7 @@ class Music
             breath.start();
         });
 
-        // Battito grave, udibile solo quando la tensione sale
+        // Low heartbeat, audible only when tension rises
         const pulse = c.createOscillator();
         pulse.type = 'sawtooth';
         pulse.frequency.value = 55;
@@ -356,7 +356,7 @@ class Music
         pulse.start();
         pulseLfo.start();
 
-        // La prima campanella arriva subito: si sente che la musica è partita
+        // The first bell plays right away, so it is clear the music has started
         window.setTimeout(() => this.bell(), 500);
         this.scheduleBell();
     }
@@ -380,7 +380,7 @@ class Music
 
     private scheduleBell ()
     {
-        // Con tensione alta le note si fanno più rade: resta solo il battito
+        // With high tension the notes get sparser and the heartbeat takes over
         const wait = 1600 + Math.random() * 2800 + this.tension * 3000;
         window.setTimeout(() =>
         {

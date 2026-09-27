@@ -62,10 +62,10 @@ interface Shadow extends Point
     phase: number;
     lit: number;
     blink: number;
-    dash: number;           // Falene: >0 durante lo scatto, <0 conto alla rovescia al prossimo
-    kvx: number;            // spinta subita (Lampo, urto)
+    dash: number;           // Moths: >0 while dashing, <0 countdown to the next dash
+    kvx: number;            // knockback velocity (Flash, impact)
     kvy: number;
-    touchCd: number;        // Colosso: pausa tra un contatto e l'altro
+    touchCd: number;        // Colossus: cooldown between two hits
     body: GameObjects.Image;
     body2: GameObjects.Image;
     eyeGlow: GameObjects.Image;
@@ -227,7 +227,7 @@ export class Game extends Scene
             })
             .setDepth(D.shadows + 1);
 
-        // Spore sospese nell'aria: stanno sotto il buio, quindi si vedono solo dentro la luce
+        // Floating spores: drawn below the darkness, so they only show inside the light
         this.add
             .particles(0, 0, 'dot', {
                 emitZone: { type: 'random', source: new Geom.Rectangle(0, 0, WIDTH, HEIGHT), quantity: 1 },
@@ -243,7 +243,6 @@ export class Game extends Scene
             })
             .setDepth(D.spores);
 
-        // Scia luminosa della lucciola
         this.trail = this.add
             .particles(0, 0, 'glow', {
                 follow: this.playerBug,
@@ -268,7 +267,7 @@ export class Game extends Scene
         {
             this.usePointer = true;
         });
-        // Su touch il tocco serve a muoversi: il Lampo ha il suo pulsante nell'HUD
+        // On touch screens a tap moves the firefly: the Flash has its own HUD button
         this.input.on('pointerdown', (pointer: Input.Pointer) =>
         {
             this.usePointer = true;
@@ -276,8 +275,8 @@ export class Game extends Scene
         });
         keyboard.on('keydown-SPACE', () => this.flash());
 
-        // Pausa, rigioca, menu: comandi che arrivano dall'interfaccia React.
-        // Con la scena in pausa si fermano update, timer e tween: il mondo resta congelato.
+        // Pause, restart, menu: commands coming from the React UI.
+        // A paused scene stops update, timers and tweens, so the world stays frozen.
         const pause = () =>
         {
             if (this.state !== 'play' || this.scene.isPaused()) return;
@@ -371,7 +370,6 @@ export class Game extends Scene
         EventBus.emit(Events.Hud, hud);
     }
 
-    // La musica si fa più tesa quando le Ombre si avvicinano o la luce è bassa
     private updateTension ()
     {
         if (this.state !== 'play')
@@ -387,7 +385,7 @@ export class Game extends Scene
         music.setTension(Math.max(threat, low));
     }
 
-    // Ogni suggerimento compare al massimo una volta per partita (id), nella lingua corrente
+    // Each hint shows at most once per game (by id), in the current language
     private hint (id: string, message: MessageKey, tone: HintTone)
     {
         if (this.hintsShown.has(id)) return;
@@ -397,7 +395,7 @@ export class Game extends Scene
 
     private splendorFactor ()
     {
-        // Sfuma nell'ultimo mezzo secondo invece di spegnersi di colpo
+        // Fade out over the last half second instead of switching off abruptly
         return Clamp(this.splendor / 0.5, 0, 1);
     }
 
@@ -474,7 +472,7 @@ export class Game extends Scene
 
         this.colossusTimer -= dt;
 
-        // Il numero di Ombre in campo ha un tetto che sale con la notte (le ondate possono superarlo)
+        // Cap on Shadows on screen, rising through the night (waves may exceed it)
         const maxShadows = Math.min(T.maxShadows, 5 + this.elapsed / 15);
         this.shadowTimer -= dt;
         if (this.shadowTimer <= 0)
@@ -504,7 +502,6 @@ export class Game extends Scene
         return Math.random() < mothChance ? 'moth' : 'shade';
     }
 
-    // Un'ondata: un gruppo di Ombre arriva dallo stesso lato
     private wave (index: number)
     {
         this.hint(`wave${index}`, 'hint.wave', 'danger');
@@ -524,7 +521,7 @@ export class Game extends Scene
         }
     }
 
-    // ---------------------------------------------------------------- giocatore
+    // ---------------------------------------------------------------- player
 
     private updatePlayer (dt: number, time: number)
     {
@@ -580,7 +577,7 @@ export class Game extends Scene
         this.playerBug.setPosition(p.x, p.y + Math.sin(time * 0.006) * 1.5);
         this.playerBug.scaleX = 1 + Math.sin(time * 0.06) * 0.12;
 
-        // Con poca luce il bagliore pulsa come un battito; con lo Splendore diventa bianco-azzurro
+        // With little light the glow pulses like a heartbeat; during Radiance it turns bluish white
         const e = Clamp(this.energy / 100, 0, 1);
         const sf = this.splendorFactor();
         const heartbeat = this.energy < 25 && this.state === 'play' ? Math.max(0, Math.sin(time * 0.012)) * 0.25 : 0;
@@ -629,9 +626,9 @@ export class Game extends Scene
         if (this.followers.length === T.maxFollowers) this.hint('fullswarm', 'hint.fullSwarm', 'gift');
     }
 
-    // ---------------------------------------------------------------- polline
+    // ---------------------------------------------------------------- pollen
 
-    // La fascia in alto è coperta dall'HUD: gli oggetti compaiono solo più in basso
+    // The top band is covered by the HUD: objects only spawn below it
     private randomSpot (minDist: number): Point
     {
         for (let i = 0; i < 20; i++)
@@ -664,7 +661,6 @@ export class Game extends Scene
             const dy = this.p.y - pl.y;
             const d = Math.hypot(dx, dy);
 
-            // La luce attira il polline vicino
             if (this.state === 'play' && d < R * 0.5 && d > 1)
             {
                 const pull = 160 * (1 - d / (R * 0.5)) + 40;
@@ -700,7 +696,7 @@ export class Game extends Scene
         pl.core.destroy();
     }
 
-    // ---------------------------------------------------------------- rugiada lunare
+    // ---------------------------------------------------------------- moon dew
 
     private spawnDew ()
     {
@@ -719,7 +715,7 @@ export class Game extends Scene
         if (!dew) return;
 
         dew.life -= dt;
-        // Negli ultimi 3 secondi lampeggia per avvisare che sta svanendo
+        // Blinks during the last 3 seconds to warn that it is fading
         const fading = dew.life < 3 ? (Math.sin(time * 0.03) > 0 ? 1 : 0.25) : 1;
         const pulse = 0.5 + 0.5 * Math.sin(time * 0.006);
         dew.glow.setAlpha(fading).setScale(1 + pulse * 0.4);
@@ -758,7 +754,7 @@ export class Game extends Scene
         [ dew.glow, dew.core, dew.ring ].forEach((o) => o.destroy());
     }
 
-    // ---------------------------------------------------------------- lucciole smarrite
+    // ---------------------------------------------------------------- lost fireflies
 
     private spawnLost ()
     {
@@ -788,7 +784,7 @@ export class Game extends Scene
             l.x = Clamp(l.x, 40, WIDTH - 40);
             l.y = Clamp(l.y, HUD_BAND, HEIGHT - 40);
 
-            // Lampeggia come una vera lucciola: un segnale ogni 1.6 secondi
+            // Blinks like a real firefly: one signal every 1.6 seconds
             const lit = (time * 0.001 + l.phase) % 1.6 < 0.55;
             l.on += ((lit ? 1 : 0.12) - l.on) * (1 - Math.exp(-dt * 12));
             l.bug.setPosition(l.x, l.y).setRotation(l.angle + Math.PI / 2);
@@ -824,14 +820,14 @@ export class Game extends Scene
         }
     }
 
-    // ---------------------------------------------------------------- ombre
+    // ---------------------------------------------------------------- shadows
 
     private spawnShadow (kind: ShadowKind, side = Between(0, 3))
     {
         const spec = SHADOWS[kind];
         const x = side === 0 ? -60 : side === 1 ? WIDTH + 60 : Between(0, WIDTH);
         const y = side === 2 ? -60 : side === 3 ? HEIGHT + 60 : Between(0, HEIGHT);
-        // Le Ombre comuni crescono e accelerano col passare della notte; il Colosso resta lento
+        // Common Shadows grow and speed up as the night goes on; the Colossus stays slow
         const grow = kind === 'shade' ? Math.min(0.5, this.elapsed / 300) : 0;
         const haste = kind === 'colossus' ? 0 : this.elapsed * 0.35;
         const size = FloatBetween(spec.size[0], spec.size[1]) + grow;
@@ -892,7 +888,7 @@ export class Game extends Scene
 
             if (s.kind === 'moth')
             {
-                // Volo a zig-zag, con scatti improvvisi quando è abbastanza vicina
+                // Zig-zag flight, with sudden dashes when close enough
                 ang += Math.sin(time * 0.006 + s.phase) * 0.9;
                 s.dash += dt;
                 if (s.dash >= 0 && s.dash < 0.45 && d < 380) spd *= 2.3;
@@ -929,7 +925,6 @@ export class Game extends Scene
                 continue;
             }
 
-            // Le Ombre divorano le lucciole smarrite
             for (let j = this.lost.length - 1; j >= 0; j--)
             {
                 const l = this.lost[j];
@@ -947,7 +942,7 @@ export class Game extends Scene
             if (this.state === 'play' && s.touchCd <= 0 && d < 16 + 12 * s.size) this.hitPlayer(s, d);
         }
 
-        // Il Colosso affievolisce la luce in modo graduale, non a scatti
+        // The Colossus dims the light gradually, not abruptly
         this.dim += (dim - this.dim) * (1 - Math.exp(-dt * 3));
     }
 
@@ -963,7 +958,7 @@ export class Game extends Scene
 
         if (s.kind === 'moth')
         {
-            // Ali: un secondo sbuffo di fumo, perpendicolare alla direzione, che batte veloce
+            // Wings: a second puff of smoke, perpendicular to the heading, flapping fast
             const flap = 0.55 + 0.45 * Math.abs(Math.sin(time * 0.03 + s.phase));
             s.body2.setPosition(bx, by).setRotation(ang).setScale(s.size * 0.7, s.size * 2.1 * flap).setAlpha(0.35 + hpFrac * 0.4);
         }
@@ -976,7 +971,7 @@ export class Game extends Scene
                 .setAlpha(0.4 + hpFrac * 0.5);
         }
 
-        // Occhi: l'unica cosa visibile nel buio. Si socchiudono nella luce.
+        // Eyes: the only thing visible in the dark. They narrow in the light.
         s.blink -= dt;
         let open = 1 - s.lit * 0.65;
         if (s.blink < 0)
@@ -1024,7 +1019,7 @@ export class Game extends Scene
     {
         const spec = SHADOWS[s.kind];
 
-        // Il Colosso non si dissolve all'impatto: colpisce, viene respinto e ritorna
+        // The Colossus does not dissolve on impact: it hits, gets pushed back and returns
         if (s.kind === 'colossus')
         {
             s.touchCd = 2.5;
@@ -1062,13 +1057,13 @@ export class Game extends Scene
         }
     }
 
-    // ---------------------------------------------------------------- lampo
+    // ---------------------------------------------------------------- flash
 
     private flash ()
     {
         if (this.state !== 'play' || this.flashCd > 0) return;
 
-        // Un tasto premuto durante la pausa può arrivare in coda alla ripresa: lo ignoriamo
+        // A key pressed while paused may be delivered right after resuming: ignore it
         if (performance.now() - this.resumedAt < 200) return;
 
         if (this.energy < T.flashMin)
@@ -1099,7 +1094,7 @@ export class Game extends Scene
         this.tweens.add({ targets: this.cameras.main, zoom: 1.02, duration: 70, yoyo: true, ease: 'Quad.easeOut' });
         this.sparks.explode(30, x, y);
 
-        // L'onda di luce raggiunge prima le Ombre più vicine
+        // The light wave reaches the closest Shadows first
         for (const s of [ ...this.shadows ])
         {
             const d = Math.hypot(s.x - x, s.y - y);
@@ -1111,7 +1106,6 @@ export class Game extends Scene
 
                 if (s.kind === 'colossus')
                 {
-                    // Resiste al Lampo: perde vita e viene respinto
                     s.hp -= 3.5;
                     this.push(s, 380);
                     this.purple.explode(20, s.x, s.y);
@@ -1126,7 +1120,7 @@ export class Game extends Scene
         }
     }
 
-    // ---------------------------------------------------------------- fine partita
+    // ---------------------------------------------------------------- end of game
 
     private gameOver ()
     {
@@ -1191,7 +1185,7 @@ export class Game extends Scene
 
         if (this.darkAlpha > 0.001)
         {
-            // Negli ultimi 25 secondi il cielo inizia a schiarirsi
+            // During the last 25 seconds the sky starts to brighten
             const pre = Clamp((this.elapsed - (T.nightLength - 25)) / 25, 0, 1);
             const color = Display.Color.GetColor(3 + pre * 14, 4 + pre * 8, 10 + pre * 26);
             rt.fill(color, this.darkAlpha - pre * 0.07);

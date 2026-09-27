@@ -15,7 +15,7 @@ interface Fly
     glow: GameObjects.Image;
 }
 
-// Sfondo animato del menu: il titolo e i testi li disegna React sopra al canvas.
+// Animated menu background: React draws the title and texts on top of the canvas.
 export class Menu extends Scene
 {
     private dark: GameObjects.RenderTexture;
@@ -89,7 +89,7 @@ export class Menu extends Scene
             erase(f.x, f.y, 60 + pulse * 40, pulse);
         }
 
-        // Il puntatore è una piccola luce che esplora il bosco
+        // The pointer is a small light exploring the forest
         const p = this.input.activePointer;
         if (p.x > 0 || p.y > 0) erase(p.worldX, p.worldY, 150, 0.9);
 

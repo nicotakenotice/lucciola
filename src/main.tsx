@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
-// Importato qui (e non con un <link> in index.html) perché Vite lo aggiorni a caldo come i componenti
+// Imported here (not via a <link> in index.html) so Vite hot-reloads it like the components
 import './style.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

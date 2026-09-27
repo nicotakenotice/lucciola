@@ -1,7 +1,7 @@
 import { Fragment, ReactNode } from 'react';
 
-// Rende un testo tradotto con qualche tag semplice (<b>, <kbd>, <pollen>…):
-// così le traduzioni restano stringhe, ma possono evidenziare parole chiave.
+// Renders a translated string with a few simple tags (<b>, <kbd>, <pollen>…):
+// translations stay plain strings but can still highlight keywords.
 const TAG = /<(\w+)>(.*?)<\/\1>/g;
 
 export function Rich ({ text }: { text: string })

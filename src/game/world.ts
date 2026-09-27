@@ -1,8 +1,8 @@
 import { Math as PMath, Scene } from 'phaser';
 import { WIDTH, HEIGHT } from './constants';
 
-// Disegna un sottobosco visto dall'alto: muschio, foglie, sassi, erba, fiori,
-// funghi, felci e ceppi. Il risultato è una texture statica: si vede solo dove c'è luce.
+// Draws a top-down forest floor: moss, leaves, stones, grass, flowers,
+// mushrooms, ferns and stumps. The result is a static texture, visible only where there is light.
 export function drawForest (scene: Scene, key: string, seed: string)
 {
     if (scene.textures.exists(key)) scene.textures.remove(key);
@@ -15,14 +15,14 @@ export function drawForest (scene: Scene, key: string, seed: string)
     g.fillGradientStyle(0x163a2e, 0x113042, 0x10291f, 0x0d2230, 1);
     g.fillRect(0, 0, WIDTH, HEIGHT);
 
-    // Chiazze di muschio e terra
+    // Moss and soil patches
     for (let i = 0; i < 70; i++)
     {
         g.fillStyle(rnd.pick([ 0x1f4a33, 0x19402c, 0x28532f, 0x14302a, 0x2a3a24 ]), rnd.realInRange(0.25, 0.6));
         g.fillEllipse(rx(), ry(), rnd.between(60, 220), rnd.between(40, 140));
     }
 
-    // Foglie secche
+    // Dry leaves
     for (let i = 0; i < 320; i++)
     {
         const x = rx();
@@ -38,7 +38,7 @@ export function drawForest (scene: Scene, key: string, seed: string)
         );
     }
 
-    // Ceppi di alberi tagliati, vicino ai bordi
+    // Tree stumps, near the edges
     for (let i = 0; i < 6; i++)
     {
         const onSide = i % 2 === 0;
@@ -65,7 +65,7 @@ export function drawForest (scene: Scene, key: string, seed: string)
         g.fillEllipse(x - r * 0.4, y + r * 0.5, r * 0.8, r * 0.5);
     }
 
-    // Sassi
+    // Stones
     for (let i = 0; i < 20; i++)
     {
         const x = rx();
@@ -85,7 +85,7 @@ export function drawForest (scene: Scene, key: string, seed: string)
         }
     }
 
-    // Felci
+    // Ferns
     for (let i = 0; i < 16; i++)
     {
         const x = rx();
@@ -110,7 +110,7 @@ export function drawForest (scene: Scene, key: string, seed: string)
         }
     }
 
-    // Ciuffi d'erba
+    // Grass tufts
     for (let i = 0; i < 190; i++)
     {
         const x = rx();
@@ -125,7 +125,7 @@ export function drawForest (scene: Scene, key: string, seed: string)
         }
     }
 
-    // Fiorellini
+    // Small flowers
     for (let i = 0; i < 45; i++)
     {
         const cx = rx();
@@ -147,7 +147,7 @@ export function drawForest (scene: Scene, key: string, seed: string)
         }
     }
 
-    // Funghi
+    // Mushrooms
     for (let i = 0; i < 14; i++)
     {
         const cx = rx();

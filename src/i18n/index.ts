@@ -1,8 +1,8 @@
 import { it } from './it';
 import { en } from './en';
 
-// Mini-i18n condiviso da React e Phaser: la lingua corrente vive qui,
-// React si iscrive ai cambi con useLang(), Phaser legge t() quando crea i testi.
+// Tiny i18n shared by React and Phaser: the current language lives here,
+// React subscribes to changes with useLang(), Phaser calls t() when it creates texts.
 
 export type Lang = 'it' | 'en';
 export type MessageKey = keyof typeof it;
@@ -21,7 +21,7 @@ function detect (): Lang
     }
     catch
     {
-        // storage non disponibile: si usa la lingua del browser
+        // storage unavailable: fall back to the browser language
     }
 
     return navigator.language?.toLowerCase().startsWith('it') ? 'it' : 'en';
@@ -47,7 +47,7 @@ export function setLang (value: Lang)
     }
     catch
     {
-        // preferenza non salvata: vale solo per questa sessione
+        // preference not saved: it only lasts for this session
     }
     listeners.forEach((fn) => fn());
 }
