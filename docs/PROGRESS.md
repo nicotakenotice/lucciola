@@ -308,3 +308,20 @@ State inherited from earlier work (commits up to `2489bf4`):
   controls, the production-build tests in `verify`, and the link to the runtime verification recipe.
 - Documentation-only change: no runtime surface; `verify:fast` runs in the pre-commit hook.
 
+## 2026-09-28 — T18 logo and README images
+
+- Logo: `public/logo.svg`, a top-down firefly with a glowing abdomen and a light trail on a night tile,
+  in the game's palette. Reviewed at 512/128/64/32/16 px on dark and light backgrounds; the first
+  version had flat, heavy wings and no sense of motion, so the wings became translucent with veins and
+  a trail was added. Replaces the template's Phaser favicon (SVG + 32 px PNG + 180 px iOS icon).
+- `npm run images` (`scripts/images.mjs`): renders the icon PNGs from the SVG, the home screen, and a
+  night played by the bot for 30 s (seed 3, swarm of 3, score 705). The bot moved from
+  `balance.mjs` to `scripts/bot.mjs`, shared by both scripts; balance results unchanged (seeds 1, 4, 6
+  matched the reference rows).
+- Found while capturing: Phaser 4 tweens run on `Date.now()`, so a night compressed by the bot left
+  floating texts, Flash rings and a screen flash frozen half-way — screenshots were not faithful.
+  The bot now plays the last 1.5 s in real time with rendering (`realtimeTail`). Seven seeds compared;
+  seed 3 chosen because it shows the core loop (swarm, Moon dew, a Shadow burning, eyes in the dark).
+- README: centered logo, title and tagline, home screenshot, gameplay screenshot with caption and alt
+  texts, `npm run images` in the command table.
+

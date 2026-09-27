@@ -42,12 +42,14 @@ Everything needed to resume work lives in this repository, not in chat history.
 | `npm run balance` | Headless bot playing seeded nights; see `docs/BALANCE.md` |
 | `npm run build` | Production build into `dist/` |
 | `npm run package` | Build, check and zip `dist/` into `lucciola-web.zip` for itch.io |
+| `npm run images` | Regenerate icon PNGs (from `public/logo.svg`) and README screenshots; rerun after visual changes |
 
 ## Where things are
 
 See `docs/ARCHITECTURE.md` for the module map, `docs/TESTING.md` for the test strategy,
 `docs/BALANCE.md` for difficulty measurements and `docs/DEPLOY.md` for publishing.
-Tooling lives in `scripts/` (`balance.mjs`, `check-dist.mjs`, `package.mjs`) and `.githooks/`.
+Tooling lives in `scripts/` (`bot.mjs`, `balance.mjs`, `images.mjs`, `check-dist.mjs`, `package.mjs`)
+and `.githooks/`.
 
 ## Gotchas learned the hard way
 
@@ -57,6 +59,9 @@ Tooling lives in `scripts/` (`balance.mjs`, `check-dist.mjs`, `package.mjs`) and
 - Chrome throttles `requestAnimationFrame` and timers in background tabs: when driving the game from
   automation, step it manually (`game.step`) and yield with `MessageChannel`, not `setTimeout`.
 - Browsers start audio only after a user gesture; iOS needs `touchend`/`click`, not `pointerdown`.
+- Phaser 4 tweens run on the wall clock (`Date.now()`), not on the step delta: when stepping the game
+  faster than real time (bot), tweened visuals lag behind. Gameplay is unaffected; for screenshots the
+  bot plays the last seconds in real time (`realtimeTail`).
 - In dev builds `window.__LUCCIOLA__` exposes the game, the debug API and `TUNING` for tests, the balance
   bot and debugging (stripped in production). Tests use only `GameDebugApi` (`src/game/debug.ts`).
 - Clean up EventBus subscriptions with `onSceneExit()` (`src/game/lifecycle.ts`), not `once('destroy')`.

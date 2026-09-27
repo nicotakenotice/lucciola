@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Lucciola">
+  <defs>
+    <radialGradient id="night" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#16372a"/>
+      <stop offset="0.55" stop-color="#08140f"/>
+      <stop offset="1" stop-color="#020308"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#f2ffc2" stop-opacity="0.95"/>
+      <stop offset="0.25" stop-color="#d4ff5a" stop-opacity="0.55"/>
+      <stop offset="0.6" stop-color="#d4ff5a" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#d4ff5a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="abdomen" cx="50%" cy="40%" r="60%">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.45" stop-color="#f6ffa0"/>
+      <stop offset="1" stop-color="#c8ec4c"/>
+    </radialGradient>
+    <radialGradient id="core" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="speck" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#fff6c8"/>
+      <stop offset="1" stop-color="#fff27a" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="tile">
+      <rect width="512" height="512" rx="112"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#tile)">
+    <rect width="512" height="512" fill="url(#night)"/>
+
+    <!-- Pollen drifting in the dark -->
+    <circle cx="112" cy="138" r="26" fill="url(#speck)"/>
+    <circle cx="404" cy="112" r="20" fill="url(#speck)"/>
+    <circle cx="420" cy="392" r="24" fill="url(#speck)"/>
+    <circle cx="96" cy="402" r="16" fill="url(#speck)"/>
+
+    <!-- Glow of the firefly, centred on its abdomen -->
+    <circle cx="246" cy="296" r="220" fill="url(#halo)"/>
+
+    <!-- Light trail left behind -->
+    <circle cx="196" cy="382" r="13" fill="#e8ff80" fill-opacity="0.7"/>
+    <circle cx="168" cy="422" r="9" fill="#e8ff80" fill-opacity="0.45"/>
+    <circle cx="146" cy="454" r="6" fill="#e8ff80" fill-opacity="0.25"/>
+
+    <!-- Firefly seen from above, flying up and to the right -->
+    <g transform="rotate(24 256 262)">
+      <path d="M256 190 C 224 124 138 110 124 152 C 112 190 184 218 250 212 Z" fill="#dff1ff" fill-opacity="0.32" stroke="#eef8ff" stroke-opacity="0.7" stroke-width="4"/>
+      <path d="M256 190 C 288 124 374 110 388 152 C 400 190 328 218 262 212 Z" fill="#dff1ff" fill-opacity="0.32" stroke="#eef8ff" stroke-opacity="0.7" stroke-width="4"/>
+      <path d="M252 196 C 214 170 176 158 150 160 M260 196 C 298 170 336 158 362 160" fill="none" stroke="#eef8ff" stroke-opacity="0.35" stroke-width="3"/>
+      <ellipse cx="256" cy="198" rx="30" ry="46" fill="#2b2320"/>
+      <circle cx="256" cy="148" r="17" fill="#ff9c5a"/>
+      <ellipse cx="256" cy="294" rx="44" ry="66" fill="url(#abdomen)"/>
+      <ellipse cx="256" cy="300" rx="70" ry="92" fill="url(#core)"/>
+    </g>
+  </g>
+</svg>

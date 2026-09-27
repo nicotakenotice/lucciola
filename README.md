@@ -1,6 +1,14 @@
-# Lucciola
+<p align="center">
+  <img src="public/logo.svg" width="128" height="128" alt="Lucciola logo: a glowing firefly in the night">
+</p>
 
-*A night in the woods. A tiny light.*
+<h1 align="center">Lucciola</h1>
+
+<p align="center"><em>A night in the woods. A tiny light.</em></p>
+
+<p align="center">
+  <img src="docs/images/home.png" width="800" alt="Lucciola home screen: the title over a dark forest lit by wandering fireflies, with the instructions and the Start button">
+</p>
 
 You are a firefly in a pitch-dark forest. Your light is both your sight and your life, and it fades
 as the night goes on. Survive until dawn.
@@ -18,6 +26,12 @@ as the night goes on. Survive until dawn.
   much faster.
 
 Italian and English, generative music, no external assets: every texture and sound is made in code.
+
+<p align="center">
+  <img src="docs/images/gameplay.png" width="800" alt="Thirty seconds into a night: the firefly and a swarm of three light up the forest floor, a Shadow burns at the edge of the light and red eyes wait in the dark">
+  <br>
+  <sub>Thirty seconds into a night: a swarm of three, a Moon dew within reach, a Shadow burning at the edge of the light.</sub>
+</p>
 
 ## Controls
 
@@ -49,6 +63,7 @@ npm run verify         # typecheck, lint, unit tests, build, end-to-end tests
 | `npm run verify` | Everything: end-to-end tests on desktop, Android and iPhone emulation and on the production build, plus a bundle check |
 | `npm run balance` | Seeded bot nights to measure difficulty ([docs/BALANCE.md](docs/BALANCE.md)) |
 | `npm run package` | `lucciola-web.zip` ready for itch.io ([docs/DEPLOY.md](docs/DEPLOY.md)) |
+| `npm run images` | Regenerate the icon PNGs from `public/logo.svg` and the README screenshots |
 
 Built with Phaser 4 (gameplay), React 19 (interface), TypeScript and Vite, starting from the official
 `phaserjs/template-react-ts` template.

@@ -36,8 +36,9 @@ src/
     └── systems/               Darkness (night layer with light holes), Effects (particles, texts, flashes)
 ```
 
-Outside `src/`: `e2e/` (Playwright), `scripts/` (balance bot, bundle check, packaging),
-`.githooks/` (pre-commit, commit-msg), `docs/`.
+Outside `src/`: `e2e/` (Playwright), `scripts/` (`bot.mjs` shared by `balance.mjs` and
+`images.mjs`, bundle check, packaging), `.githooks/` (pre-commit, commit-msg), `docs/` (with
+`images/` for the README), `public/` (`logo.svg` and the icon PNGs generated from it).
 
 ## One frame of the Game scene
 

@@ -23,6 +23,7 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 | T15 | Enforce code style with lint (brace style, spacing, quotes) | done |
 | T16 | Address the independent review | done |
 | T17 | Fix findings from the runtime verification | done |
+| T18 | App logo and README images | done |
 
 ## T01 — Work-tracking docs and resume protocol
 
@@ -155,4 +156,11 @@ Found by driving the game and the CLIs (`/verify`), not by tests:
 - End panel: the HUD kept showing "Esc pause · M sound" (Esc means Menu there); a first night scored 0
   showed "Best: 0"; the light bar kept a dot at zero light.
 - The opening "Survive until dawn" banner covered floating texts near the centre.
+
+## T18 — App logo and README images (2026-09-28)
+
+- `public/logo.svg`: vector logo readable from 512 px down to 32 px; used as favicon, with PNG
+  fallback (32 px) and an iOS icon (180 px) generated from it.
+- README: logo header, home screenshot, gameplay screenshot about 30 s into a night.
+- `npm run images` regenerates every derived image deterministically (bot night with a fixed seed).
 
