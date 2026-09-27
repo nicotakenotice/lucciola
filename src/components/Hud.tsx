@@ -32,7 +32,7 @@ export function Hud ({ hud, muted, touch, onPause, onToggleMute, onFlash }: IPro
                 <div className="label">{t('hud.light')}</div>
                 <div className="bar-row">
                     <div className={`bar${danger ? ' low' : ''}${hud.radiance > 0 ? ' shining' : ''}`}>
-                        <div className="bar-fill" style={{ width: `${hud.energy}%` }} />
+                        {hud.energy > 0 && <div className="bar-fill" style={{ width: `${hud.energy}%` }} />}
                         <div className="bar-mark" style={{ left: `${hud.flashMin}%` }} />
                     </div>
                     <div className={`flash-dot${hud.flashReady ? ' ready' : ''}`} title={t('hud.flash')} />
@@ -82,9 +82,9 @@ export function Hud ({ hud, muted, touch, onPause, onToggleMute, onFlash }: IPro
 
             <div className="intro">{t('hud.intro')}</div>
 
-            {touch
+            {hud.alive && (touch
                 ? <button className={`touch-flash${hud.flashReady ? ' ready' : ''}`} onPointerDown={onFlash}>{t('hud.flash')}</button>
-                : <div className="hud-hint"><Rich text={t('hud.keys')} /></div>}
+                : <div className="hud-hint"><Rich text={t('hud.keys')} /></div>)}
         </div>
     );
 }

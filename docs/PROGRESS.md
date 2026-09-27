@@ -281,3 +281,21 @@ State inherited from earlier work (commits up to `2489bf4`):
   dependency on timing and got the same isolation. The gameplay group then passed 3/3 runs.- Verification: `npm run verify` green — unit 174/174, e2e 45/45 (24 desktop, 20 mobile,
   1 production), check:dist clean (load average ~16 at the time).
 
+## 2026-09-27 — Runtime verification (`/verify`) and T17
+
+- Drove the production build on desktop (Chromium) and on an iPhone 14 landscape profile (WebKit)
+  with real input, the packaged zip from a sub-path (as itch.io serves it) and both CLIs.
+  Verdict PASS: no page errors, no external requests, rotation/pause/Flash/tap-to-move all behaved.
+  Recipe saved in `.claude/skills/verify/SKILL.md`.
+- Findings fixed in T17:
+  - `npm run balance` trusted its input: a misspelled `--tuning` key was printed as applied and ignored
+    (misleading balance conclusions), malformed JSON printed a stack trace, `--seeds ''` played seed 0.
+    New `scripts/balance-args.mjs` (12 unit tests) validates options; TUNING keys and types are checked
+    against the live game before playing. Every bad input now exits 2 with a one-line message
+    (checked at the terminal for 5 bad inputs, plus a normal run).
+  - End panel: HUD key hints and the touch Flash button are hidden once the night is over, the light
+    bar disappears at zero, and "Best: 0" is no longer shown. New e2e test.
+  - The opening banner moved from 30% to 20% of the height so it no longer covers floating texts
+    (checked with a screenshot of a Moon dew pickup at the start).
+- Verification: `npm run verify` green — unit 186/186 (8 files), e2e 46/46, check:dist clean.
+

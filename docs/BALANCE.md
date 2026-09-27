@@ -8,6 +8,9 @@ change to `TUNING`/`SHADOWS` can be compared on the same nights. Try a change wi
 npm run balance -- --seeds 1,2,3,4,5,6,7,8,9,10 --tuning '{"energyDecayGrowth":0.004}'
 ```
 
+Arguments are validated (`scripts/balance-args.mjs`): a misspelled or wrongly typed `--tuning` key,
+malformed JSON or bad seeds stop the run with exit code 2 and a one-line message.
+
 Every gameplay number (spawn timings and distances, pickup and contact radii, points, Shadow
 behaviour, shields per Shadow kind) lives in `TUNING` or `SHADOWS`, so `--tuning` can reach it.
 

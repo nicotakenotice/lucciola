@@ -63,3 +63,20 @@ test.describe('game flow', () =>
         await expect(page.locator('.overlay.end p').first()).toContainText('bonus');
     });
 });
+
+test.describe('end of the night panel', () =>
+{
+    test('shows no key hints, no Flash control and no "Best: 0" on a scoreless first night', async ({ page }) =>
+    {
+        await openMenu(page);
+        await startGame(page);
+        await expect(page.locator('.hud-hint')).toBeVisible();
+
+        await setGame(page, { energy: 0 });
+
+        await expect(page.locator('.overlay.end')).toBeVisible({ timeout: END_PANEL_TIMEOUT });
+        await expect(page.locator('.hud-hint')).toHaveCount(0);
+        await expect(page.locator('.bar-fill')).toHaveCount(0);
+        await expect(page.locator('.overlay.end .best')).toHaveCount(0);
+    });
+});

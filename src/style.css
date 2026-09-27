@@ -327,7 +327,8 @@ html, body {
 
 .intro {
     position: absolute;
-    top: 30%;
+    /* Above the play area centre, where floating texts appear */
+    top: 20%;
     width: 100%;
     text-align: center;
     font-family: var(--font-title);

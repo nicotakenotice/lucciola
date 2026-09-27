@@ -9,14 +9,21 @@
 
 import { chromium } from '@playwright/test';
 import { createServer } from 'vite';
+import { parseArgs, tuningProblems, USAGE, UsageError } from './balance-args.mjs';
 
-const args = Object.fromEntries(
-    process.argv.slice(2).reduce((pairs, arg, i, all) => (arg.startsWith('--') ? [ ...pairs, [ arg.slice(2), all[i + 1] ] ] : pairs), [])
-);
-const seeds = (args.seeds ?? '1,2,3,4,5,6').split(',').map(Number);
-// Headless WebGL is CPU-bound: nights in parallel mostly slow each other down
-const parallel = Number(args.parallel ?? 1);
-const tuning = JSON.parse(args.tuning ?? '{}');
+let options;
+try
+{
+    // Headless WebGL is CPU-bound: nights in parallel (--parallel) mostly slow each other down
+    options = parseArgs(process.argv.slice(2));
+}
+catch (error)
+{
+    if (!(error instanceof UsageError)) throw error;
+    console.error(`balance: ${error.message}\n${USAGE}`);
+    process.exit(2);
+}
+const { seeds, parallel, tuning } = options;
 const PORT = 5175;
 
 // Runs inside the page. Must be self-contained: Playwright serializes its source.
@@ -108,6 +115,9 @@ async function runWorker (browser, queue, results)
     await page.goto(`http://localhost:${PORT}/`, { timeout: 120_000 });
     await page.waitForFunction(() => window.__LUCCIOLA__?.game.scene.isActive('Menu'), undefined, { timeout: 120_000 });
 
+    const problems = tuningProblems(tuning, await page.evaluate(() => ({ ...window.__LUCCIOLA__.tuning })));
+    if (problems.length) throw new UsageError(problems.join('; '));
+
     while (queue.length)
     {
         const seed = queue.shift();
@@ -129,8 +139,22 @@ try
     const results = [];
     const queue = [ ...seeds ];
     await Promise.all(Array.from({ length: Math.min(parallel, seeds.length) }, () => runWorker(browser, queue, results)));
-    results.sort((a, b) => a.seed - b.seed);
+    printReport(results.sort((a, b) => a.seed - b.seed));
+}
+catch (error)
+{
+    if (!(error instanceof UsageError)) throw error;
+    console.error(`balance: ${error.message}`);
+    process.exitCode = 2;
+}
+finally
+{
+    await browser.close();
+    await server.close();
+}
 
+function printReport (results)
+{
     const dawns = results.filter((r) => r.state === 'dawn').length;
     const survival = results.map((r) => r.seconds).sort((a, b) => a - b);
     const median = survival[Math.floor(survival.length / 2)];
@@ -144,9 +168,4 @@ try
     if (Object.keys(tuning).length) console.log(`\nTuning overrides: ${JSON.stringify(tuning)}`);
     console.log(`\nDawn reached in ${dawns}/${results.length} nights; median survival ${median} s. ` +
         `(${Math.round((Date.now() - started) / 1000)} s wall time)`);
-}
-finally
-{
-    await browser.close();
-    await server.close();
 }

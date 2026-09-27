@@ -5,7 +5,7 @@
 | Layer | Tool | Where | Covers |
 |---|---|---|---|
 | Types and style | `tsc`, ESLint (`@stylistic`) | `npm run typecheck`, `npm run lint` | app code, tests, scripts |
-| Unit | Vitest (jsdom) | `src/**/*.test.ts(x)` | pure rules, NightDirector, i18n, storage, best score, `<Rich>` |
+| Unit | Vitest (jsdom) | `src/**/*.test.ts(x)`, `scripts/**/*.test.mjs` | pure rules, NightDirector, i18n, storage, best score, `<Rich>`, balance CLI arguments |
 | End-to-end, desktop | Playwright, Chromium 1280×800 | `e2e/desktop/` | menu, language, sound, pause, game over, dawn, controls, fonts; gameplay: rescue, swarm shields, Colossus, Radiance, combo, new best, blur pause, hints |
 | End-to-end, mobile | Playwright, Pixel 7 (Chromium) and iPhone 14 (WebKit), landscape, touch | `e2e/mobile/` | layout fit, text sizes, touch controls, audio unlock, portrait notice |
 | End-to-end, production | Playwright against `vite preview` of `dist/` | `e2e/production/` | the shipped build runs, no dev hook, no external requests |
@@ -32,6 +32,11 @@ The pre-commit hook runs `verify:fast`.
   browser profile is never touched.
 - After a suite passes on the first try, check it can fail: break the behaviour on purpose, confirm
   the test goes red, restore. PROGRESS records the mutation checks done so far.
+
+## Runtime verification
+
+`.claude/skills/verify/SKILL.md` describes how to run the game and the CLIs and observe a change
+like a player (desktop, phone profile, packaged build from a sub-path). T17 came from such a run.
 
 ## Manual checks on real devices
 

@@ -22,6 +22,7 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 | T14 | Final full verification and report | done |
 | T15 | Enforce code style with lint (brace style, spacing, quotes) | done |
 | T16 | Address the independent review | done |
+| T17 | Fix findings from the runtime verification | done |
 
 ## T01 — Work-tracking docs and resume protocol
 
@@ -143,3 +144,15 @@ all verified before fixing:
   no director test for the double-spawn cap.
 - Process: last PROGRESS entry without verification results; wrong e2e count; a `docs:` commit that
   also added tooling (recorded, not rewritten).
+
+## T17 — Fix findings from the runtime verification (2026-09-27)
+
+Found by driving the game and the CLIs (`/verify`), not by tests:
+
+- `npm run balance`: a misspelled `--tuning` key was accepted, printed as an override and ignored;
+  malformed JSON printed a raw stack trace; `--seeds ''` silently played seed 0. Acceptance: invalid
+  options exit with code 2 and a one-line message; unknown or wrongly typed TUNING keys are rejected.
+- End panel: the HUD kept showing "Esc pause · M sound" (Esc means Menu there); a first night scored 0
+  showed "Best: 0"; the light bar kept a dot at zero light.
+- The opening "Survive until dawn" banner covered floating texts near the centre.
+

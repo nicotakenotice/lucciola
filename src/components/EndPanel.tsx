@@ -36,9 +36,11 @@ export function EndPanel ({ result, touch, onRestart, onMenu }: IProps)
                     : <p>{t('end.overText', { n: result.seconds })}</p>}
 
                 <div className="final-score">{result.score}</div>
-                <p className={`best${result.newRecord ? ' record' : ''}`}>
-                    {result.newRecord ? t('end.newRecord') : t('record', { n: result.best })}
-                </p>
+                {(result.newRecord || result.best > 0) && (
+                    <p className={`best${result.newRecord ? ' record' : ''}`}>
+                        {result.newRecord ? t('end.newRecord') : t('record', { n: result.best })}
+                    </p>
+                )}
 
                 <dl className="stats">
                     {STAT_LABELS.map(([ stat, label ]) => (
