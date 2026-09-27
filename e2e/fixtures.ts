@@ -75,4 +75,3 @@ export async function fontSize (page: Page, selector: string): Promise<number>
 {
     return page.locator(selector).first().evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
 }
-

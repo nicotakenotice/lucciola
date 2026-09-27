@@ -25,6 +25,7 @@ Everything needed to resume work lives in this repository, not in chat history.
 
 - Code, identifiers, comments and docs in English. Player-facing texts live in `src/i18n/` (it, en).
 - Comments only when they explain something the code doesn't (why, constraints, units).
+- Code style is enforced by ESLint (`@stylistic`): Allman braces, 4 spaces; run `npx eslint . --fix`.
 - Commits: Conventional Commits in English (`feat(scope): …`, `fix: …`, `refactor: …`, `test: …`,
   `docs: …`, `chore: …`). Never add `Co-Authored-By` or other attribution trailers.
 - Every game lives in its own folder under `~/Repos/games`; never write files outside `lucciola/`.

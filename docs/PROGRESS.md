@@ -149,3 +149,11 @@ State inherited from earlier work (commits up to `2489bf4`):
   still unverified on a physical phone (manual check listed in `docs/TESTING.md`).
 - Verification: `npm run verify` green — unit 173/173, e2e 34/34 (14 desktop + 20 mobile).
 
+## 2026-09-27 — T15 enforced code style
+
+- `@stylistic/eslint-plugin` with the house style (Allman braces, 4-space indent, single quotes,
+  semicolons, no trailing commas, spaced brackets and braces, spacing rules, single empty lines).
+- Only 25 violations existed, all in template leftovers (`vite/*.mjs`, `src/main.tsx`,
+  `src/game/main.ts`) plus two extra blank lines at end of file; fixed with `eslint --fix`.
+- Verification: `npm run verify` green — lint 0 problems, unit 173/173, e2e 34/34.
+

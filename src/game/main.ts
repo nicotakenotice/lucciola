@@ -25,8 +25,8 @@ const config: Phaser.Types.Core.GameConfig = {
     ]
 };
 
-const StartGame = (parent: string) => {
-
+const StartGame = (parent: string) =>
+{
     const game = new Game({ ...config, parent });
 
     // Test/debug handle, compiled out of production bundles
@@ -45,7 +45,6 @@ const StartGame = (parent: string) => {
     }
 
     return game;
-
-}
+};
 
 export default StartGame;
