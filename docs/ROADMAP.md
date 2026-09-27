@@ -8,7 +8,7 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 |---|---|---|
 | T01 | Work-tracking docs and resume protocol | done |
 | T02 | Tooling: ESLint flat config, Vitest, Playwright, `verify` scripts, git hooks | done |
-| T03 | Extract pure game rules into `rules.ts` with unit tests | todo |
+| T03 | Extract pure game rules into `rules.ts` with unit tests | done |
 | T04 | Split `Game.ts` into systems without changing behaviour | todo |
 | T05 | Unit tests for i18n, rich text and storage helpers | todo |
 | T06 | End-to-end tests on desktop | done |

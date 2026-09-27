@@ -66,3 +66,15 @@ State inherited from earlier work (commits up to `2489bf4`):
 - Known limitation: the debug surface ships in production builds (a few hundred bytes); only the
   window hook is stripped.
 
+## 2026-09-27 — T03 pure game rules
+
+- New `src/game/rules.ts` (no Phaser): light radius, Radiance fade, energy decay, shadow cap, spawn
+  interval, double spawns, Moth share, kind selection, shadow stats, light reach, burn rate, Colossus
+  dimming, pollen points, dawn bonus, wave size/composition, steering speed. Randomness is injected.
+- `TUNING` reorganised by topic; the magic numbers that were inline in `Game.ts` are now named
+  parameters with units. Removed the unused `TUNING.hitEnergy` (damage lives in `SHADOWS`).
+- Behaviour preserved: each formula was compared with the original expression. One discrepancy was
+  caught during review (shade growth would have reached its maximum at 300 s instead of 150 s) and
+  fixed before committing by expressing growth per second.
+- Verification: unit 20/20 (18 new rule tests), `npm run verify` green, e2e 16/16.
+

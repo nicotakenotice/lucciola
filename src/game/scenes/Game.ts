@@ -2,6 +2,7 @@ import { BlendModes, Display, GameObjects, Geom, Input, Math as PMath, Scene, Ty
 import { EventBus } from '../EventBus';
 import { Events, GameEndResult, GameStats, HintTone, HudState } from '../events';
 import { FONT_UI, HEIGHT, SHADOWS, ShadowKind, TUNING as T, WIDTH, loadBest, saveBest } from '../constants';
+import * as rules from '../rules';
 import { drawForest } from '../world';
 import { music, sfx } from '../audio';
 import { MessageKey, t } from '../../i18n';
@@ -409,12 +410,6 @@ export class Game extends Scene
         EventBus.emit(Events.Hint, { text: t(message), tone });
     }
 
-    private splendorFactor ()
-    {
-        // Fade out over the last half second instead of switching off abruptly
-        return Clamp(this.splendor / 0.5, 0, 1);
-    }
-
     private snapshot (): GameSnapshot
     {
         const point = ({ x, y }: Point) => ({ x, y });
@@ -438,9 +433,13 @@ export class Game extends Scene
 
     private lightRadius ()
     {
-        const r = T.baseRadius + Math.max(0, this.energy) * T.radiusPerEnergy + this.followers.length * T.radiusPerFollower;
-
-        return r * (1 + this.splendorFactor() * T.splendorRadius) * this.dim * this.lightScale;
+        return rules.lightRadius({
+            energy: this.energy,
+            followers: this.followers.length,
+            splendor: this.splendor,
+            dim: this.dim,
+            scale: this.lightScale
+        });
     }
 
     private updateEnergy (dt: number)
@@ -456,7 +455,7 @@ export class Game extends Scene
         }
         else
         {
-            this.energy -= dt * (T.energyDecay + this.elapsed * T.energyDecayGrowth);
+            this.energy -= dt * rules.energyDecayRate(this.elapsed);
         }
 
         this.comboTimer -= dt;
@@ -509,14 +508,14 @@ export class Game extends Scene
 
         this.colossusTimer -= dt;
 
-        // Cap on Shadows on screen, rising through the night (waves may exceed it)
-        const maxShadows = Math.min(T.maxShadows, 5 + this.elapsed / 15);
+        // Waves may exceed the cap; regular spawns never do
+        const cap = rules.shadowCap(this.elapsed);
         this.shadowTimer -= dt;
         if (this.shadowTimer <= 0)
         {
-            if (this.shadows.length < maxShadows) this.spawnShadow(this.pickKind());
-            if (this.elapsed > 60 && Math.random() < 0.3 && this.shadows.length < maxShadows) this.spawnShadow(this.pickKind());
-            this.shadowTimer = Math.max(0.9, 3.2 - this.elapsed * 0.02) * FloatBetween(0.8, 1.2);
+            if (this.shadows.length < cap) this.spawnShadow(this.pickKind());
+            if (rules.spawnsTwo(this.elapsed) && this.shadows.length < cap) this.spawnShadow(this.pickKind());
+            this.shadowTimer = rules.spawnInterval(this.elapsed);
         }
 
         if (this.nextWave < T.waves.length && this.elapsed >= T.waves[this.nextWave])
@@ -528,15 +527,11 @@ export class Game extends Scene
 
     private pickKind (): ShadowKind
     {
-        if (this.elapsed > T.colossusFrom && this.colossusTimer <= 0 && !this.shadows.some((s) => s.kind === 'colossus'))
-        {
-            this.colossusTimer = T.colossusInterval;
-            return 'colossus';
-        }
+        const colossusReady = this.colossusTimer <= 0 && !this.shadows.some((s) => s.kind === 'colossus');
+        const kind = rules.pickShadowKind(this.elapsed, colossusReady);
+        if (kind === 'colossus') this.colossusTimer = T.colossusInterval;
 
-        const mothChance = Clamp((this.elapsed - 25) / 100, 0, 0.3);
-
-        return Math.random() < mothChance ? 'moth' : 'shade';
+        return kind;
     }
 
     private wave (index: number)
@@ -546,14 +541,13 @@ export class Game extends Scene
         this.cameras.main.shake(700, 0.004);
 
         const side = Between(0, 3);
-        const count = 3 + index * 2;
+        const count = rules.waveSize(index);
         for (let i = 0; i < count; i++)
         {
             this.time.delayedCall(i * 260, () =>
             {
                 if (this.state !== 'play') return;
-                const kind: ShadowKind = index > 0 && i % 3 === 2 ? 'moth' : 'shade';
-                this.spawnShadow(kind, side);
+                this.spawnShadow(rules.waveMemberKind(index, i), side);
             });
         }
     }
@@ -587,7 +581,7 @@ export class Game extends Scene
                 const d = Math.hypot(dx, dy);
                 if (d > 4)
                 {
-                    const s = Math.min(T.playerSpeed, d * 3.5);
+                    const s = rules.steeringSpeed(d);
                     dvx = (dx / d) * s;
                     dvy = (dy / d) * s;
                 }
@@ -617,7 +611,7 @@ export class Game extends Scene
 
         // With little light the glow pulses like a heartbeat; during Radiance it turns bluish white
         const e = Clamp(this.energy / 100, 0, 1);
-        const sf = this.splendorFactor();
+        const sf = rules.splendorFactor(this.splendor);
         const heartbeat = this.energy < 25 && this.state === 'play' ? Math.max(0, Math.sin(time * 0.012)) * 0.25 : 0;
         this.playerGlow
             .setPosition(p.x, p.y)
@@ -726,7 +720,7 @@ export class Game extends Scene
         this.stats.pollen++;
         sfx.pickup(this.comboStep);
 
-        const pts = Math.round(10 * (1 + this.followers.length * 0.25) * (1 + this.comboStep * 0.1));
+        const pts = rules.pollenPoints(this.followers.length, this.comboStep);
         this.score += pts;
         this.floatText(pl.x, pl.y - 10, `+${pts}`, '#f4ffb0', 16);
         this.sparks.explode(8, pl.x, pl.y);
@@ -865,11 +859,7 @@ export class Game extends Scene
         const spec = SHADOWS[kind];
         const x = side === 0 ? -60 : side === 1 ? WIDTH + 60 : Between(0, WIDTH);
         const y = side === 2 ? -60 : side === 3 ? HEIGHT + 60 : Between(0, HEIGHT);
-        // Common Shadows grow and speed up as the night goes on; the Colossus stays slow
-        const grow = kind === 'shade' ? Math.min(0.5, this.elapsed / 300) : 0;
-        const haste = kind === 'colossus' ? 0 : this.elapsed * 0.35;
-        const size = FloatBetween(spec.size[0], spec.size[1]) + grow;
-        const hp = kind === 'shade' ? spec.hp * size : spec.hp;
+        const { size, hp, speed } = rules.rollShadow(kind, this.elapsed);
 
         this.shadows.push({
             kind,
@@ -878,7 +868,7 @@ export class Game extends Scene
             size,
             hp,
             maxHp: hp,
-            speed: Math.min(spec.speed[1] * 1.9, FloatBetween(spec.speed[0], spec.speed[1]) + haste),
+            speed,
             phase: Math.random() * 10,
             lit: 0,
             blink: FloatBetween(1, 4),
@@ -919,7 +909,7 @@ export class Game extends Scene
             const dx = p.x - s.x;
             const dy = p.y - s.y;
             const d = Math.hypot(dx, dy);
-            const inLight = this.state === 'play' && d < R * 0.92;
+            const inLight = this.state === 'play' && rules.isInLight(d, R);
 
             let ang = Math.atan2(dy, dx) + Math.sin(time * 0.0017 + s.phase) * 0.5;
             let spd = s.speed * (inLight ? spec.lightSlow : 1);
@@ -944,16 +934,11 @@ export class Game extends Scene
             s.lit += ((inLight ? 1 : 0) - s.lit) * (1 - Math.exp(-dt * 8));
             if (inLight)
             {
-                const heat = 1 - d / R;
-                const splendor = 1 + this.splendorFactor() * (T.splendorBurn - 1);
-                s.hp -= dt * (0.25 + heat * 1.1) * (1 + this.followers.length * 0.06) * spec.burn * splendor;
+                s.hp -= dt * rules.burnRate(d, R, this.followers.length, s.kind, this.splendor);
                 if (Math.random() < dt * 10 * s.size) this.purple.emitParticle(1, s.x + Between(-14, 14) * s.size, s.y + Between(-14, 14) * s.size);
             }
 
-            if (s.kind === 'colossus' && this.state === 'play' && d < T.colossusDimRange)
-            {
-                dim = Math.min(dim, 1 - T.colossusDim * (1 - d / T.colossusDimRange));
-            }
+            if (s.kind === 'colossus' && this.state === 'play') dim = Math.min(dim, rules.colossusDim(d));
 
             this.drawShadow(s, ang, time, dt);
 
@@ -1188,7 +1173,7 @@ export class Game extends Scene
         this.state = 'dawn';
         sfx.dawn();
 
-        const bonus = this.followers.length * 100 + Math.round(this.energy) * 5;
+        const bonus = rules.dawnBonus(this.followers.length, this.energy);
         this.score += bonus;
 
         this.shadows.slice().forEach((s, i) => this.time.delayedCall(i * 80, () => this.killShadow(s, 0)));
