@@ -1,10 +1,11 @@
 import { BlendModes, GameObjects, Math as PMath, Scene } from 'phaser';
+import { TEXTURES } from '../textures';
 import { HEIGHT, SHADOWS, ShadowKind, WIDTH } from '../constants';
-import type { Point } from '../debug';
+import type { Point } from '../types';
 import { DEPTH } from '../layout';
 import * as rules from '../rules';
 import type { Effects } from '../systems/Effects';
-import { sfx } from '../audio';
+import { sfx } from '../../audio';
 
 export interface Shadow extends Point
 {
@@ -107,11 +108,11 @@ export class ShadowHorde
             kvx: 0,
             kvy: 0,
             touchCd: 0,
-            body: add.image(x, y, 'smoke').setDepth(DEPTH.shadows),
-            body2: add.image(x, y, 'smoke').setDepth(DEPTH.shadows),
-            eyeGlow: add.image(x, y, 'glow').setDepth(DEPTH.lights).setBlendMode(BlendModes.ADD).setTint(spec.eye).setAlpha(0.45),
-            eyeL: add.image(x, y, 'dot').setDepth(DEPTH.lights + 1).setTint(spec.eye),
-            eyeR: add.image(x, y, 'dot').setDepth(DEPTH.lights + 1).setTint(spec.eye)
+            body: add.image(x, y, TEXTURES.smoke).setDepth(DEPTH.shadows),
+            body2: add.image(x, y, TEXTURES.smoke).setDepth(DEPTH.shadows),
+            eyeGlow: add.image(x, y, TEXTURES.glow).setDepth(DEPTH.lights).setBlendMode(BlendModes.ADD).setTint(spec.eye).setAlpha(0.45),
+            eyeL: add.image(x, y, TEXTURES.dot).setDepth(DEPTH.lights + 1).setTint(spec.eye),
+            eyeR: add.image(x, y, TEXTURES.dot).setDepth(DEPTH.lights + 1).setTint(spec.eye)
         };
         this.shadows.push(shadow);
 

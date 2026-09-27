@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { music, sfx } from '../game/audio';
+import { music, sfx } from '../audio';
 
 // Browsers only start audio after a user gesture, and iOS only accepts some of them
 // (touchend, click, keydown — not touchstart/pointerdown). Music starts on the first one,

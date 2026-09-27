@@ -2,12 +2,13 @@ import { BlendModes, Input, Math as PMath, Scene } from 'phaser';
 import { EventBus } from '../EventBus';
 import { Events, GameEndResult, GameStats, HintTone, HudState } from '../events';
 import { HEIGHT, SHADOWS, ShadowKind, TUNING as T, WIDTH } from '../constants';
-import { loadBest, saveBest } from '../score';
+import { loadBest, saveBest } from '../../score';
 import * as rules from '../rules';
 import { drawForest } from '../world';
-import { music, sfx } from '../audio';
+import { music, sfx } from '../../audio';
 import { MessageKey, t } from '../../i18n';
-import type { GameDebugApi, GameSnapshot, Point } from '../debug';
+import type { GameDebugApi, GameSnapshot } from '../debug';
+import type { Point, RunState } from '../types';
 import { DEPTH, randomSpot } from '../layout';
 import { NightDirector } from '../director';
 import { Firefly } from '../entities/Firefly';
@@ -19,7 +20,6 @@ import { Contact, Shadow, ShadowHorde } from '../entities/ShadowHorde';
 import { Darkness, LightSpot } from '../systems/Darkness';
 import { Effects } from '../systems/Effects';
 
-type RunState = 'play' | 'over' | 'dawn';
 type Keys = Record<'W' | 'A' | 'S' | 'D' | 'UP' | 'DOWN' | 'LEFT' | 'RIGHT', Input.Keyboard.Key>;
 
 const TOUCH = window.matchMedia('(pointer: coarse)').matches;

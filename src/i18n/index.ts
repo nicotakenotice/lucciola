@@ -8,8 +8,6 @@ import { readStorage, STORAGE_KEYS, writeStorage } from '../storage';
 export type Lang = 'it' | 'en';
 export type MessageKey = keyof typeof it;
 
-export const LANGS: Lang[] = [ 'it', 'en' ];
-
 const dictionaries: Record<Lang, Record<MessageKey, string>> = { it, en };
 // A saved choice wins; otherwise Italian browsers get Italian and everyone else English
 function detect (): Lang

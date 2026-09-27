@@ -1,6 +1,7 @@
 import { BlendModes, GameObjects, Math as PMath, Scene } from 'phaser';
+import { TEXTURES } from '../textures';
 import { HEIGHT, WIDTH } from '../constants';
-import type { Point } from '../debug';
+import type { Point } from '../types';
 import { DEPTH, HUD_BAND, MARGIN } from '../layout';
 
 interface LostFly extends Point
@@ -42,8 +43,8 @@ export class LostFireflies
             angle: Math.random() * Math.PI * 2,
             phase: Math.random() * 2,
             on: 0,
-            bug: this.scene.add.image(x, y, 'bug').setDepth(DEPTH.bugs).setScale(0.8),
-            glow: this.scene.add.image(x, y, 'glow').setDepth(DEPTH.lights).setBlendMode(BlendModes.ADD).setTint(0x7dfcff)
+            bug: this.scene.add.image(x, y, TEXTURES.bug).setDepth(DEPTH.bugs).setScale(0.8),
+            glow: this.scene.add.image(x, y, TEXTURES.glow).setDepth(DEPTH.lights).setBlendMode(BlendModes.ADD).setTint(0x7dfcff)
         });
     }
 

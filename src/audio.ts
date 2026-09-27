@@ -1,6 +1,6 @@
 // Sound effects synthesized with WebAudio: no audio files to load.
 
-import { readStorage, STORAGE_KEYS, writeStorage } from '../storage';
+import { readStorage, STORAGE_KEYS, writeStorage } from './storage';
 
 const MASTER_VOLUME = 0.35;
 

@@ -1,4 +1,5 @@
 import { BlendModes, Display, GameObjects, Scene } from 'phaser';
+import { LIGHT_SIZE, TEXTURES } from '../textures';
 import { HEIGHT, WIDTH } from '../constants';
 import { DEPTH } from '../layout';
 
@@ -11,23 +12,20 @@ export interface LightSpot
 }
 
 const NIGHT_ALPHA = 0.955;
-const LIGHT_TEXTURE_RADIUS = 128;
 
 // A full-screen layer of night with holes erased wherever there is light
 export class Darkness
 {
-    // Tweened to 0 at dawn
-    alpha = NIGHT_ALPHA;
-
     private readonly texture: GameObjects.RenderTexture;
 
-    constructor (scene: Scene)
+    // `alpha` is tweened to 0 at dawn; the menu uses a slightly lighter night
+    constructor (scene: Scene, public alpha = NIGHT_ALPHA)
     {
         this.texture = scene.add.renderTexture(0, 0, WIDTH, HEIGHT).setOrigin(0).setDepth(DEPTH.darkness);
     }
 
     // `dawnProgress` (0..1) tints and thins the night during its last seconds
-    render (lights: LightSpot[], dawnProgress: number)
+    render (lights: LightSpot[], dawnProgress = 0)
     {
         const rt = this.texture;
         rt.clear();
@@ -41,7 +39,7 @@ export class Darkness
             {
                 if (radius > 1 && alpha > 0.01)
                 {
-                    rt.stamp('light', undefined, x, y, { scale: radius / LIGHT_TEXTURE_RADIUS, alpha, blendMode: BlendModes.ERASE });
+                    rt.stamp(TEXTURES.light, undefined, x, y, { scale: radius / (LIGHT_SIZE / 2), alpha, blendMode: BlendModes.ERASE });
                 }
             }
         }

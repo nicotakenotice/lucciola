@@ -1,6 +1,7 @@
 import { BlendModes, Display, GameObjects, Math as PMath, Scene } from 'phaser';
+import { TEXTURES } from '../textures';
 import { HEIGHT, WIDTH } from '../constants';
-import type { Point } from '../debug';
+import type { Point } from '../types';
 import { DEPTH } from '../layout';
 
 const EDGE = 12;
@@ -31,8 +32,8 @@ export class Firefly
     {
         const { x, y } = this.position;
         this.path = Array.from({ length: 120 }, () => ({ x, y }));
-        this.sprite = scene.add.image(x, y, 'bug').setDepth(DEPTH.bugs + 1);
-        this.glow = scene.add.image(x, y, 'glow').setDepth(DEPTH.lights).setBlendMode(BlendModes.ADD).setTint(0xe4ff7a);
+        this.sprite = scene.add.image(x, y, TEXTURES.bug).setDepth(DEPTH.bugs + 1);
+        this.glow = scene.add.image(x, y, TEXTURES.glow).setDepth(DEPTH.lights).setBlendMode(BlendModes.ADD).setTint(0xe4ff7a);
     }
 
     update (dt: number, time: number, desired: Point, glow: GlowState)

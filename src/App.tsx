@@ -2,7 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { PhaserGame } from './PhaserGame';
 import { EventBus } from './game/EventBus';
 import { Events, GameEndResult, Hint, HudState } from './game/events';
-import { audioReady, isMuted, music, setMuted, sfx } from './game/audio';
+import { audioReady, isMuted, music, setMuted, sfx } from './audio';
 import { MenuScreen } from './components/MenuScreen';
 import { Hud } from './components/Hud';
 import { EndPanel } from './components/EndPanel';

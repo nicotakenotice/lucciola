@@ -1,4 +1,5 @@
 import { BlendModes, GameObjects, Geom, Scene, Types } from 'phaser';
+import { RING_RADIUS, TEXTURES } from '../textures';
 import { FONT_UI, HEIGHT, WIDTH } from '../constants';
 import { DEPTH } from '../layout';
 
@@ -27,15 +28,15 @@ export class Effects
         };
         const add = scene.add;
 
-        this.sparks = add.particles(0, 0, 'glow', { ...burst, speed: { min: 40, max: 180 }, tint: 0xe8ff80 }).setDepth(DEPTH.lights + 1);
+        this.sparks = add.particles(0, 0, TEXTURES.glow, { ...burst, speed: { min: 40, max: 180 }, tint: 0xe8ff80 }).setDepth(DEPTH.lights + 1);
         this.cyan = add
-            .particles(0, 0, 'glow', { ...burst, speed: { min: 40, max: 200 }, tint: [ 0x7dfcff, 0xc8fff0, 0xffffff ] })
+            .particles(0, 0, TEXTURES.glow, { ...burst, speed: { min: 40, max: 200 }, tint: [ 0x7dfcff, 0xc8fff0, 0xffffff ] })
             .setDepth(DEPTH.lights + 1);
         this.purple = add
-            .particles(0, 0, 'glow', { ...burst, speed: { min: 30, max: 150 }, scale: { start: 0.5, end: 0 }, tint: [ 0x8a4dff, 0x5a2bb0, 0xc38bff ] })
+            .particles(0, 0, TEXTURES.glow, { ...burst, speed: { min: 30, max: 150 }, scale: { start: 0.5, end: 0 }, tint: [ 0x8a4dff, 0x5a2bb0, 0xc38bff ] })
             .setDepth(DEPTH.lights + 1);
         this.smoke = add
-            .particles(0, 0, 'smoke', {
+            .particles(0, 0, TEXTURES.smoke, {
                 speed: { min: 20, max: 90 },
                 lifespan: { min: 500, max: 1000 },
                 scale: { start: 0.6, end: 0.1 },
@@ -45,7 +46,7 @@ export class Effects
             .setDepth(DEPTH.shadows + 1);
 
         // Floating spores: drawn below the darkness, so they only show inside the light
-        add.particles(0, 0, 'dot', {
+        add.particles(0, 0, TEXTURES.dot, {
             emitZone: { type: 'random', source: new Geom.Rectangle(0, 0, WIDTH, HEIGHT), quantity: 1 },
             lifespan: 7000,
             frequency: 70,
@@ -59,7 +60,7 @@ export class Effects
         }).setDepth(DEPTH.spores);
 
         this.trail = add
-            .particles(0, 0, 'glow', {
+            .particles(0, 0, TEXTURES.glow, {
                 follow: trailTarget,
                 frequency: 45,
                 lifespan: 600,
@@ -96,14 +97,14 @@ export class Effects
     lightWave (x: number, y: number, range: number)
     {
         const ring = this.scene.add
-            .image(x, y, 'ring')
+            .image(x, y, TEXTURES.ring)
             .setDepth(DEPTH.lights + 2)
             .setBlendMode(BlendModes.ADD)
             .setTint(0xf6ffc0)
             .setScale(0.2);
         this.scene.tweens.add({
             targets: ring,
-            scale: range / 60,
+            scale: range / RING_RADIUS,
             alpha: 0,
             duration: 450,
             ease: 'Cubic.easeOut',

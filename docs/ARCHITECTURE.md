@@ -12,21 +12,23 @@ src/
 │                              FullscreenButton, RotateNotice, Rich (inline tags), Icons, keepFocus
 ├── i18n/                      Dictionaries (it = source of keys, en), t(), useLang()
 ├── hooks/                     useMediaQuery (portrait, touch), useFullscreen, useAudioUnlock, useAutoPause
+├── audio.ts                   Synthesized sound effects and generative music (WebAudio)
+├── score.ts                   Best score persistence
 ├── storage.ts                 Safe localStorage access and the keys used by the game
 └── game/
     ├── main.ts                Phaser config; dev-only window.__LUCCIOLA__ test hook
     ├── EventBus.ts, events.ts Event bus and typed event names/payloads between React and Phaser
     ├── constants.ts           Screen size, TUNING (balance), SHADOWS (per-kind specs)
-    ├── score.ts               Best score persistence
+    ├── types.ts               Point, RunState
+    ├── textures.ts            Keys and sizes of the textures generated at boot
     ├── rules.ts               Pure formulas (light, decay, spawns, burn, scoring…) — unit tested
     ├── director.ts            NightDirector: what spawns and when — pure, unit tested
     ├── debug.ts               GameSnapshot / GameDebugApi contract used by tests and bots
     ├── layout.ts              Draw depths, HUD band, random spawn spots
-    ├── audio.ts               Synthesized sound effects and generative music (WebAudio)
     ├── world.ts               Procedural forest-floor texture
     ├── scenes/
     │   ├── Boot.ts            Generates every texture in code
-    │   ├── Menu.ts            Animated menu background (texts are React)
+    │   ├── Menu.ts            Animated menu background on the Darkness layer (texts are React)
     │   └── Game.ts            Coordinator of one night (see below)
     ├── entities/              Firefly, Swarm, PollenField, LostFireflies, MoonDew, ShadowHorde
     └── systems/               Darkness (night layer with light holes), Effects (particles, texts, flashes)

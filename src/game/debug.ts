@@ -1,18 +1,13 @@
 import type { ShadowKind } from './constants';
 import type { GameStats } from './events';
+import type { Point, RunState } from './types';
 
 // Stable surface used by end-to-end tests and the balance bot. The scene internals can change freely
 // as long as this contract holds.
 
-export interface Point
-{
-    x: number;
-    y: number;
-}
-
 export interface GameSnapshot
 {
-    state: 'play' | 'over' | 'dawn';
+    state: RunState;
     paused: boolean;
     energy: number;
     elapsed: number;

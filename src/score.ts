@@ -1,4 +1,4 @@
-import { readStorage, STORAGE_KEYS, writeStorage } from '../storage';
+import { readStorage, STORAGE_KEYS, writeStorage } from './storage';
 
 export function loadBest (): number
 {

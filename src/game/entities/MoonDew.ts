@@ -1,6 +1,7 @@
 import { BlendModes, GameObjects, Scene } from 'phaser';
+import { TEXTURES } from '../textures';
 import { TUNING as T } from '../constants';
-import type { Point } from '../debug';
+import type { Point } from '../types';
 import { DEPTH } from '../layout';
 
 interface Drop extends Point
@@ -36,9 +37,9 @@ export class MoonDew
     spawn ({ x, y }: Point)
     {
         const add = this.scene.add;
-        const glow = add.image(x, y, 'glow').setDepth(DEPTH.lights).setBlendMode(BlendModes.ADD).setTint(0xbfe8ff).setScale(0);
-        const core = add.image(x, y, 'dot').setDepth(DEPTH.lights + 1).setTint(0xffffff).setScale(0);
-        const ring = add.image(x, y, 'ring').setDepth(DEPTH.lights).setBlendMode(BlendModes.ADD).setTint(0xbfe8ff).setScale(0);
+        const glow = add.image(x, y, TEXTURES.glow).setDepth(DEPTH.lights).setBlendMode(BlendModes.ADD).setTint(0xbfe8ff).setScale(0);
+        const core = add.image(x, y, TEXTURES.dot).setDepth(DEPTH.lights + 1).setTint(0xffffff).setScale(0);
+        const ring = add.image(x, y, TEXTURES.ring).setDepth(DEPTH.lights).setBlendMode(BlendModes.ADD).setTint(0xbfe8ff).setScale(0);
         this.scene.tweens.add({ targets: [ glow, core ], scale: 1, duration: 700, ease: 'Back.easeOut' });
         this.drop = { x, y, glow, core, ring, life: T.dewLifetime };
     }

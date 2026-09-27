@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest';
-import { STORAGE_KEYS } from '../storage';
+import { STORAGE_KEYS } from './storage';
 import { loadBest, saveBest } from './score';
 
 describe('best score', () =>

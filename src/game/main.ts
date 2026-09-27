@@ -8,7 +8,6 @@ const config: Phaser.Types.Core.GameConfig = {
     type: AUTO,
     width: WIDTH,
     height: HEIGHT,
-    parent: 'game-container',
     backgroundColor: '#020308',
     // All audio is synthesized in audio.ts: Phaser's sound manager is not needed
     audio: {

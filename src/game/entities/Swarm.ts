@@ -1,5 +1,6 @@
 import { BlendModes, GameObjects, Math as PMath, Scene } from 'phaser';
-import type { Point } from '../debug';
+import { TEXTURES } from '../textures';
+import type { Point } from '../types';
 import { DEPTH } from '../layout';
 
 interface Follower extends Point
@@ -38,8 +39,8 @@ export class Swarm
             y,
             phase: Math.random() * Math.PI * 2,
             pulse: 1,
-            bug: this.scene.add.image(x, y, 'bug').setDepth(DEPTH.bugs).setScale(0.8),
-            glow: this.scene.add.image(x, y, 'glow').setDepth(DEPTH.lights).setBlendMode(BlendModes.ADD).setTint(0x9dffcf)
+            bug: this.scene.add.image(x, y, TEXTURES.bug).setDepth(DEPTH.bugs).setScale(0.8),
+            glow: this.scene.add.image(x, y, TEXTURES.glow).setDepth(DEPTH.lights).setBlendMode(BlendModes.ADD).setTint(0x9dffcf)
         });
     }
 

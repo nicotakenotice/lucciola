@@ -1,6 +1,6 @@
 import { Math as PMath } from 'phaser';
 import { HEIGHT, WIDTH } from './constants';
-import type { Point } from './debug';
+import type { Point } from './types';
 
 // Draw order of the world layers: everything under DARKNESS is visible only inside the light
 export const DEPTH = {
