@@ -39,7 +39,7 @@ test.describe('landscape phone layout', () =>
         await expect(page.locator('.touch-flash')).toBeVisible();
         await expect(page.locator('.hud-hint')).toHaveCount(0);
 
-        await page.locator('.hud-buttons .icon-button').last().tap();
+        await page.getByRole('button', { name: 'Pause (Esc)' }).tap();
         await expect(page.locator('.overlay.pause')).toBeVisible();
         await expect(page.locator('.overlay.pause kbd')).toHaveCount(0);
     });

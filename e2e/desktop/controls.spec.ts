@@ -39,6 +39,8 @@ test.describe('controls', () =>
         await setGame(page, { energy: TUNING.flashMin - 5 });
 
         await page.keyboard.press('Space');
+        // Keys are handled on the next game step: give the Flash a chance to (wrongly) happen
+        await advanceGameTime(page, 0.3);
 
         expect((await snapshot(page)).stats.flashes).toBe(0);
     });
@@ -58,7 +60,7 @@ test.describe('controls', () =>
     {
         await openMenu(page);
         await startGame(page);
-        await page.locator('.hud-buttons .icon-button').last().click();
+        await page.getByRole('button', { name: 'Pause (Esc)' }).click();
         await expect(page.locator('.overlay.pause')).toBeVisible();
         await page.keyboard.press('Escape');
         await expect(page.locator('.overlay.pause')).toBeHidden();

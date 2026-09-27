@@ -3,6 +3,7 @@ import { EventBus } from '../EventBus';
 import { Events } from '../events';
 import { HEIGHT, WIDTH } from '../constants';
 import { DEPTH } from '../layout';
+import { onSceneExit } from '../lifecycle';
 import { TEXTURES } from '../textures';
 import { Darkness, LightSpot } from '../systems/Darkness';
 import { drawForest } from '../world';
@@ -61,9 +62,7 @@ export class Menu extends Scene
             this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Game'));
         };
         EventBus.once(Events.UiStart, start);
-        const cleanup = () => EventBus.off(Events.UiStart, start);
-        this.events.once('shutdown', cleanup);
-        this.events.once('destroy', cleanup);
+        onSceneExit(this, () => EventBus.off(Events.UiStart, start));
 
         this.cameras.main.fadeIn(600, 2, 3, 8);
 

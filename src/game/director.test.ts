@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { TUNING as T } from './constants';
 import { NightDirector, SpawnRequest, WorldCounts } from './director';
+import { shadowCap } from './rules';
 
 const empty: WorldCounts = { pollen: 0, lost: 0, swarm: 0, shadows: 0, dewPresent: false, colossusPresent: false };
 const types = (requests: SpawnRequest[]) => requests.map((r) => r.type);
@@ -49,6 +50,19 @@ describe('NightDirector', () =>
         // The cap starts at shadowCapBase and grows with the night
         const early = run(new NightDirector(() => 0), 0, 3, { ...empty, shadows: T.shadowCapBase - 1 });
         expect(early.filter((r) => r.type === 'shadow').length).toBeGreaterThan(0);
+    });
+
+    it('adds a second Shadow late in the night only while under the cap', () =>
+    {
+        const late = T.doubleSpawnFrom + 1;
+        // The cap is fractional: a Shadow may spawn while the count is below it
+        const lastRoom = Math.ceil(shadowCap(late)) - 1;
+        const count = (shadows: number) => new NightDirector(() => 0).update(T.spawnIntervalStart, late, { ...empty, shadows })
+            .filter((r) => r.type === 'shadow').length;
+
+        expect(count(lastRoom - 1)).toBe(2);
+        expect(count(lastRoom)).toBe(1);
+        expect(count(lastRoom + 1)).toBe(0);
     });
 
     it('announces each wave once, at its time', () =>

@@ -27,6 +27,7 @@ export interface GameDebugApi
     snapshot (): GameSnapshot;
     set (values: Partial<{ energy: number; elapsed: number }>): void;
     spawnShadow (kind: ShadowKind, at?: Point): void;
+    spawn (kind: 'pollen' | 'lost' | 'dew', at: Point): void;
     // Moves the firefly towards a point instead of the pointer; `null` gives control back
     steerTo (target: Point | null): void;
     flash (): void;

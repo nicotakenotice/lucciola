@@ -74,7 +74,7 @@ export function Hud ({ hud, muted, touch, onPause, onToggleMute, onFlash }: IPro
                         <SoundIcon muted={muted} />
                     </button>
                     <FullscreenButton />
-                    <button className="icon-button" onClick={onPause} onMouseDown={keepFocus} title={t('hud.pause')}>
+                    <button className="icon-button" onClick={onPause} onMouseDown={keepFocus} title={t('hud.pause')} aria-label={t('hud.pause')}>
                         <PauseIcon />
                     </button>
                 </div>

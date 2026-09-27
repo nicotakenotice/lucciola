@@ -2,7 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { PhaserGame } from './PhaserGame';
 import { EventBus } from './game/EventBus';
 import { Events, GameEndResult, Hint, HudState } from './game/events';
-import { audioReady, isMuted, music, setMuted, sfx } from './audio';
+import { audioStarted, isMuted, music, setMuted, sfx } from './audio';
 import { MenuScreen } from './components/MenuScreen';
 import { Hud } from './components/Hud';
 import { EndPanel } from './components/EndPanel';
@@ -21,7 +21,9 @@ function App ()
     const [ screen, setScreen ] = useState<Screen>('loading');
     const [ hud, setHud ] = useState<HudState | null>(null);
     const [ result, setResult ] = useState<GameEndResult | null>(null);
-    const [ hint, setHint ] = useState<(Hint & { id: number }) | null>(null);
+    // Hints wait in a queue and show one at a time
+    const [ hints, setHints ] = useState<(Hint & { id: number })[]>([]);
+    const nextHintId = useRef(0);
     const [ muted, setMutedState ] = useState(isMuted);
     const touch = useTouch();
     const portrait = usePortrait();
@@ -32,7 +34,7 @@ function App ()
         if (key !== 'Menu' && key !== 'Game') return;
 
         setResult(null);
-        setHint(null);
+        setHints([]);
         setScreen(key === 'Menu' ? 'menu' : 'game');
     }, []);
 
@@ -49,7 +51,7 @@ function App ()
             music.setDucked(paused);
             setScreen(paused ? 'paused' : 'game');
         };
-        const onHint = (h: Hint) => setHint({ ...h, id: Date.now() });
+        const onHint = (h: Hint) => setHints((queue) => [ ...queue, { ...h, id: nextHintId.current++ } ]);
 
         return EventBus.subscribe({
             [Events.Hud]: onHud,
@@ -85,15 +87,15 @@ function App ()
 
     const toggleMute = useCallback(() =>
     {
-        // If audio has not started yet (the browser waits for a gesture) and it was not muted,
-        // the first click starts it instead of muting it
-        const wasRunning = audioReady();
+        // Before any gesture there is no audio yet: the first click starts it instead of muting it
+        const started = audioStarted();
         sfx.unlock();
         music.start();
-        if (wasRunning || isMuted()) setMuted(!isMuted());
+        if (started || isMuted()) setMuted(!isMuted());
         setMutedState(isMuted());
     }, []);
 
+    const dropHint = useCallback(() => setHints((queue) => queue.slice(1)), []);
     const flash = useCallback(() => EventBus.emit(Events.UiFlash), []);
     const pause = useCallback(() => EventBus.emit(Events.UiPause), []);
     const resume = useCallback(() => EventBus.emit(Events.UiResume), []);
@@ -139,7 +141,7 @@ function App ()
                 {(screen === 'game' || screen === 'paused' || screen === 'end') && hud && (
                     <Hud hud={hud} muted={muted} touch={touch} onPause={pause} onToggleMute={toggleMute} onFlash={flash} />
                 )}
-                {screen === 'game' && hint && <Toast hint={hint} />}
+                {screen === 'game' && hints.length > 0 && <Toast hint={hints[0]} onDone={dropHint} />}
                 {screen === 'paused' && (
                     <PausePanel muted={muted} touch={touch} onResume={resume} onRestart={restart} onMenu={toMenu} onToggleMute={toggleMute} />
                 )}

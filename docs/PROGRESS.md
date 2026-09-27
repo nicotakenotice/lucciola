@@ -228,3 +228,45 @@ State inherited from earlier work (commits up to `2489bf4`):
   average 31: unit 173/173, e2e 36/36, check:dist clean. No retries were added; `PW_WORKERS=1` is
   documented for busy machines.
 
+## 2026-09-27 — T16 part 2: structure and naming (from the independent review)
+
+- Shared, Phaser-free modules moved to `src/`: `audio.ts`, `score.ts` (React uses them too).
+  New `game/types.ts` (Point, RunState) and `game/textures.ts` (texture keys and sizes: Boot,
+  Darkness and Effects no longer repeat 256/128/60). The Menu background now uses `Darkness`,
+  `DEPTH` and `TEXTURES` instead of its own render texture and raw depths.
+- Typed EventBus: `EventMap` gives every event its payload type; `EventBus.subscribe()` replaces the
+  string-keyed handler arrays. A probe file with three wrong emits failed to compile as expected.
+  ARCHITECTURE/DECISIONS corrected: React and Phaser also share a few Phaser-free modules.
+- Naming: `splendor` → `radiance` everywhere in code, CSS and i18n keys (Italian text still says
+  "Splendore"); the Shadow context flag `lost` → `nightLost`. Two shell attempts at the rename
+  silently did nothing (zsh does not word-split variables; BSD `grep -Z` means decompress); caught by
+  re-grepping, then done with Python.
+- Every gameplay number now lives in `TUNING`/`SHADOWS` (spawn timings and distances, pickup and
+  contact radii, points, Moth dash, Colossus bounce and Flash damage, wave spacing, per-kind shields,
+  two named low-light thresholds; the HUD receives `lowLight` instead of hard-coding 25).
+  Proof of no behaviour change: the 10 seeded balance nights matched the previous run row by row.
+- Verification: unit 173/173, e2e 36/36 after each commit; `LANGS` export and a redundant `parent`
+  config field removed.
+
+## 2026-09-27 — T16 part 3: bugs from the review, each with a test
+
+- Hints: a queue with incrementing ids; a hint is dropped when its animation ends, so pausing no longer
+  replays an old one and two hints in one frame no longer overwrite each other.
+- Score: Flash kills landing after the end of the night no longer add points (end panel = final score).
+- Scene cleanup: `onSceneExit()` removes both the shutdown and the destroy listener; a `once('destroy')`
+  had piled up on every restart.
+- Mute: decided by whether the audio context exists, not whether it is running, so the button works
+  even if the browser keeps audio suspended; this also removes the timing race in the audio tests.
+- A Flash is rejected while paused; touch detection is read when used; `useMediaQuery` memoises its
+  subscription (it re-subscribed ~12 times per second); music stops and releases its nodes on hot reload.
+- Tests: debug API gains `spawn('pollen' | 'lost' | 'dew', at)`. New `e2e/desktop/gameplay.spec.ts`
+  (9 tests: rescue, swarm shield, Colossus contact, Radiance, combo, new best, late Flash score, blur
+  pause, faded hint after pause). The "Flash with too little light" test now waits a game step before
+  asserting (it could not fail before). Pause button has an `aria-label`; tests use `getByRole`.
+  New director test on the double-spawn cap: my first version assumed an integer cap and was wrong
+  (the cap is fractional); fixed.
+- Mutation checks: removing the score guard failed the late-Flash test; not dropping finished hints
+  failed the faded-hint test.
+- Verification: `npm run verify` green — unit 174/174, e2e 45/45 (24 desktop, 20 mobile, 1 production),
+  check:dist clean.
+

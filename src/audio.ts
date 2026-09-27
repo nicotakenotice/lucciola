@@ -226,14 +226,17 @@ const MUSIC_LEVEL = 0.8;
 const MUSIC_DUCKED = 0.3;
 const DRONE_CUTOFF = 480;
 
-export function audioReady ()
+// True once a user gesture has created the audio context, even if the browser keeps it suspended
+export function audioStarted ()
 {
-    return !!ctx && ctx.state === 'running';
+    return ctx !== null;
 }
 
 class Music
 {
     private started = false;
+    private sources: AudioScheduledSourceNode[] = [];
+    private bellTimer = 0;
     private bus: GainNode;
     private droneFilter: BiquadFilterNode;
     private pulseGain: GainNode;
@@ -282,7 +285,7 @@ class Music
             const g = c.createGain();
             g.gain.value = 0.5;
             osc.connect(g).connect(this.droneFilter);
-            osc.start();
+            this.play(osc);
         });
 
         const lfo = c.createOscillator();
@@ -290,7 +293,7 @@ class Music
         const lfoDepth = c.createGain();
         lfoDepth.gain.value = 160;
         lfo.connect(lfoDepth).connect(this.droneFilter.frequency);
-        lfo.start();
+        this.play(lfo);
 
         // Mid-register pad (D-F-A): the part that is audible even on small speakers.
         // Each voice swells and recedes with its own slow breath.
@@ -313,8 +316,8 @@ class Music
             breathDepth.gain.value = 0.025;
             breath.connect(breathDepth).connect(voice.gain);
             osc.connect(voice).connect(padFilter);
-            osc.start();
-            breath.start();
+            this.play(osc);
+            this.play(breath);
         });
 
         // Low heartbeat, audible only when tension rises
@@ -335,12 +338,15 @@ class Music
         pulseAmp.gain.value = 0.5;
         pulseLfo.connect(pulseLfoDepth).connect(pulseAmp.gain);
         pulse.connect(pulseFilter).connect(pulseAmp).connect(this.pulseGain).connect(this.bus);
-        pulse.start();
-        pulseLfo.start();
+        this.play(pulse);
+        this.play(pulseLfo);
 
         // The first bell plays right away, so it is clear the music has started
-        window.setTimeout(() => this.bell(), 500);
-        this.scheduleBell();
+        this.bellTimer = window.setTimeout(() =>
+        {
+            this.bell();
+            this.scheduleBell();
+        }, 500);
     }
 
     setTension (value: number)
@@ -360,11 +366,28 @@ class Music
         this.bus.gain.setTargetAtTime(value ? MUSIC_DUCKED : MUSIC_LEVEL, ctx.currentTime, 0.3);
     }
 
+    // Silences the music for good and releases its nodes and timers (used on hot reload)
+    stop ()
+    {
+        if (!this.started) return;
+        this.started = false;
+        window.clearTimeout(this.bellTimer);
+        this.sources.forEach((source) => source.stop());
+        this.sources = [];
+        this.bus.disconnect();
+    }
+
+    private play (source: AudioScheduledSourceNode)
+    {
+        source.start();
+        this.sources.push(source);
+    }
+
     private scheduleBell ()
     {
         // With high tension the notes get sparser and the heartbeat takes over
         const wait = 1600 + Math.random() * 2800 + this.tension * 3000;
-        window.setTimeout(() =>
+        this.bellTimer = window.setTimeout(() =>
         {
             this.bell();
             this.scheduleBell();
@@ -397,3 +420,5 @@ class Music
 }
 
 export const music = new Music();
+
+import.meta.hot?.dispose(() => music.stop());

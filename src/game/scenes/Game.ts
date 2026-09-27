@@ -10,6 +10,7 @@ import { MessageKey, t } from '../../i18n';
 import type { GameDebugApi, GameSnapshot } from '../debug';
 import type { Point, RunState } from '../types';
 import { DEPTH, randomSpot } from '../layout';
+import { onSceneExit } from '../lifecycle';
 import { NightDirector } from '../director';
 import { Firefly } from '../entities/Firefly';
 import { Swarm } from '../entities/Swarm';
@@ -22,7 +23,7 @@ import { Effects } from '../systems/Effects';
 
 type Keys = Record<'W' | 'A' | 'S' | 'D' | 'UP' | 'DOWN' | 'LEFT' | 'RIGHT', Input.Keyboard.Key>;
 
-const TOUCH = window.matchMedia('(pointer: coarse)').matches;
+const isTouch = () => window.matchMedia('(pointer: coarse)').matches;
 const MAX_STEP = 0.05;          // seconds: longer frames are slowed down rather than skipped
 const HUD_INTERVAL = 0.08;
 const { Between, FloatBetween, Clamp } = PMath;
@@ -74,6 +75,12 @@ export class Game extends Scene
         {
             const shadow = this.spawnShadow(kind);
             if (at) Object.assign(shadow, at);
+        },
+        spawn: (kind, at) =>
+        {
+            if (kind === 'pollen') this.pollen.spawn(at);
+            else if (kind === 'lost') this.lost.spawn(at);
+            else this.dew.spawn(at);
         },
         steerTo: (target) =>
         {
@@ -171,13 +178,11 @@ export class Game extends Scene
             [Events.UiMenu]: () => this.scene.start('Menu')
         });
 
-        const cleanup = () =>
+        onSceneExit(this, () =>
         {
             unsubscribe();
             music.setTension(0);
-        };
-        this.events.once('shutdown', cleanup);
-        this.events.once('destroy', cleanup);
+        });
     }
 
     // ---------------------------------------------------------------- loop
@@ -477,7 +482,7 @@ export class Game extends Scene
 
             if (this.state === 'play' && this.tutorial && Math.hypot(shadow.x - player.x, shadow.y - player.y) < 350)
             {
-                this.hint('shadow', TOUCH ? 'hint.shadow.touch' : 'hint.shadow.pointer', 'danger');
+                this.hint('shadow', isTouch() ? 'hint.shadow.touch' : 'hint.shadow.pointer', 'danger');
             }
         }
 
@@ -487,8 +492,11 @@ export class Game extends Scene
         }
     }
 
+    // Flash kills land up to flashWaveDuration later: once the night is over they no longer score
     private onShadowDissolved (shadow: Shadow, points: number)
     {
+        if (this.state !== 'play') return;
+
         this.score += points;
         this.stats.dissolved++;
         this.fx.floatText(shadow.x, shadow.y - 20 * shadow.size, `+${points}`, '#d4b8ff', shadow.kind === 'colossus' ? 24 : 16);
@@ -527,7 +535,7 @@ export class Game extends Scene
 
     private flash ()
     {
-        if (this.state !== 'play' || this.flashCd > 0) return;
+        if (this.state !== 'play' || this.scene.isPaused() || this.flashCd > 0) return;
 
         // A key pressed while paused may be delivered right after resuming: ignore it
         if (performance.now() - this.resumedAt < 200) return;
