@@ -25,6 +25,7 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 | T17 | Fix findings from the runtime verification | done |
 | T18 | App logo and README images | done |
 | T19 | Public repository and GitHub Pages hosting | done |
+| T20 | Fix the menu missing on iOS Safari | done |
 
 ## T01 — Work-tracking docs and resume protocol
 
@@ -171,4 +172,10 @@ Found by driving the game and the CLIs (`/verify`), not by tests:
 - `pages.yml` deploys `dist/` to GitHub Pages on every push to `main`, gated by `verify:fast`.
 - `ci.yml` runs the full `npm run verify` on pushes and pull requests.
 - The live site loads, starts a night and has no page errors or failed requests.
+
+## T20 — Menu missing on iOS Safari (2026-09-28)
+
+- React subscribes to `scene-ready` before the Phaser game boots, so a scene that is ready early is
+  never missed.
+- Regression test for the ordering; checked on iOS Safari in the Simulator, not only in Playwright.
 

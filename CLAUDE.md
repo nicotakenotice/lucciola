@@ -66,6 +66,9 @@ and `.githooks/`.
   bot plays the last seconds in real time (`realtimeTail`).
 - In dev builds `window.__LUCCIOLA__` exposes the game, the debug API and `TUNING` for tests, the balance
   bot and debugging (stripped in production). Tests use only `GameDebugApi` (`src/game/debug.ts`).
+- Subscribe to the EventBus before the event can fire: `PhaserGame` subscribes to `scene-ready`
+  before `StartGame`, because iOS Safari readies the Menu before React's passive effects run.
+- Playwright's WebKit is not iOS Safari: check mobile changes in the iOS Simulator too (`verify` skill).
 - Clean up EventBus subscriptions with `onSceneExit()` (`src/game/lifecycle.ts`), not `once('destroy')`.
 - Gameplay numbers belong in `TUNING`/`SHADOWS`; after changing one, run `npm run balance` and record it.
 - Shell pitfalls seen here: zsh does not split unquoted variables into words and macOS `grep -Z` means

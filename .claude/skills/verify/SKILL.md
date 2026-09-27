@@ -27,6 +27,11 @@ Write a throwaway Playwright script inside the repo (so `@playwright/test` resol
   (`spawn('dew' | 'lost' | 'pollen', at)`, `spawnShadow(kind, at)`, `set({ energy, elapsed })`, `snapshot()`).
   Set `localStorage['lucciola.best'] = '1'` first to silence first-night tutorial hints.
 - Always collect `pageerror`, console errors and requests leaving localhost.
+- Real iOS Safari: Playwright's WebKit misses timing bugs (see PROGRESS T20). With the Xcode
+  Simulator booted, serve a build and run `xcrun simctl openurl booted http://localhost:5191/`, then
+  `xcrun simctl io booted screenshot <scratchpad>/sim.png` (rotate landscape shots with `sips -r 90`).
+  No console there: inject a temporary probe script into `dist/index.html` that prints element sizes
+  and errors on screen, and rebuild before committing.
 - itch.io check: `npm run package`, unzip into `<tmp>/games/x/`, serve with
   `python3 -m http.server`, open `/games/x/index.html` (paths must be relative).
 - CLIs: `npm run balance -- --seeds 7` (~2 s per night); `npm run package` → `lucciola-web.zip`.

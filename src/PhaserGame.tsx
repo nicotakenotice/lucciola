@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import StartGame from './game/main';
 import { EventBus } from './game/EventBus';
 import { Events } from './game/events';
@@ -11,22 +11,26 @@ interface IProps
 // Mounts the Phaser game once and reports every scene that becomes ready
 export function PhaserGame ({ onSceneReady }: IProps)
 {
+    const onSceneReadyRef = useRef(onSceneReady);
+
     useLayoutEffect(() =>
     {
-        const game = StartGame('game-container');
+        onSceneReadyRef.current = onSceneReady;
+    }, [ onSceneReady ]);
 
-        return () => game.destroy(true);
-    }, []);
-
-    useEffect(() =>
+    useLayoutEffect(() =>
     {
-        EventBus.on(Events.SceneReady, onSceneReady);
+        // Subscribe before booting: on iOS Safari the Menu can be ready before passive effects run
+        const handler = (scene: Phaser.Scene) => onSceneReadyRef.current(scene);
+        EventBus.on(Events.SceneReady, handler);
+        const game = StartGame('game-container');
 
         return () =>
         {
-            EventBus.off(Events.SceneReady, onSceneReady);
+            EventBus.off(Events.SceneReady, handler);
+            game.destroy(true);
         };
-    }, [ onSceneReady ]);
+    }, []);
 
     return <div id="game-container" />;
 }

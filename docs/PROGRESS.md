@@ -340,6 +340,22 @@ State inherited from earlier work (commits up to `2489bf4`):
   firefly less than expected). Cause: the runner (2 vCPUs, software WebGL, 3 browsers at once) ran
   the game at about 1–2 fps — one second of game time did not pass in 15 s of wall time. Fix: in CI
   Playwright uses 1 worker and longer timeouts, and game-time waits get 3× more room. The 4 tests
-  passed locally with `CI=1`.- Second CI run (`65d8422`) green: unit 186/186, e2e 46/46 in 3.2 min (one worker is faster than
+  passed locally with `CI=1`.
+- Second CI run (`65d8422`) green: unit 186/186, e2e 46/46 in 3.2 min (one worker is faster than
   three contending for 2 vCPUs), check:dist clean; Pages redeployed successfully.
+
+## T20 — Menu missing on iOS Safari (2026-09-28)
+
+- Owner report: on a real iPhone and in the iOS Simulator the live site showed the forest but no
+  interface (no menu, no Start button). Reproduced in the Simulator (iOS 26.5 Safari); a layout probe
+  showed stage and canvas correctly sized, no page errors, and no React overlay at all.
+- Cause: `PhaserGame` booted the game in `useLayoutEffect` but subscribed to `scene-ready` in
+  `useEffect`. On iOS Safari the Menu scene became ready before passive effects ran, so the event was
+  lost and the app stayed on the `loading` screen. Playwright's WebKit and Chromium profiles always
+  won the race, which is why the suite and the earlier "iPhone" check (a Playwright profile, not a
+  real device) never saw it.
+- Fix: subscribe in the same layout effect, before `StartGame`, with the latest callback in a ref.
+  `src/PhaserGame.test.tsx` emits `scene-ready` from inside `StartGame`; it fails on the old code.
+- Verified in the iOS Simulator on a local production build: the menu, sound button and IT/EN toggle
+  appear.
 
