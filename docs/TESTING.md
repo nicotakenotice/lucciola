@@ -24,6 +24,9 @@ The pre-commit hook runs `verify:fast`.
   internals: the contract is what keeps refactors cheap.
 - On a machine already busy with other headless browsers, run with fewer workers:
   `PW_WORKERS=1 npm run test:e2e`.
+- With `CI` set (GitHub Actions), Playwright uses one worker, longer timeouts, and game-time waits
+  get 3× more room: GitHub runners render WebGL in software on 2 vCPUs and the game can drop to a
+  couple of frames per second there.
 - Wait for **game time** (`advanceGameTime`), not wall time. WebGL is software-rendered in headless
   browsers and slows down under load; the game clamps long frames, so game time lags wall time.
 - Prefer specific selectors (`[data-audio-toggle]`) over positional ones (`.icon-button` became

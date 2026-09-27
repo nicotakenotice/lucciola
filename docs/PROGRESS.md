@@ -325,3 +325,20 @@ State inherited from earlier work (commits up to `2489bf4`):
 - README: centered logo, title and tagline, home screenshot, gameplay screenshot with caption and alt
   texts, `npm run images` in the command table.
 
+## 2026-09-28 — T19 public repository and GitHub Pages
+
+- Pre-publish scan of the whole history: no secrets (only the `js-tokens` package matched), no file
+  over 500 KB, no local paths or work e-mail. Commits carry the owner's git identity
+  (`nicola.zorzo@gmail.com`), now public.
+- Created `nicotakenotice/lucciola` (public, owner's personal account) with description, homepage
+  and topics; enabled Pages with the "GitHub Actions" source before the first push.
+- `pages.yml` (checkout v7, setup-node v7 with `.nvmrc`, configure-pages v6, upload-pages-artifact v5,
+  deploy-pages v5): first run green in under a minute. Live site checked from outside: page, logo and
+  icons return 200; a night starts on desktop (Chromium) and on an iPhone profile (WebKit, Italian);
+  no dev hook, no failed request, no page error.
+- `ci.yml` first run: unit 186/186 but 4 of 46 e2e failed (end panels never appeared, a tap moved the
+  firefly less than expected). Cause: the runner (2 vCPUs, software WebGL, 3 browsers at once) ran
+  the game at about 1–2 fps — one second of game time did not pass in 15 s of wall time. Fix: in CI
+  Playwright uses 1 worker and longer timeouts, and game-time waits get 3× more room. The 4 tests
+  passed locally with `CI=1`.
+

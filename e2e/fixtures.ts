@@ -45,17 +45,20 @@ export function snapshot (page: Page): Promise<GameSnapshot>
     return page.evaluate(() => window.__LUCCIOLA__!.debug()!.snapshot());
 }
 
+// CI runners render WebGL in software on 2 vCPUs: the game can drop to a couple of frames per second
+const SLOWDOWN = process.env.CI ? 3 : 1;
+
 // Waits for game time, not wall time: under load the game runs at fewer frames per second
 export async function advanceGameTime (page: Page, seconds: number)
 {
     const start = (await snapshot(page)).elapsed;
     await expect
-        .poll(async () => (await snapshot(page)).elapsed, { timeout: 10_000 + seconds * 5_000 })
+        .poll(async () => (await snapshot(page)).elapsed, { timeout: (10_000 + seconds * 5_000) * SLOWDOWN })
         .toBeGreaterThanOrEqual(start + seconds);
 }
 
 // End-of-night panels appear after in-game delays, so allow for slow frames
-export const END_PANEL_TIMEOUT = 15_000;
+export const END_PANEL_TIMEOUT = 15_000 * SLOWDOWN;
 
 export function setGame (page: Page, values: { energy?: number; elapsed?: number })
 {

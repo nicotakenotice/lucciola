@@ -2,6 +2,8 @@ import { defineConfig, devices } from '@playwright/test';
 
 // Dedicated ports keep tests away from a dev server the owner may be using on 8080
 const PORT = 5174;
+// CI runners have 2 vCPUs and render WebGL in software: run one browser at a time, allow more time
+const CI = !!process.env.CI;
 const PREVIEW_PORT = 5176;
 
 export default defineConfig({
@@ -11,9 +13,9 @@ export default defineConfig({
     // WebGL is software-rendered in headless browsers: more workers only slow every game down,
     // and a busy machine can slow a frame a lot, hence the generous timeouts
     // PW_WORKERS=1 helps when other heavy processes share the machine
-    workers: Number(process.env.PW_WORKERS ?? 3),
-    timeout: 60_000,
-    expect: { timeout: 10_000 },
+    workers: Number(process.env.PW_WORKERS ?? (CI ? 1 : 3)),
+    timeout: CI ? 180_000 : 60_000,
+    expect: { timeout: CI ? 30_000 : 10_000 },
     retries: 0,
     reporter: [ [ 'list' ] ],
     use: {
