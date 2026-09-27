@@ -4,9 +4,11 @@ import { Events, GameEndResult, GameStats, HintTone, HudState } from '../events'
 import { FONT_UI, HEIGHT, SHADOWS, ShadowKind, TUNING as T, WIDTH, loadBest, saveBest } from '../constants';
 import { drawForest } from '../world';
 import { music, sfx } from '../audio';
+import { MessageKey, t } from '../../i18n';
 
 const D = { spores: 8, shadows: 5, bugs: 10, dark: 100, lights: 110, fx: 190 };
 const HUD_BAND = 125;
+const TOUCH = window.matchMedia('(pointer: coarse)').matches;
 const ADD = BlendModes.ADD;
 const { Between, FloatBetween, Clamp } = PMath;
 
@@ -185,7 +187,7 @@ export class Game extends Scene
 
         if (this.tutorial)
         {
-            this.time.delayedCall(2500, () => this.hint('pollen', 'Raccogli il polline luminoso per nutrire la tua luce', 'info'));
+            this.time.delayedCall(2500, () => this.hint('pollen', 'hint.pollen', 'info'));
         }
 
         this.emitHud();
@@ -385,11 +387,12 @@ export class Game extends Scene
         music.setTension(Math.max(threat, low));
     }
 
-    private hint (key: string, text: string, tone: HintTone)
+    // Ogni suggerimento compare al massimo una volta per partita (id), nella lingua corrente
+    private hint (id: string, message: MessageKey, tone: HintTone)
     {
-        if (this.hintsShown.has(key)) return;
-        this.hintsShown.add(key);
-        EventBus.emit(Events.Hint, { text, tone });
+        if (this.hintsShown.has(id)) return;
+        this.hintsShown.add(id);
+        EventBus.emit(Events.Hint, { text: t(message), tone });
     }
 
     private splendorFactor ()
@@ -424,7 +427,7 @@ export class Game extends Scene
         this.comboTimer -= dt;
         if (this.comboTimer <= 0) this.comboStep = 0;
 
-        if (this.energy < 30 && this.tutorial) this.hint('low', 'La tua luce si sta spegnendo: cerca il polline!', 'danger');
+        if (this.energy < 30 && this.tutorial) this.hint('low', 'hint.low', 'danger');
 
         if (this.energy < 25)
         {
@@ -443,7 +446,7 @@ export class Game extends Scene
             this.chirpTimer = FloatBetween(2, 6);
         }
 
-        if (this.elapsed > T.nightLength - 20) this.hint('predawn', 'L\'alba è vicina… resisti!', 'info');
+        if (this.elapsed > T.nightLength - 20) this.hint('predawn', 'hint.predawn', 'info');
     }
 
     private updateSpawners (dt: number)
@@ -504,7 +507,7 @@ export class Game extends Scene
     // Un'ondata: un gruppo di Ombre arriva dallo stesso lato
     private wave (index: number)
     {
-        this.hint(`wave${index}`, 'Le Ombre si risvegliano…', 'danger');
+        this.hint(`wave${index}`, 'hint.wave', 'danger');
         sfx.wave();
         this.cameras.main.shake(700, 0.004);
 
@@ -623,7 +626,7 @@ export class Game extends Scene
             glow: this.add.image(x, y, 'glow').setDepth(D.lights).setBlendMode(ADD).setTint(0x9dffcf)
         });
         this.stats.maxSwarm = Math.max(this.stats.maxSwarm, this.followers.length);
-        if (this.followers.length === T.maxFollowers) this.hint('fullswarm', 'Sciame completo!', 'gift');
+        if (this.followers.length === T.maxFollowers) this.hint('fullswarm', 'hint.fullSwarm', 'gift');
     }
 
     // ---------------------------------------------------------------- polline
@@ -707,7 +710,7 @@ export class Game extends Scene
         const ring = this.add.image(x, y, 'ring').setDepth(D.lights).setBlendMode(ADD).setTint(0xbfe8ff).setScale(0);
         this.tweens.add({ targets: [ glow, core ], scale: 1, duration: 700, ease: 'Back.easeOut' });
         this.dew = { x, y, glow, core, ring, life: T.dewLifetime };
-        this.hint('dew', 'Rugiada lunare! Raccoglila per lo Splendore', 'gift');
+        this.hint('dew', 'hint.dew', 'gift');
     }
 
     private updateDew (dt: number, time: number)
@@ -744,8 +747,8 @@ export class Game extends Scene
         this.stats.dew++;
         sfx.dew();
         this.cyanSparks.explode(36, dew.x, dew.y);
-        this.floatText(dew.x, dew.y - 20, 'Splendore! +40', '#dff4ff', 22);
-        this.hint('splendor', 'Splendore: la tua luce non si consuma e brucia le Ombre', 'gift');
+        this.floatText(dew.x, dew.y - 20, t('game.splendor', { n: 40 }), '#dff4ff', 22);
+        this.hint('splendor', 'hint.splendor', 'gift');
         this.whiteFlash.setAlpha(0.12);
         this.tweens.add({ targets: this.whiteFlash, alpha: 0, duration: 500 });
     }
@@ -769,7 +772,7 @@ export class Game extends Scene
             bug: this.add.image(x, y, 'bug').setDepth(D.bugs).setScale(0.8),
             glow: this.add.image(x, y, 'glow').setDepth(D.lights).setBlendMode(ADD).setTint(0x7dfcff)
         });
-        if (this.tutorial) this.hint('lost', 'Una lucciola smarrita lampeggia nel buio: raggiungila!', 'info');
+        if (this.tutorial) this.hint('lost', 'hint.lost', 'info');
     }
 
     private updateLost (dt: number, time: number)
@@ -813,7 +816,7 @@ export class Game extends Scene
         if (this.followers.length < T.maxFollowers)
         {
             this.addFollower(l.x, l.y);
-            this.floatText(l.x, l.y - 16, 'Nuova lucciola! +50', '#a8fff0', 20);
+            this.floatText(l.x, l.y - 16, t('game.newFirefly', { n: 50 }), '#a8fff0', 20);
         }
         else
         {
@@ -859,13 +862,13 @@ export class Game extends Scene
         if (kind === 'moth')
         {
             sfx.moth();
-            this.hint('moth', 'Falene d\'ombra: veloci e imprevedibili', 'danger');
+            this.hint('moth', 'hint.moth', 'danger');
         }
         else if (kind === 'colossus')
         {
             sfx.colossus();
             this.cameras.main.shake(900, 0.003);
-            this.hint('colossus', 'Un Colosso d\'ombra… vicino a lui la tua luce si affievolisce', 'danger');
+            this.hint('colossus', 'hint.colossus', 'danger');
         }
     }
 
@@ -940,7 +943,7 @@ export class Game extends Scene
                 }
             }
 
-            if (this.state === 'play' && d < 350 && this.tutorial) this.hint('shadow', 'Un\'Ombra! Clic o SPAZIO per il Lampo', 'danger');
+            if (this.state === 'play' && d < 350 && this.tutorial) this.hint('shadow', TOUCH ? 'hint.shadow.touch' : 'hint.shadow.pointer', 'danger');
             if (this.state === 'play' && s.touchCd <= 0 && d < 16 + 12 * s.size) this.hitPlayer(s, d);
         }
 
@@ -1046,7 +1049,7 @@ export class Game extends Scene
         if (saved > 0)
         {
             sfx.lose();
-            this.floatText(this.p.x, this.p.y - 30, saved > 1 ? 'Due lucciole ti hanno protetto' : 'Una lucciola ti ha protetto', '#a8fff0', 16);
+            this.floatText(this.p.x, this.p.y - 30, t(saved > 1 ? 'game.savedTwo' : 'game.savedOne'), '#a8fff0', 16);
             this.cameras.main.shake(150, 0.005);
         }
         else
@@ -1071,7 +1074,7 @@ export class Game extends Scene
         if (this.energy < T.flashMin)
         {
             sfx.fizzle();
-            this.floatText(this.p.x, this.p.y - 30, 'Luce troppo debole', '#ffb08a', 16);
+            this.floatText(this.p.x, this.p.y - 30, t('game.tooWeak'), '#ffb08a', 16);
             return;
         }
 

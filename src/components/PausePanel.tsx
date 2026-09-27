@@ -1,4 +1,7 @@
+import { t } from '../i18n';
+import { useLang } from '../i18n/useLang';
 import { SoundIcon } from './Icons';
+import { LangSwitch } from './LangSwitch';
 
 interface IProps
 {
@@ -11,21 +14,25 @@ interface IProps
 
 export function PausePanel ({ muted, onResume, onRestart, onMenu, onToggleMute }: IProps)
 {
+    useLang();
+
     return (
         <div className="overlay pause">
             <div className="panel">
-                <h2>Pausa</h2>
-                <p className="pause-hint">La notte ti aspetta.</p>
+                <h2>{t('pause.title')}</h2>
+                <p className="pause-hint">{t('pause.subtitle')}</p>
 
                 <div className="actions vertical">
-                    <button className="button primary" onClick={onResume}>Riprendi <kbd>Esc</kbd></button>
-                    <button className="button" onClick={onRestart}>Ricomincia</button>
-                    <button className="button" onClick={onMenu}>Menu</button>
+                    <button className="button primary" onClick={onResume}>{t('pause.resume')} <kbd>{t('key.esc')}</kbd></button>
+                    <button className="button" onClick={onRestart}>{t('pause.restart')}</button>
+                    <button className="button" onClick={onMenu}>{t('pause.menu')}</button>
                     <button className="button with-icon" onClick={onToggleMute} data-audio-toggle>
                         <SoundIcon muted={muted} />
-                        {muted ? 'Audio disattivato' : 'Audio attivo'} <kbd>M</kbd>
+                        {muted ? t('audio.off') : t('audio.on')} <kbd>M</kbd>
                     </button>
                 </div>
+
+                <LangSwitch className="in-panel" />
             </div>
         </div>
     );

@@ -379,6 +379,50 @@ html, body {
     right: 1.8cqw;
 }
 
+/* Selettore di lingua */
+.lang-switch {
+    display: inline-flex;
+    padding: 0.25cqw;
+    border-radius: 999px;
+    border: 1px solid rgba(242, 255, 194, 0.3);
+    background: rgba(5, 7, 15, 0.55);
+    pointer-events: auto;
+}
+
+.lang-switch button {
+    min-width: 30px;
+    padding: 0.35cqw 0.9cqw;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink-soft);
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: max(11px, 1cqw);
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.lang-switch button:hover {
+    color: var(--glow);
+}
+
+.lang-switch button.active {
+    background: var(--glow);
+    color: #11160a;
+}
+
+.lang-switch.corner-left {
+    position: absolute;
+    top: 1.4cqw;
+    left: 1.8cqw;
+}
+
+.lang-switch.in-panel {
+    margin-top: 1.6cqw;
+}
+
 /* Splendore */
 .splendor {
     display: flex;

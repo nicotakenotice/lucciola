@@ -1,0 +1,77 @@
+// Testi in italiano. Le chiavi di questo dizionario sono la fonte di verità:
+// le altre lingue devono tradurle tutte (lo controlla TypeScript).
+// Tag supportati nel testo ricco: <b>, <kbd>, <pollen>, <lost>, <shadow>, <dew>. Parametri: {nome}.
+export const it = {
+    'menu.subtitle': 'Una notte nel bosco. Una piccola luce.',
+    'menu.move.pointer': 'Muoviti con il <b>mouse</b>, <b>WASD</b> o le <b>frecce</b>',
+    'menu.move.touch': '<b>Tocca</b> lo schermo per muoverti',
+    'menu.pollen': 'La tua luce si consuma: raccogli il <pollen>polline</pollen> per nutrirla',
+    'menu.lost': 'Le <lost>lucciole smarrite</lost> si uniranno a te e ti faranno da scudo',
+    'menu.shadows.pointer': 'Le <shadow>Ombre</shadow> temono la luce: <b>clic</b> o <b>SPAZIO</b> per un Lampo che le dissolve',
+    'menu.shadows.touch': 'Le <shadow>Ombre</shadow> temono la luce: il pulsante <b>Lampo</b> le dissolve',
+    'menu.dew': 'La <dew>rugiada lunare</dew> ti dona lo Splendore. Sopravvivi fino all\'alba',
+    'menu.start': 'Inizia',
+    'menu.startHint': 'oppure premi SPAZIO · ESC per la pausa',
+    'record': 'Record: {n}',
+
+    'audio.mute': 'Silenzia (M)',
+    'audio.unmute': 'Attiva audio (M)',
+    'audio.on': 'Audio attivo',
+    'audio.off': 'Audio disattivato',
+    'lang.label': 'Lingua',
+
+    'hud.light': 'Luce',
+    'hud.splendor': 'Splendore',
+    'hud.swarm': 'Sciame',
+    'hud.dawnIn': 'Alba tra {time}',
+    'hud.dawn': 'Alba',
+    'hud.combo': 'Combo ×{n}',
+    'hud.flash': 'Lampo',
+    'hud.pause': 'Pausa (Esc)',
+    'hud.keys': '<kbd>Esc</kbd> pausa · <kbd>M</kbd> audio',
+    'hud.intro': 'Sopravvivi fino all\'alba',
+
+    'pause.title': 'Pausa',
+    'pause.subtitle': 'La notte ti aspetta.',
+    'pause.resume': 'Riprendi',
+    'pause.restart': 'Ricomincia',
+    'pause.menu': 'Menu',
+
+    'end.dawnTitle': 'L\'alba!',
+    'end.overTitle': 'La tua luce si è spenta',
+    'end.dawnText': 'Hai attraversato la notte.',
+    'end.bonus': 'Bonus sciame e luce: <b>+{n}</b>',
+    'end.overText': 'Hai resistito {n} secondi nel buio.',
+    'end.newRecord': 'Nuovo record!',
+    'end.again': 'Rigioca',
+    'end.menu': 'Menu',
+
+    'stats.pollen': 'Polline raccolto',
+    'stats.rescued': 'Lucciole salvate',
+    'stats.dissolved': 'Ombre dissolte',
+    'stats.maxSwarm': 'Sciame massimo',
+    'stats.flashes': 'Lampi',
+    'stats.dew': 'Rugiade lunari',
+
+    'key.space': 'Spazio',
+    'key.esc': 'Esc',
+
+    'game.newFirefly': 'Nuova lucciola! +{n}',
+    'game.splendor': 'Splendore! +{n}',
+    'game.tooWeak': 'Luce troppo debole',
+    'game.savedOne': 'Una lucciola ti ha protetto',
+    'game.savedTwo': 'Due lucciole ti hanno protetto',
+
+    'hint.pollen': 'Raccogli il polline luminoso per nutrire la tua luce',
+    'hint.lost': 'Una lucciola smarrita lampeggia nel buio: raggiungila!',
+    'hint.shadow.pointer': 'Un\'Ombra! Clic o SPAZIO per il Lampo',
+    'hint.shadow.touch': 'Un\'Ombra! Tocca Lampo per dissolverla',
+    'hint.low': 'La tua luce si sta spegnendo: cerca il polline!',
+    'hint.moth': 'Falene d\'ombra: veloci e imprevedibili',
+    'hint.colossus': 'Un Colosso d\'ombra… vicino a lui la tua luce si affievolisce',
+    'hint.dew': 'Rugiada lunare! Raccoglila per lo Splendore',
+    'hint.splendor': 'Splendore: la tua luce non si consuma e brucia le Ombre',
+    'hint.wave': 'Le Ombre si risvegliano…',
+    'hint.predawn': 'L\'alba è vicina… resisti!',
+    'hint.fullSwarm': 'Sciame completo!'
+};

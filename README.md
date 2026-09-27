@@ -18,6 +18,8 @@ Sei una lucciola in un sottobosco immerso nel buio: la tua luce è sia la tua vi
 
 Durante la prima partita compaiono dei suggerimenti contestuali; a fine partita un riepilogo mostra le statistiche della notte.
 
+Il gioco è in **italiano e inglese**: la lingua iniziale segue quella del browser e si cambia dal selettore IT / EN nel menu o nella pausa (la scelta viene ricordata).
+
 Tutta la grafica e l'audio sono generati via codice: il progetto non ha asset esterni.
 
 ## Stack
@@ -45,7 +47,8 @@ React e Phaser comunicano tramite `EventBus` (`src/game/EventBus.ts`); i nomi de
 src/
 ├── App.tsx               # macchina a stati della UI (menu / gioco / fine)
 ├── PhaserGame.tsx        # ponte React ↔ Phaser (dal template)
-├── components/           # MenuScreen, Hud, Toast, PausePanel, EndPanel, Icons
+├── i18n/                 # dizionari it/en, t() e hook useLang()
+├── components/           # MenuScreen, Hud, Toast, PausePanel, EndPanel, LangSwitch, Rich, Icons
 └── game/
     ├── main.ts           # configurazione Phaser
     ├── constants.ts      # dimensioni, bilanciamento, tipi di Ombra, record
@@ -59,3 +62,11 @@ src/
 ```
 
 Per ritoccare la difficoltà, modifica `TUNING` e `SHADOWS` in `src/game/constants.ts`.
+
+## Traduzioni
+
+I testi stanno in `src/i18n/it.ts` (fonte delle chiavi) ed `src/i18n/en.ts`: TypeScript segnala le chiavi mancanti in una traduzione. I testi possono contenere tag semplici (`<b>`, `<kbd>`, `<pollen>`, `<lost>`, `<shadow>`, `<dew>`) e parametri (`{n}`).
+
+## Commit
+
+I messaggi di commit seguono [Conventional Commits](https://www.conventionalcommits.org/) e sono scritti in inglese (es. `feat(i18n): add English translation`).

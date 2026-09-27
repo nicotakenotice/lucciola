@@ -1,0 +1,77 @@
+import type { it } from './it';
+
+// English texts: the type forces a translation for every Italian key
+export const en: Record<keyof typeof it, string> = {
+    'menu.subtitle': 'A night in the woods. A tiny light.',
+    'menu.move.pointer': 'Move with the <b>mouse</b>, <b>WASD</b> or the <b>arrow keys</b>',
+    'menu.move.touch': '<b>Tap</b> the screen to move',
+    'menu.pollen': 'Your light fades over time: collect <pollen>pollen</pollen> to feed it',
+    'menu.lost': '<lost>Lost fireflies</lost> will join you and shield you',
+    'menu.shadows.pointer': '<shadow>Shadows</shadow> fear the light: <b>click</b> or <b>SPACE</b> for a Flash that dissolves them',
+    'menu.shadows.touch': '<shadow>Shadows</shadow> fear the light: the <b>Flash</b> button dissolves them',
+    'menu.dew': '<dew>Moon dew</dew> grants you Radiance. Survive until dawn',
+    'menu.start': 'Start',
+    'menu.startHint': 'or press SPACE · ESC to pause',
+    'record': 'Best: {n}',
+
+    'audio.mute': 'Mute (M)',
+    'audio.unmute': 'Unmute (M)',
+    'audio.on': 'Sound on',
+    'audio.off': 'Sound off',
+    'lang.label': 'Language',
+
+    'hud.light': 'Light',
+    'hud.splendor': 'Radiance',
+    'hud.swarm': 'Swarm',
+    'hud.dawnIn': 'Dawn in {time}',
+    'hud.dawn': 'Dawn',
+    'hud.combo': 'Combo ×{n}',
+    'hud.flash': 'Flash',
+    'hud.pause': 'Pause (Esc)',
+    'hud.keys': '<kbd>Esc</kbd> pause · <kbd>M</kbd> sound',
+    'hud.intro': 'Survive until dawn',
+
+    'pause.title': 'Paused',
+    'pause.subtitle': 'The night awaits.',
+    'pause.resume': 'Resume',
+    'pause.restart': 'Restart',
+    'pause.menu': 'Menu',
+
+    'end.dawnTitle': 'Dawn!',
+    'end.overTitle': 'Your light has gone out',
+    'end.dawnText': 'You made it through the night.',
+    'end.bonus': 'Swarm and light bonus: <b>+{n}</b>',
+    'end.overText': 'You lasted {n} seconds in the dark.',
+    'end.newRecord': 'New best!',
+    'end.again': 'Play again',
+    'end.menu': 'Menu',
+
+    'stats.pollen': 'Pollen collected',
+    'stats.rescued': 'Fireflies rescued',
+    'stats.dissolved': 'Shadows dissolved',
+    'stats.maxSwarm': 'Largest swarm',
+    'stats.flashes': 'Flashes',
+    'stats.dew': 'Moon dew',
+
+    'key.space': 'Space',
+    'key.esc': 'Esc',
+
+    'game.newFirefly': 'New firefly! +{n}',
+    'game.splendor': 'Radiance! +{n}',
+    'game.tooWeak': 'Light too weak',
+    'game.savedOne': 'A firefly shielded you',
+    'game.savedTwo': 'Two fireflies shielded you',
+
+    'hint.pollen': 'Collect the glowing pollen to feed your light',
+    'hint.lost': 'A lost firefly is blinking in the dark: reach it!',
+    'hint.shadow.pointer': 'A Shadow! Click or SPACE to Flash',
+    'hint.shadow.touch': 'A Shadow! Tap Flash to dissolve it',
+    'hint.low': 'Your light is fading: find some pollen!',
+    'hint.moth': 'Shadow moths: fast and unpredictable',
+    'hint.colossus': 'A Shadow Colossus… your light dims near it',
+    'hint.dew': 'Moon dew! Collect it for Radiance',
+    'hint.splendor': 'Radiance: your light won\'t fade and it burns the Shadows',
+    'hint.wave': 'The Shadows are stirring…',
+    'hint.predawn': 'Dawn is near… hold on!',
+    'hint.fullSwarm': 'Full swarm!'
+};
