@@ -299,3 +299,12 @@ State inherited from earlier work (commits up to `2489bf4`):
     (checked with a screenshot of a Moon dew pickup at the start).
 - Verification: `npm run verify` green — unit 186/186 (8 files), e2e 46/46, check:dist clean.
 
+## 2026-09-28 — T13 license and README review
+
+- License: MIT, as decided by the owner. `LICENSE` now names Nicola Zorzo (2026) and keeps the
+  Phaser Studio line for the template-derived parts; README, DEPLOY, ROADMAP and DECISIONS (D10) updated.
+- README re-checked against the code: game facts (Moth 25 s, Colossus 70 s, waves 45/95/128 s,
+  7 s Radiance), Node versions and commands were correct; added the language toggle and fullscreen
+  controls, the production-build tests in `verify`, and the link to the runtime verification recipe.
+- Documentation-only change: no runtime surface; `verify:fast` runs in the pre-commit hook.
+

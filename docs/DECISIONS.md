@@ -60,3 +60,9 @@ energy decay more slowly over the night (`energyDecayGrowth` 0.005 → 0.004) gi
 Supersedes the bot estimate in D07, which came from three non-deterministic runs. Details in
 `docs/BALANCE.md`. If real players find it too easy or too hard, move the target and re-measure.
 
+## D10 — MIT license (2026-09-28)
+
+The owner chose MIT. `LICENSE` holds the owner's copyright and keeps the Phaser Studio notice, since
+parts of the project (e.g. `PhaserGame.tsx`, the event bus origin, the Vite configs) come from the
+MIT-licensed `phaserjs/template-react-ts`. `package.json` already declares `"license": "MIT"`.
+

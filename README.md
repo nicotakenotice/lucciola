@@ -27,6 +27,8 @@ Italian and English, generative music, no external assets: every texture and sou
 | Flash | click or Space | **Flash** button |
 | Pause | Esc or P, or the pause button | pause button |
 | Sound | M, or the speaker button | speaker button |
+| Language | IT / EN toggle in the menu or the pause panel | same |
+| Full screen | button in the menu and the HUD, where the browser supports it | same (Android) |
 
 The game pauses by itself when the window loses focus or a phone is turned to portrait.
 
@@ -44,7 +46,7 @@ npm run verify         # typecheck, lint, unit tests, build, end-to-end tests
 |---|---|
 | `npm run dev` / `npm run build` | Dev server / production build into `dist/` |
 | `npm run verify:fast` | Typecheck, lint, unit tests (also run by the pre-commit hook) |
-| `npm run verify` | Everything, including end-to-end tests on desktop, Android and iPhone emulation |
+| `npm run verify` | Everything: end-to-end tests on desktop, Android and iPhone emulation and on the production build, plus a bundle check |
 | `npm run balance` | Seeded bot nights to measure difficulty ([docs/BALANCE.md](docs/BALANCE.md)) |
 | `npm run package` | `lucciola-web.zip` ready for itch.io ([docs/DEPLOY.md](docs/DEPLOY.md)) |
 
@@ -60,10 +62,13 @@ Built with Phaser 4 (gameplay), React 19 (interface), TypeScript and Vite, start
 - [docs/ROADMAP.md](docs/ROADMAP.md), [docs/PROGRESS.md](docs/PROGRESS.md),
   [docs/DECISIONS.md](docs/DECISIONS.md) — work tracking
 - [CLAUDE.md](CLAUDE.md) — conventions and the work loop for contributors (human or AI)
+- [.claude/skills/verify/SKILL.md](.claude/skills/verify/SKILL.md) — how to run the game and observe a
+  change like a player
 
 Commits follow [Conventional Commits](https://www.conventionalcommits.org/) in English; the
 `commit-msg` hook enforces it.
 
 ## License
 
-Not decided yet: `LICENSE` still holds the MIT license of the Phaser template (see `docs/ROADMAP.md`, T13).
+[MIT](LICENSE) © 2026 Nicola Zorzo. Parts derived from the Phaser template keep their original MIT
+notice (© 2025 Phaser Studio Inc).

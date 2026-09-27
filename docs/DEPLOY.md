@@ -33,5 +33,5 @@ supports the `/<repo>/` sub-path.
 
 ## Before any public release
 
-- Decide the license (`docs/ROADMAP.md`, T13).
 - Run `npm run verify` and the manual device checks.
+- The game is MIT-licensed (`LICENSE`); keep that file in any redistributed source.

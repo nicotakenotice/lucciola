@@ -18,7 +18,7 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 | T10 | Seeded headless balance script and baseline report | done |
 | T11 | English README and technical docs | done |
 | T12 | Packaging for itch.io and deploy guide | done |
-| T13 | Choose a license for the game | blocked |
+| T13 | Choose a license for the game | done |
 | T14 | Final full verification and report | done |
 | T15 | Enforce code style with lint (brace style, spacing, quotes) | done |
 | T16 | Address the independent review | done |
@@ -101,10 +101,10 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 - `npm run package` builds without analytics and creates `lucciola-web.zip` ready for itch.io.
 - `docs/DEPLOY.md` covers itch.io, Cloudflare Pages / Netlify / Vercel and GitHub Pages.
 
-## T13 — License (blocked)
+## T13 — License
 
-The current `LICENSE` is the MIT license of the Phaser template (© Phaser Studio). Choosing how to
-license the game (open source or not, under whose name) is the owner's decision.
+Decided by the owner on 2026-09-28: MIT. `LICENSE` names the owner and keeps the Phaser Studio notice
+for the parts derived from the template, as the template's MIT license requires.
 
 ## T15 — Enforced code style
 
