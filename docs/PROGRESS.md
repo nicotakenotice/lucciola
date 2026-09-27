@@ -340,5 +340,6 @@ State inherited from earlier work (commits up to `2489bf4`):
   firefly less than expected). Cause: the runner (2 vCPUs, software WebGL, 3 browsers at once) ran
   the game at about 1–2 fps — one second of game time did not pass in 15 s of wall time. Fix: in CI
   Playwright uses 1 worker and longer timeouts, and game-time waits get 3× more room. The 4 tests
-  passed locally with `CI=1`.
+  passed locally with `CI=1`.- Second CI run (`65d8422`) green: unit 186/186, e2e 46/46 in 3.2 min (one worker is faster than
+  three contending for 2 vCPUs), check:dist clean; Pages redeployed successfully.
 

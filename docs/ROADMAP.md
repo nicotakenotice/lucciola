@@ -24,7 +24,7 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 | T16 | Address the independent review | done |
 | T17 | Fix findings from the runtime verification | done |
 | T18 | App logo and README images | done |
-| T19 | Public repository and GitHub Pages hosting | in progress |
+| T19 | Public repository and GitHub Pages hosting | done |
 
 ## T01 — Work-tracking docs and resume protocol
 
