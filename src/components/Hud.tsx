@@ -2,6 +2,7 @@ import type { HudState } from '../game/events';
 import { t } from '../i18n';
 import { useLang } from '../i18n/useLang';
 import { PauseIcon, SoundIcon } from './Icons';
+import { FullscreenButton } from './FullscreenButton';
 import { keepFocus } from './keepFocus';
 import { Rich } from './Rich';
 
@@ -72,6 +73,7 @@ export function Hud ({ hud, muted, touch, onPause, onToggleMute, onFlash }: IPro
                     <button className="icon-button" onClick={onToggleMute} onMouseDown={keepFocus} data-audio-toggle title={muted ? t('audio.unmute') : t('audio.mute')}>
                         <SoundIcon muted={muted} />
                     </button>
+                    <FullscreenButton />
                     <button className="icon-button" onClick={onPause} onMouseDown={keepFocus} title={t('hud.pause')}>
                         <PauseIcon />
                     </button>

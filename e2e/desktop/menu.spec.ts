@@ -29,7 +29,7 @@ test.describe('menu', () =>
     test('sound button starts audio first, then mutes and is remembered', async ({ page }) =>
     {
         await openMenu(page);
-        const sound = page.locator('.menu-corner .icon-button');
+        const sound = page.locator('.menu-corner [data-audio-toggle]');
         await expect(sound).toHaveAttribute('title', 'Mute (M)');
 
         await sound.click();
@@ -40,14 +40,14 @@ test.describe('menu', () =>
         expect(await page.evaluate(() => localStorage.getItem('lucciola.muted'))).toBe('1');
 
         await page.reload();
-        await expect(page.locator('.menu-corner .icon-button')).toHaveAttribute('title', 'Unmute (M)');
+        await expect(page.locator('.menu-corner [data-audio-toggle]')).toHaveAttribute('title', 'Unmute (M)');
     });
 
     test('sound and language controls sit at the top right of the stage', async ({ page }) =>
     {
         await openMenu(page);
         const stage = (await page.locator('.stage').boundingBox())!;
-        const sound = (await page.locator('.menu-corner .icon-button').boundingBox())!;
+        const sound = (await page.locator('.menu-corner [data-audio-toggle]').boundingBox())!;
         const toggle = (await page.locator('.menu .lang-toggle').boundingBox())!;
 
         expect(toggle.x).toBeGreaterThan(sound.x + sound.width - 1);

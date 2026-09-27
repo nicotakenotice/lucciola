@@ -18,6 +18,10 @@ export const en: Record<keyof typeof it, string> = {
     'audio.unmute': 'Unmute (M)',
     'audio.on': 'Sound on',
     'audio.off': 'Sound off',
+    'fullscreen.enter': 'Full screen',
+    'fullscreen.exit': 'Exit full screen',
+    'rotate.title': 'Rotate your device',
+    'rotate.text': 'Lucciola is played in landscape.',
     'lang.toggle': 'Language: English. Click to switch to Italian',
 
     'hud.light': 'Light',

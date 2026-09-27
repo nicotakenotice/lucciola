@@ -12,13 +12,14 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 | T04 | Split `Game.ts` into systems without changing behaviour | done |
 | T05 | Unit tests for i18n, rich text and storage helpers | done |
 | T06 | End-to-end tests on desktop | done |
-| T07 | Mobile improvements | todo |
+| T07 | Mobile improvements | done |
 | T08 | End-to-end tests on mobile (touch emulation) | todo |
 | T09 | Self-host fonts, drop Google Fonts | todo |
 | T10 | Seeded headless balance script and baseline report | todo |
 | T11 | English README and technical docs | todo |
 | T12 | Packaging for itch.io and deploy guide | todo |
 | T13 | Choose a license for the game | blocked |
+| T15 | Enforce code style with lint (brace style, spacing, quotes) | todo |
 | T14 | Final full verification and report | todo |
 
 ## T01 — Work-tracking docs and resume protocol
@@ -70,6 +71,8 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 - Fullscreen button where the Fullscreen API is available (tries to lock landscape).
 - Audio unlocks on the first `touchend`/`click` too (iOS).
 - Keyboard hints hidden on touch devices (end and pause panels).
+- Quality: `App.tsx` split into hooks; `PhaserGame.tsx` no longer removes every listener of an event
+  and drops the unused ref plumbing from the template.
 
 ## T08 — End-to-end tests on mobile
 
@@ -100,6 +103,12 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 
 The current `LICENSE` is the MIT license of the Phaser template (© Phaser Studio). Choosing how to
 license the game (open source or not, under whose name) is the owner's decision.
+
+## T15 — Enforced code style
+
+- Style rules (Allman braces as used by the Phaser template, 4-space indent, single quotes, semicolons,
+  spacing) are enforced by ESLint and auto-fixed once across the codebase; `npm run lint` stays clean.
+- Found during T07: the same files mixed brace styles, and nothing enforced consistency.
 
 ## T14 — Final verification
 

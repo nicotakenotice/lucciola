@@ -18,6 +18,10 @@ export const it = {
     'audio.unmute': 'Attiva audio (M)',
     'audio.on': 'Audio attivo',
     'audio.off': 'Audio disattivato',
+    'fullscreen.enter': 'Schermo intero',
+    'fullscreen.exit': 'Esci dallo schermo intero',
+    'rotate.title': 'Ruota il dispositivo',
+    'rotate.text': 'Lucciola si gioca in orizzontale.',
     'lang.toggle': 'Lingua: italiano. Clicca per passare all\'inglese',
 
     'hud.light': 'Luce',

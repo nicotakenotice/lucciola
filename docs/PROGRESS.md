@@ -110,3 +110,25 @@ State inherited from earlier work (commits up to `2489bf4`):
 - Verification: unit 165/165 across 7 files (most are per-key dictionary checks); `npm run verify`
   green, e2e 16/16.
 
+## 2026-09-27 — T07 mobile improvements
+
+- Portrait: `RotateNotice` covers the screen and `useAutoPause` pauses a running game.
+- Text minimums with `max(px, cqw)`: HUD 12 px (labels ≥ 10 px), menu body 12 px, hints 11 px,
+  panels 13 px. Desktop sizes are unchanged (the cqw value is larger there).
+- Touch: `touch-action: manipulation` (no double-tap zoom), no tap highlight, no long-press callout or
+  text selection on the stage.
+- Fullscreen button (menu and HUD) only where the Fullscreen API exists; tries to lock landscape.
+- Audio unlock also listens to `touchend` and `click` (iOS ignores `pointerdown`).
+- Keyboard hints hidden in the pause and end panels on touch devices.
+- Quality: `App.tsx` logic moved to hooks (`useMediaQuery`, `useFullscreen`, `useAudioUnlock`,
+  `useAutoPause`); `PhaserGame.tsx` rewritten without the template's unused ref and without
+  `removeListener(event)` that dropped every listener of the event.
+- Bug found by the tests under heavy machine load (load average 18–23): the keyboard listener was
+  re-registered after paint on every screen change, so a panel could be visible while its keys were
+  not handled yet; Space-to-start/restart tests timed out. The listener is now registered once and
+  reads the screen from a ref synced in a layout effect. Desktop suite then passed 3/3 runs under the
+  same load.
+- Test fix: `.menu-corner .icon-button` became ambiguous with the fullscreen button; tests now target
+  `[data-audio-toggle]`.
+- Verification: unit 173/173, `npm run verify` green, e2e 16/16. Mobile behaviour itself is verified in T08.
+

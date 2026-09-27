@@ -9,8 +9,9 @@ src/
 ├── PhaserGame.tsx             Mounts the Phaser game and reports the active scene (from the template)
 ├── style.css                  All UI styles (imported by main.tsx so Vite hot-reloads it)
 ├── components/                React UI: MenuScreen, Hud, Toast, PausePanel, EndPanel, LangToggle,
-│                              Rich (inline tags in translations), Icons, keepFocus
+│                              FullscreenButton, RotateNotice, Rich (inline tags), Icons, keepFocus
 ├── i18n/                      Dictionaries (it = source of keys, en), t(), useLang()
+├── hooks/                     useMediaQuery (portrait, touch), useFullscreen, useAudioUnlock, useAutoPause
 ├── storage.ts                 Safe localStorage access and the keys used by the game
 └── game/
     ├── main.ts                Phaser config; dev-only window.__LUCCIOLA__ test hook

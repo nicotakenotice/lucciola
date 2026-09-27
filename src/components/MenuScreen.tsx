@@ -2,6 +2,7 @@ import { loadBest } from '../game/score';
 import { t } from '../i18n';
 import { useLang } from '../i18n/useLang';
 import { SoundIcon } from './Icons';
+import { FullscreenButton } from './FullscreenButton';
 import { keepFocus } from './keepFocus';
 import { LangToggle } from './LangToggle';
 import { Rich } from './Rich';
@@ -33,6 +34,7 @@ export function MenuScreen ({ muted, touch, onStart, onToggleMute }: IProps)
                 <button className="icon-button" onClick={onToggleMute} onMouseDown={keepFocus} data-audio-toggle title={muted ? t('audio.unmute') : t('audio.mute')}>
                     <SoundIcon muted={muted} />
                 </button>
+                <FullscreenButton />
                 <LangToggle />
             </div>
 

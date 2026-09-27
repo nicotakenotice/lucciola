@@ -24,6 +24,9 @@ html, body {
     background-color: var(--bg);
     color: var(--ink);
     font-family: var(--font-ui);
+    /* No double-tap zoom or grey tap flash while playing on touch screens */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 #app {
@@ -41,6 +44,9 @@ html, body {
     width: min(100vw, calc(100dvh * 16 / 9));
     aspect-ratio: 16 / 9;
     container-type: inline-size;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 #game-container {
@@ -78,7 +84,7 @@ html, body {
 .title {
     margin: 0;
     font-family: var(--font-title);
-    font-size: 8cqw;
+    font-size: max(36px, 8cqw);
     line-height: 1;
     color: var(--glow);
     text-shadow: 0 0 2cqw rgba(212, 255, 90, 0.7), 0 0 5cqw rgba(212, 255, 90, 0.3);
@@ -87,7 +93,7 @@ html, body {
 
 .subtitle {
     margin: 1.2cqw 0 3cqw;
-    font-size: 1.9cqw;
+    font-size: max(14px, 1.9cqw);
     color: var(--ink-soft);
 }
 
@@ -95,7 +101,7 @@ html, body {
     margin: 0 0 3cqw;
     padding: 0;
     list-style: none;
-    font-size: 1.5cqw;
+    font-size: max(12px, 1.5cqw);
     line-height: 2.1;
     text-shadow: 0 2px 6px #000;
 }
@@ -108,13 +114,13 @@ html, body {
 
 .hint {
     margin: 0.8cqw 0 0;
-    font-size: 1.1cqw;
+    font-size: max(11px, 1.1cqw);
     color: var(--ink-soft);
 }
 
 .best {
     margin: 1cqw 0 0;
-    font-size: 1.3cqw;
+    font-size: max(12px, 1.3cqw);
     color: var(--ink-soft);
 }
 
@@ -123,7 +129,7 @@ html, body {
 .button {
     font-family: var(--font-ui);
     font-weight: 700;
-    font-size: 1.6cqw;
+    font-size: max(13px, 1.6cqw);
     padding: 0.8cqw 2.6cqw;
     border-radius: 999px;
     border: 1px solid rgba(242, 255, 194, 0.45);
@@ -158,7 +164,7 @@ html, body {
 /* ---------------------------------------------------------------- hud */
 
 .hud {
-    font-size: 1.2cqw;
+    font-size: max(12px, 1.2cqw);
 }
 
 .hud-left {
@@ -312,7 +318,7 @@ html, body {
 }
 
 .hud-score {
-    font-size: 2.4cqw;
+    font-size: max(20px, 2.4cqw);
     font-weight: 700;
     color: var(--glow);
     text-shadow: 0 0 1cqw rgba(212, 255, 90, 0.4);
@@ -325,7 +331,7 @@ html, body {
     width: 100%;
     text-align: center;
     font-family: var(--font-title);
-    font-size: 3.3cqw;
+    font-size: max(22px, 3.3cqw);
     color: var(--glow);
     text-shadow: 0 0 1.5cqw rgba(212, 255, 90, 0.6);
     animation: intro 3s ease forwards;
@@ -512,7 +518,7 @@ html, body {
     border-radius: 999px;
     background: var(--panel);
     border: 1px solid rgba(242, 255, 194, 0.3);
-    font-size: 1.35cqw;
+    font-size: max(12px, 1.35cqw);
     font-weight: 700;
     color: var(--ink);
     white-space: nowrap;
@@ -554,6 +560,45 @@ html, body {
     color: #11160a;
     background: var(--glow);
     box-shadow: 0 0 2cqw rgba(212, 255, 90, 0.6);
+}
+
+/* Portrait notice: the game is played in landscape */
+.rotate-notice {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 24px;
+    text-align: center;
+    background: radial-gradient(circle at 50% 40%, rgba(212, 255, 90, 0.08), transparent 60%), var(--bg);
+    color: var(--ink);
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.rotate-notice svg {
+    width: 72px;
+    height: 72px;
+    color: var(--glow);
+    filter: drop-shadow(0 0 10px rgba(212, 255, 90, 0.5));
+    animation: rotate-hint 2.4s ease-in-out infinite;
+}
+
+.rotate-notice h2 {
+    margin: 0;
+    font-family: var(--font-title);
+    font-size: 24px;
+    color: var(--glow);
+}
+
+.rotate-notice p {
+    margin: 0;
+    font-size: 16px;
+    color: var(--ink-soft);
 }
 
 /* ---------------------------------------------------------------- pause */
@@ -611,7 +656,7 @@ html, body {
     border: 1px solid rgba(212, 255, 90, 0.3);
     box-shadow: 0 0 4cqw rgba(0, 0, 0, 0.6);
     text-align: center;
-    font-size: 1.6cqw;
+    font-size: max(13px, 1.6cqw);
 }
 
 .panel.dawn {
@@ -621,7 +666,7 @@ html, body {
 .panel h2 {
     margin: 0 0 1cqw;
     font-family: var(--font-title);
-    font-size: 3cqw;
+    font-size: max(20px, 3cqw);
     color: var(--glow);
     text-shadow: 0 0 1.4cqw rgba(212, 255, 90, 0.5);
 }
@@ -646,7 +691,7 @@ html, body {
     grid-template-columns: repeat(3, 1fr);
     gap: 0.8cqw 1.6cqw;
     margin: 1.6cqw 0 0;
-    font-size: 0.8em;
+    font-size: max(11px, 0.8em);
 }
 
 .stats div {
@@ -668,7 +713,7 @@ html, body {
 
 .final-score {
     margin: 1.4cqw 0 0.2cqw;
-    font-size: 5cqw;
+    font-size: max(30px, 5cqw);
     font-weight: 700;
     color: var(--glow);
     font-variant-numeric: tabular-nums;
@@ -713,6 +758,12 @@ html, body {
     50% { box-shadow: 0 0 0.5cqw rgba(212, 255, 90, 0.5), 0 0 1.2cqw rgba(212, 255, 90, 0.15); }
 }
 
+@keyframes rotate-hint {
+    0%, 20% { transform: rotate(0deg); }
+    50%, 70% { transform: rotate(-90deg); }
+    100% { transform: rotate(0deg); }
+}
+
 @keyframes pop {
     from { transform: scale(1.4); }
     to { transform: scale(1); }
@@ -735,7 +786,7 @@ html, body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .title, .flash-dot.ready, .bar.low .bar-fill, .bar.shining .bar-fill, .vignette.danger, .combo, .lang-toggle-knob { animation: none; }
+    .title, .flash-dot.ready, .bar.low .bar-fill, .bar.shining .bar-fill, .vignette.danger, .combo, .lang-toggle-knob, .rotate-notice svg { animation: none; }
     .lang-toggle-knob { transition: none; }
     .vignette.danger { opacity: 0.7; }
 }

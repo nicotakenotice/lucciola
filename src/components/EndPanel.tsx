@@ -6,6 +6,7 @@ import { Rich } from './Rich';
 interface IProps
 {
     result: GameEndResult;
+    touch: boolean;
     onRestart: () => void;
     onMenu: () => void;
 }
@@ -19,7 +20,7 @@ const STAT_LABELS: [ keyof GameStats, MessageKey ][] = [
     [ 'dew', 'stats.dew' ]
 ];
 
-export function EndPanel ({ result, onRestart, onMenu }: IProps)
+export function EndPanel ({ result, touch, onRestart, onMenu }: IProps)
 {
     useLang();
 
@@ -49,8 +50,8 @@ export function EndPanel ({ result, onRestart, onMenu }: IProps)
                 </dl>
 
                 <div className="actions">
-                    <button className="button primary" onClick={onRestart}>{t('end.again')} <kbd>{t('key.space')}</kbd></button>
-                    <button className="button" onClick={onMenu}>{t('end.menu')} <kbd>{t('key.esc')}</kbd></button>
+                    <button className="button primary" onClick={onRestart}>{t('end.again')} {!touch && <kbd>{t('key.space')}</kbd>}</button>
+                    <button className="button" onClick={onMenu}>{t('end.menu')} {!touch && <kbd>{t('key.esc')}</kbd>}</button>
                 </div>
             </div>
         </div>
