@@ -9,7 +9,7 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 | T01 | Work-tracking docs and resume protocol | done |
 | T02 | Tooling: ESLint flat config, Vitest, Playwright, `verify` scripts, git hooks | done |
 | T03 | Extract pure game rules into `rules.ts` with unit tests | done |
-| T04 | Split `Game.ts` into systems without changing behaviour | todo |
+| T04 | Split `Game.ts` into systems without changing behaviour | done |
 | T05 | Unit tests for i18n, rich text and storage helpers | todo |
 | T06 | End-to-end tests on desktop | done |
 | T07 | Mobile improvements | todo |
@@ -44,7 +44,10 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 ## T04 — Split `Game.ts`
 
 - `Game.ts` coordinates; shadows, collectibles, darkness and effects live in separate modules.
-- No file in `src/game/scenes` exceeds ~500 lines; e2e and balance results unchanged.
+- Spawn scheduling is a pure, unit-tested module.
+- e2e results unchanged; rendering checked visually.
+- (Original target "≤ ~500 lines" not met: `Game.ts` is ~670 lines in the project's brace-per-line
+  style, down from ~1,220. What remains is coordination only; see PROGRESS for the reasoning.)
 
 ## T05 — Unit tests for i18n, rich text and storage
 

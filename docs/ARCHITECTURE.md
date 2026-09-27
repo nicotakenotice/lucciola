@@ -1,0 +1,64 @@
+# Architecture
+
+Phaser draws and simulates the world; React draws the interface on top of the canvas.
+They share nothing but typed events on the template's `EventBus`.
+
+```
+src/
+├── main.tsx, App.tsx          React entry and UI state machine (menu / game / paused / end)
+├── PhaserGame.tsx             Mounts the Phaser game and reports the active scene (from the template)
+├── style.css                  All UI styles (imported by main.tsx so Vite hot-reloads it)
+├── components/                React UI: MenuScreen, Hud, Toast, PausePanel, EndPanel, LangToggle,
+│                              Rich (inline tags in translations), Icons, keepFocus
+├── i18n/                      Dictionaries (it = source of keys, en), t(), useLang()
+└── game/
+    ├── main.ts                Phaser config; dev-only window.__LUCCIOLA__ test hook
+    ├── EventBus.ts, events.ts Event bus and typed event names/payloads between React and Phaser
+    ├── constants.ts           Screen size, TUNING (balance), SHADOWS (per-kind specs), best score
+    ├── rules.ts               Pure formulas (light, decay, spawns, burn, scoring…) — unit tested
+    ├── director.ts            NightDirector: what spawns and when — pure, unit tested
+    ├── debug.ts               GameSnapshot / GameDebugApi contract used by tests and bots
+    ├── layout.ts              Draw depths, HUD band, random spawn spots
+    ├── audio.ts               Synthesized sound effects and generative music (WebAudio)
+    ├── world.ts               Procedural forest-floor texture
+    ├── scenes/
+    │   ├── Boot.ts            Generates every texture in code
+    │   ├── Menu.ts            Animated menu background (texts are React)
+    │   └── Game.ts            Coordinator of one night (see below)
+    ├── entities/              Firefly, Swarm, PollenField, LostFireflies, MoonDew, ShadowHorde
+    └── systems/               Darkness (night layer with light holes), Effects (particles, texts, flashes)
+```
+
+## One frame of the Game scene
+
+1. `NightDirector.update()` returns spawn requests; the scene places them (`randomSpot`) and plays
+   the related sounds and hints.
+2. Energy decays (unless Radiance is active); heartbeat and ambient sounds tick.
+3. Entities update themselves and **report** what happened: pollen collected, fireflies rescued,
+   dew collected, Shadows in contact. `ShadowHorde` burns Shadows in the light and calls
+   `onDissolved` for scoring.
+4. The scene applies the consequences that involve several parts: energy, score, stats, swarm
+   shields, Flash, hints.
+5. `Darkness.render()` fills the night and erases a hole for every light source.
+6. Every 80 ms the HUD state is sent to React and the music tension is updated.
+
+Entities never call each other; the scene is the only place where cross-entity rules live.
+
+## React ↔ Phaser events (`src/game/events.ts`)
+
+| Event | Direction | Payload |
+|---|---|---|
+| `current-scene-ready` | Phaser → React | the active scene |
+| `hud` | Phaser → React | `HudState` |
+| `hint` | Phaser → React | `Hint` (text already translated) |
+| `game-end` | Phaser → React | `GameEndResult` |
+| `paused` | Phaser → React | `boolean` |
+| `ui-start`, `ui-restart`, `ui-menu`, `ui-pause`, `ui-resume`, `ui-flash` | React → Phaser | — |
+
+## Persistence (`localStorage`)
+
+| Key | Meaning |
+|---|---|
+| `lucciola.best` | Best score |
+| `lucciola.muted` | `1` when sound is muted |
+| `lucciola.lang` | `it` or `en` |

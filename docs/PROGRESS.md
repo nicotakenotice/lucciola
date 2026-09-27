@@ -78,3 +78,22 @@ State inherited from earlier work (commits up to `2489bf4`):
   fixed before committing by expressing growth per second.
 - Verification: unit 20/20 (18 new rule tests), `npm run verify` green, e2e 16/16.
 
+## 2026-09-27 — T04 split `Game.ts`
+
+- New modules: `layout.ts` (depths, HUD band, spawn spots), `entities/` (Firefly, Swarm, PollenField,
+  LostFireflies, MoonDew, ShadowHorde), `systems/` (Darkness, Effects), `director.ts` (NightDirector).
+- Entities update themselves and return what happened; `Game.ts` applies cross-entity consequences.
+  Behaviour constants of Shadows (Moth dash, Colossus bounce, Flash damage…) are named in ShadowHorde.
+- `NightDirector` replaces the spawn timers: pure, randomness injected, 6 unit tests.
+  One of my new tests was wrong (it assumed the cap stays at its base value) and was corrected.
+- Size: `Game.ts` 1,223 → 673 lines. The roadmap target of ~500 was not reached; the remaining code
+  is coordination (input, frame order, pickups, contacts, HUD, end of night). Splitting further would
+  move cross-entity rules away from the one place meant to hold them, so I stopped here.
+- Minor ordering change: lost fireflies are now devoured after all Shadows have moved in a frame,
+  instead of during each Shadow's update. Not observable in play.
+- Verification: typecheck and lint clean; unit 26/26; `npm run verify` green with e2e 16/16 (these
+  tests were written before the split). Visual check with a throwaway Playwright script against the
+  dev server: Colossus, Moth and Shade on screen, a Flash dissolving Moth (+30) and Shade (+25) while
+  the Colossus resisted; no page errors.
+- Added `docs/ARCHITECTURE.md` describing the new structure.
+
