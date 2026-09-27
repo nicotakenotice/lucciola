@@ -1,5 +1,6 @@
 import { it } from './it';
 import { en } from './en';
+import { readStorage, STORAGE_KEYS, writeStorage } from '../storage';
 
 // Tiny i18n shared by React and Phaser: the current language lives here,
 // React subscribes to changes with useLang(), Phaser calls t() when it creates texts.
@@ -10,19 +11,11 @@ export type MessageKey = keyof typeof it;
 export const LANGS: Lang[] = [ 'it', 'en' ];
 
 const dictionaries: Record<Lang, Record<MessageKey, string>> = { it, en };
-const LANG_KEY = 'lucciola.lang';
-
+// A saved choice wins; otherwise Italian browsers get Italian and everyone else English
 function detect (): Lang
 {
-    try
-    {
-        const saved = localStorage.getItem(LANG_KEY);
-        if (saved === 'it' || saved === 'en') return saved;
-    }
-    catch
-    {
-        // storage unavailable: fall back to the browser language
-    }
+    const saved = readStorage(STORAGE_KEYS.lang);
+    if (saved === 'it' || saved === 'en') return saved;
 
     return navigator.language?.toLowerCase().startsWith('it') ? 'it' : 'en';
 }
@@ -41,14 +34,7 @@ export function setLang (value: Lang)
     if (value === lang) return;
     lang = value;
     document.documentElement.lang = value;
-    try
-    {
-        localStorage.setItem(LANG_KEY, value);
-    }
-    catch
-    {
-        // preference not saved: it only lasts for this session
-    }
+    writeStorage(STORAGE_KEYS.lang, value);
     listeners.forEach((fn) => fn());
 }
 

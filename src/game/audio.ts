@@ -1,24 +1,13 @@
 // Sound effects synthesized with WebAudio: no audio files to load.
 
-const MUTE_KEY = 'lucciola.muted';
+import { readStorage, STORAGE_KEYS, writeStorage } from '../storage';
+
 const MASTER_VOLUME = 0.35;
 
 let ctx: AudioContext | null = null;
 let master: GainNode;
 let noiseBuffer: AudioBuffer;
-let muted = loadMuted();
-
-function loadMuted (): boolean
-{
-    try
-    {
-        return localStorage.getItem(MUTE_KEY) === '1';
-    }
-    catch
-    {
-        return false;
-    }
-}
+let muted = readStorage(STORAGE_KEYS.muted) === '1';
 
 function ensure (): AudioContext | null
 {
@@ -108,14 +97,7 @@ export function isMuted ()
 export function setMuted (value: boolean)
 {
     muted = value;
-    try
-    {
-        localStorage.setItem(MUTE_KEY, value ? '1' : '0');
-    }
-    catch
-    {
-        // preference not saved: it only lasts for this session
-    }
+    writeStorage(STORAGE_KEYS.muted, value ? '1' : '0');
     if (ctx) master.gain.setTargetAtTime(value ? 0 : MASTER_VOLUME, ctx.currentTime, 0.05);
 }
 

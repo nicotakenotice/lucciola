@@ -95,33 +95,3 @@ export const SHADOWS: Record<ShadowKind, ShadowSpec> = {
     moth: { hp: 0.9, speed: [ 105, 130 ], size: [ 0.55, 0.7 ], lightSlow: 0.8, burn: 1.2, points: 20, flashPoints: 30, hitEnergy: 16, eye: 0xd98bff },
     colossus: { hp: 10, speed: [ 30, 38 ], size: [ 2.0, 2.3 ], lightSlow: 0.85, burn: 0.55, points: 120, flashPoints: 120, hitEnergy: 38, eye: 0xffa040 }
 };
-
-const BEST_KEY = 'lucciola.best';
-
-export function loadBest (): number
-{
-    try
-    {
-        return Number(localStorage.getItem(BEST_KEY)) || 0;
-    }
-    catch
-    {
-        return 0;
-    }
-}
-
-export function saveBest (score: number): number
-{
-    const best = Math.max(loadBest(), score);
-
-    try
-    {
-        localStorage.setItem(BEST_KEY, String(best));
-    }
-    catch
-    {
-        // storage unavailable: the best score only lasts for this session
-    }
-
-    return best;
-}

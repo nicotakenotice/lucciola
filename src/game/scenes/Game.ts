@@ -1,7 +1,8 @@
 import { BlendModes, Input, Math as PMath, Scene } from 'phaser';
 import { EventBus } from '../EventBus';
 import { Events, GameEndResult, GameStats, HintTone, HudState } from '../events';
-import { HEIGHT, SHADOWS, ShadowKind, TUNING as T, WIDTH, loadBest, saveBest } from '../constants';
+import { HEIGHT, SHADOWS, ShadowKind, TUNING as T, WIDTH } from '../constants';
+import { loadBest, saveBest } from '../score';
 import * as rules from '../rules';
 import { drawForest } from '../world';
 import { music, sfx } from '../audio';

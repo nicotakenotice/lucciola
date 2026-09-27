@@ -1,4 +1,4 @@
-import { loadBest } from '../game/constants';
+import { loadBest } from '../game/score';
 import { t } from '../i18n';
 import { useLang } from '../i18n/useLang';
 import { SoundIcon } from './Icons';

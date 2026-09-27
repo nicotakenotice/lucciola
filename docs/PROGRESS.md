@@ -97,3 +97,16 @@ State inherited from earlier work (commits up to `2489bf4`):
   the Colossus resisted; no page errors.
 - Added `docs/ARCHITECTURE.md` describing the new structure.
 
+## 2026-09-27 — T05 unit tests for i18n, rich text and storage
+
+- Structure fix found while writing the tests: `localStorage` access (with its try/catch) was repeated
+  in three places and the best-score functions lived in `constants.ts`. Now `src/storage.ts` owns
+  every access and the keys; `src/game/score.ts` owns the best score (also rejects negative or
+  garbage values, which were previously read as-is).
+- Tests: storage (normal and throwing storage), best score, dictionaries (same keys, same tags and
+  parameters per key, balanced tags, no empty text), i18n (browser-language detection, saved choice
+  wins, switching persists and notifies, interpolation), `<Rich>` rendering (tags, colour classes,
+  escaping).
+- Verification: unit 165/165 across 7 files (most are per-key dictionary checks); `npm run verify`
+  green, e2e 16/16.
+

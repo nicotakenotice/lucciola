@@ -11,10 +11,12 @@ src/
 ├── components/                React UI: MenuScreen, Hud, Toast, PausePanel, EndPanel, LangToggle,
 │                              Rich (inline tags in translations), Icons, keepFocus
 ├── i18n/                      Dictionaries (it = source of keys, en), t(), useLang()
+├── storage.ts                 Safe localStorage access and the keys used by the game
 └── game/
     ├── main.ts                Phaser config; dev-only window.__LUCCIOLA__ test hook
     ├── EventBus.ts, events.ts Event bus and typed event names/payloads between React and Phaser
-    ├── constants.ts           Screen size, TUNING (balance), SHADOWS (per-kind specs), best score
+    ├── constants.ts           Screen size, TUNING (balance), SHADOWS (per-kind specs)
+    ├── score.ts               Best score persistence
     ├── rules.ts               Pure formulas (light, decay, spawns, burn, scoring…) — unit tested
     ├── director.ts            NightDirector: what spawns and when — pure, unit tested
     ├── debug.ts               GameSnapshot / GameDebugApi contract used by tests and bots
