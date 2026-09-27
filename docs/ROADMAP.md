@@ -24,6 +24,7 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 | T16 | Address the independent review | done |
 | T17 | Fix findings from the runtime verification | done |
 | T18 | App logo and README images | done |
+| T19 | Public repository and GitHub Pages hosting | in progress |
 
 ## T01 — Work-tracking docs and resume protocol
 
@@ -163,4 +164,11 @@ Found by driving the game and the CLIs (`/verify`), not by tests:
   fallback (32 px) and an iOS icon (180 px) generated from it.
 - README: logo header, home screenshot, gameplay screenshot about 30 s into a night.
 - `npm run images` regenerates every derived image deterministically (bot night with a fixed seed).
+
+## T19 — Public repository and GitHub Pages (2026-09-28)
+
+- Public repo `nicotakenotice/lucciola` (owner's personal account), with description and topics.
+- `pages.yml` deploys `dist/` to GitHub Pages on every push to `main`, gated by `verify:fast`.
+- `ci.yml` runs the full `npm run verify` on pushes and pull requests.
+- The live site loads, starts a night and has no page errors or failed requests.
 

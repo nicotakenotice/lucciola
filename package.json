@@ -55,5 +55,13 @@
     "typescript-eslint": "^8.26.1",
     "vite": "^6.4.3",
     "vitest": "^5.0.2"
+  },
+  "homepage": "https://nicotakenotice.github.io/lucciola/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicotakenotice/lucciola.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nicotakenotice/lucciola/issues"
   }
 }

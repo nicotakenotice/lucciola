@@ -29,6 +29,8 @@ Everything needed to resume work lives in this repository, not in chat history.
 - Commits: Conventional Commits in English (`feat(scope): …`, `fix: …`, `refactor: …`, `test: …`,
   `docs: …`, `chore: …`). Never add `Co-Authored-By` or other attribution trailers.
 - Every game lives in its own folder under `~/Repos/games`; never write files outside `lucciola/`.
+- The repository is public on GitHub (`nicotakenotice/lucciola`) and every push to `main` deploys the
+  game to GitHub Pages: push only commits that passed `npm run verify`, and only when the owner asks.
 
 ## Commands
 

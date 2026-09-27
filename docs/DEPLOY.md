@@ -24,12 +24,17 @@ Cloudflare Pages, Netlify and Vercel all work the same way once the repository i
 | Output directory | `dist` |
 | Node.js version | 24 (see `engines` in `package.json`) |
 
-## GitHub Pages
+## GitHub Pages (live)
 
-Add `.github/workflows/pages.yml` that runs `npm ci`, `npm run build`, uploads `dist` with
-`actions/upload-pages-artifact` and deploys with `actions/deploy-pages`; enable Pages with source
-"GitHub Actions" in the repository settings. The relative `base` in `vite/config.prod.mjs` already
-supports the `/<repo>/` sub-path.
+The game is published at https://nicotakenotice.github.io/lucciola/ by
+`.github/workflows/pages.yml` on every push to `main`: `npm ci`, `npm run verify:fast` (a failing
+check blocks the deployment), `npm run build`, `npm run check:dist`, then `actions/upload-pages-artifact`
+and `actions/deploy-pages`. Pages uses the "GitHub Actions" source (set once through the API:
+`gh api -X POST repos/nicotakenotice/lucciola/pages -f build_type=workflow`). The relative `base` in
+`vite/config.prod.mjs` makes the build work under the `/lucciola/` sub-path.
+
+`.github/workflows/ci.yml` runs the full `npm run verify` (including end-to-end tests on Chromium and
+WebKit) on pushes and pull requests; Playwright traces are uploaded when it fails.
 
 ## Before any public release
 

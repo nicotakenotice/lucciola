@@ -7,6 +7,12 @@
 <p align="center"><em>A night in the woods. A tiny light.</em></p>
 
 <p align="center">
+  <a href="https://nicotakenotice.github.io/lucciola/"><strong>▶ Play in your browser</strong></a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/nicotakenotice/lucciola/actions/workflows/ci.yml"><img src="https://github.com/nicotakenotice/lucciola/actions/workflows/ci.yml/badge.svg" alt="CI status" align="center"></a>
+</p>
+
+<p align="center">
   <img src="docs/images/home.png" width="800" alt="Lucciola home screen: the title over a dark forest lit by wandering fireflies, with the instructions and the Start button">
 </p>
 
