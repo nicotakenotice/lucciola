@@ -1,5 +1,6 @@
 import { BlendModes, GameObjects, Scene } from 'phaser';
 import { TEXTURES } from '../textures';
+import { TUNING as T } from '../constants';
 import type { Point } from '../types';
 import { DEPTH } from '../layout';
 
@@ -9,8 +10,6 @@ interface Pollen extends Point
     glow: GameObjects.Image;
     core: GameObjects.Image;
 }
-
-const PICKUP_DISTANCE = 22;
 
 export class PollenField
 {
@@ -44,7 +43,8 @@ export class PollenField
     update (dt: number, time: number, player: Point, lightRadius: number, alive: boolean): Point[]
     {
         const collected: Point[] = [];
-        const pullRange = lightRadius * 0.5;
+        const pullRange = lightRadius * T.pollenPullReach;
+        const [ slowPull, fastPull ] = T.pollenPullSpeed;
 
         for (let i = this.items.length - 1; i >= 0; i--)
         {
@@ -55,7 +55,7 @@ export class PollenField
 
             if (alive && d < pullRange && d > 1)
             {
-                const pull = 160 * (1 - d / pullRange) + 40;
+                const pull = slowPull + (fastPull - slowPull) * (1 - d / pullRange);
                 pollen.x += (dx / d) * pull * dt;
                 pollen.y += (dy / d) * pull * dt;
             }
@@ -64,7 +64,7 @@ export class PollenField
             pollen.glow.setPosition(pollen.x, pollen.y + bob).setAlpha(0.7 + Math.sin(time * 0.005 + pollen.phase) * 0.3);
             pollen.core.setPosition(pollen.x, pollen.y + bob);
 
-            if (alive && d < PICKUP_DISTANCE)
+            if (alive && d < T.pollenPickupRadius)
             {
                 this.items.splice(i, 1);
                 pollen.glow.destroy();

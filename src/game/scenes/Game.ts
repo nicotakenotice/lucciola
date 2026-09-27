@@ -25,10 +25,6 @@ type Keys = Record<'W' | 'A' | 'S' | 'D' | 'UP' | 'DOWN' | 'LEFT' | 'RIGHT', Inp
 const TOUCH = window.matchMedia('(pointer: coarse)').matches;
 const MAX_STEP = 0.05;          // seconds: longer frames are slowed down rather than skipped
 const HUD_INTERVAL = 0.08;
-const COMBO_WINDOW = 1.4;
-const LOW_LIGHT = 25;
-const RESCUE_POINTS = 50;
-const DEW_POINTS = 40;
 const { Between, FloatBetween, Clamp } = PMath;
 
 // Coordinates one night: owns the run state, reads input, spawns things and applies the
@@ -96,7 +92,7 @@ export class Game extends Scene
         drawForest(this, 'forest-game', String(Date.now()));
 
         this.state = 'play';
-        this.energy = 100;
+        this.energy = T.maxEnergy;
         this.score = 0;
         this.elapsed = 0;
         this.radiance = 0;
@@ -124,7 +120,7 @@ export class Game extends Scene
 
         this.createInput();
 
-        for (let i = 0; i < 6; i++) this.pollen.spawn(randomSpot(this.firefly.position, 140));
+        for (let i = 0; i < T.pollenAtStart; i++) this.pollen.spawn(randomSpot(this.firefly.position, T.pollenSpawnDistance));
 
         this.cameras.main.fadeIn(500, 2, 3, 8);
         music.start();
@@ -202,7 +198,7 @@ export class Game extends Scene
         this.firefly.update(dt, time, this.desiredVelocity(), {
             energy: this.energy,
             radiance: rules.radianceFactor(this.radiance),
-            lowLight: alive && this.energy < LOW_LIGHT,
+            lowLight: alive && this.energy < T.lowLight,
             scale: this.lightScale
         });
         this.swarm.update(dt, time, this.firefly.path, this.lightScale);
@@ -322,15 +318,15 @@ export class Game extends Scene
         this.comboTimer -= dt;
         if (this.comboTimer <= 0) this.comboStep = 0;
 
-        if (this.energy < 30 && this.tutorial) this.hint('low', 'hint.low', 'danger');
+        if (this.energy < T.lowLightWarning && this.tutorial) this.hint('low', 'hint.low', 'danger');
 
-        if (this.energy < LOW_LIGHT)
+        if (this.energy < T.lowLight)
         {
             this.timers.heart -= dt;
             if (this.timers.heart <= 0)
             {
                 sfx.heartbeat();
-                this.timers.heart = 0.6 + this.energy / LOW_LIGHT;
+                this.timers.heart = 0.6 + this.energy / T.lowLight;
             }
         }
 
@@ -361,14 +357,14 @@ export class Game extends Scene
             switch (request.type)
             {
                 case 'pollen':
-                    this.pollen.spawn(randomSpot(player, 140));
+                    this.pollen.spawn(randomSpot(player, T.pollenSpawnDistance));
                     break;
                 case 'lost':
-                    this.lost.spawn(randomSpot(player, 300));
+                    this.lost.spawn(randomSpot(player, T.lostSpawnDistance));
                     if (this.tutorial) this.hint('lost', 'hint.lost', 'info');
                     break;
                 case 'dew':
-                    this.dew.spawn(randomSpot(player, 260));
+                    this.dew.spawn(randomSpot(player, T.dewSpawnDistance));
                     this.hint('dew', 'hint.dew', 'gift');
                     break;
                 case 'shadow':
@@ -390,7 +386,7 @@ export class Game extends Scene
         const side = Between(0, 3);
         for (let i = 0; i < rules.waveSize(index); i++)
         {
-            this.time.delayedCall(i * 260, () =>
+            this.time.delayedCall(i * T.waveSpacing * 1000, () =>
             {
                 if (this.state === 'play') this.spawnShadow(rules.waveMemberKind(index, i), side);
             });
@@ -420,9 +416,9 @@ export class Game extends Scene
 
     private collectPollen (spot: Point)
     {
-        this.energy = Math.min(100, this.energy + T.pollenEnergy);
+        this.energy = Math.min(T.maxEnergy, this.energy + T.pollenEnergy);
         this.comboStep = this.comboTimer > 0 ? this.comboStep + 1 : 0;
-        this.comboTimer = COMBO_WINDOW;
+        this.comboTimer = T.comboWindow;
         this.stats.pollen++;
         sfx.pickup(this.comboStep);
 
@@ -436,31 +432,31 @@ export class Game extends Scene
     {
         this.fx.cyan.explode(20, spot.x, spot.y);
         sfx.join();
-        this.energy = Math.min(100, this.energy + T.lostEnergy);
-        this.score += RESCUE_POINTS;
+        this.energy = Math.min(T.maxEnergy, this.energy + T.lostEnergy);
+        this.score += T.rescuePoints;
         this.stats.rescued++;
 
         if (this.swarm.size >= T.maxFollowers)
         {
-            this.fx.floatText(spot.x, spot.y - 16, `+${RESCUE_POINTS}`, '#a8fff0', 20);
+            this.fx.floatText(spot.x, spot.y - 16, `+${T.rescuePoints}`, '#a8fff0', 20);
             return;
         }
 
         this.swarm.add(spot.x, spot.y);
         this.stats.maxSwarm = Math.max(this.stats.maxSwarm, this.swarm.size);
-        this.fx.floatText(spot.x, spot.y - 16, t('game.newFirefly', { n: RESCUE_POINTS }), '#a8fff0', 20);
+        this.fx.floatText(spot.x, spot.y - 16, t('game.newFirefly', { n: T.rescuePoints }), '#a8fff0', 20);
         if (this.swarm.size === T.maxFollowers) this.hint('fullswarm', 'hint.fullSwarm', 'gift');
     }
 
     private collectDew (spot: Point)
     {
         this.radiance = T.radianceDuration;
-        this.energy = Math.min(100, this.energy + T.dewEnergy);
-        this.score += DEW_POINTS;
+        this.energy = Math.min(T.maxEnergy, this.energy + T.dewEnergy);
+        this.score += T.dewPoints;
         this.stats.dew++;
         sfx.dew();
         this.fx.cyan.explode(36, spot.x, spot.y);
-        this.fx.floatText(spot.x, spot.y - 20, t('game.radiance', { n: DEW_POINTS }), '#dff4ff', 22);
+        this.fx.floatText(spot.x, spot.y - 20, t('game.radiance', { n: T.dewPoints }), '#dff4ff', 22);
         this.hint('radiance', 'hint.radiance', 'gift');
         this.fx.screenFlash('white', 0.12, 500);
     }
@@ -473,7 +469,7 @@ export class Game extends Scene
 
         for (const shadow of this.horde.members)
         {
-            for (const spot of this.lost.devour(shadow.x, shadow.y, 18 * shadow.size))
+            for (const spot of this.lost.devour(shadow.x, shadow.y, T.devourPerSize * shadow.size))
             {
                 this.fx.purple.explode(12, spot.x, spot.y);
                 sfx.gulp();
@@ -505,7 +501,7 @@ export class Game extends Scene
         if (shadow.kind === 'colossus') this.horde.bounceOff(shadow, player, distance);
         else this.horde.kill(shadow, 0);
 
-        const shields = shadow.kind === 'colossus' ? 2 : 1;
+        const shields = SHADOWS[shadow.kind].shields;
         let saved = 0;
         while (saved < shields)
         {
@@ -559,7 +555,8 @@ export class Game extends Scene
     private emitHud ()
     {
         const hud: HudState = {
-            energy: Clamp(this.energy, 0, 100),
+            energy: Clamp(this.energy / T.maxEnergy * 100, 0, 100),
+            lowLight: this.state === 'play' && this.energy < T.lowLight,
             followers: this.swarm.size,
             maxFollowers: T.maxFollowers,
             score: this.score,
@@ -587,7 +584,7 @@ export class Game extends Scene
         let nearest = Infinity;
         for (const s of this.horde.members) nearest = Math.min(nearest, Math.hypot(s.x - player.x, s.y - player.y));
         const threat = Clamp(1 - (nearest - 80) / 400, 0, 1);
-        const lowLight = Clamp((30 - this.energy) / 30, 0, 1);
+        const lowLight = Clamp((T.lowLightWarning - this.energy) / T.lowLightWarning, 0, 1);
         music.setTension(Math.max(threat, lowLight));
     }
 

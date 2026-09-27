@@ -16,7 +16,8 @@ export const Events = {
 
 export interface HudState
 {
-    energy: number;         // 0..100
+    energy: number;         // 0..100 (percentage of the maximum)
+    lowLight: boolean;      // alive and below the low-light threshold
     followers: number;
     maxFollowers: number;
     score: number;

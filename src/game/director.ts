@@ -19,15 +19,13 @@ export interface WorldCounts
     colossusPresent: boolean;
 }
 
-const MAX_LOST = 2;
-
 // Decides what appears during the night and when. Pure: the scene executes the requests.
 export class NightDirector
 {
     private pollenTimer: number = 0;
-    private lostTimer: number = 5;
+    private lostTimer: number = T.lostFirst;
     private dewTimer: number = T.dewFirst;
-    private shadowTimer: number = 3;
+    private shadowTimer: number = T.shadowFirst;
     private colossusTimer: number = 0;
     private nextWave: number = 0;
 
@@ -43,14 +41,14 @@ export class NightDirector
         if (this.pollenTimer <= 0)
         {
             if (world.pollen < T.pollenMax) requests.push({ type: 'pollen' });
-            this.pollenTimer = this.between(0.8, 1.6);
+            this.pollenTimer = this.between(T.pollenInterval[0], T.pollenInterval[1]);
         }
 
         this.lostTimer -= dt;
         if (this.lostTimer <= 0)
         {
-            if (world.lost < MAX_LOST && world.swarm < T.maxFollowers) requests.push({ type: 'lost' });
-            this.lostTimer = this.between(9, 14);
+            if (world.lost < T.lostMax && world.swarm < T.maxFollowers) requests.push({ type: 'lost' });
+            this.lostTimer = this.between(T.lostInterval[0], T.lostInterval[1]);
         }
 
         this.dewTimer -= dt;

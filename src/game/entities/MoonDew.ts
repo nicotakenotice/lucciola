@@ -12,7 +12,6 @@ interface Drop extends Point
     ring: GameObjects.Image;
 }
 
-const PICKUP_DISTANCE = 28;
 const WARNING_TIME = 3;
 
 // The rare Moon dew power-up: at most one on screen, vanishing after a while
@@ -58,7 +57,7 @@ export class MoonDew
         drop.core.setAlpha(fading).setScale(0.8 + pulse * 0.3);
         drop.ring.setAlpha(fading * (1 - ripple)).setScale(0.2 + ripple * 0.5);
 
-        if (alive && Math.hypot(player.x - drop.x, player.y - drop.y) < PICKUP_DISTANCE)
+        if (alive && Math.hypot(player.x - drop.x, player.y - drop.y) < T.dewPickupRadius)
         {
             this.drop = null;
             this.destroy(drop);

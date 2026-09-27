@@ -22,7 +22,7 @@ export function Hud ({ hud, muted, touch, onPause, onToggleMute, onFlash }: IPro
 
     const minutes = Math.floor(hud.secondsToDawn / 60);
     const seconds = String(hud.secondsToDawn % 60).padStart(2, '0');
-    const danger = hud.alive && hud.energy < 25;
+    const danger = hud.lowLight;
 
     return (
         <div className="overlay hud">

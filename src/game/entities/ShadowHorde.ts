@@ -1,6 +1,6 @@
 import { BlendModes, GameObjects, Math as PMath, Scene } from 'phaser';
 import { TEXTURES } from '../textures';
-import { HEIGHT, SHADOWS, ShadowKind, WIDTH } from '../constants';
+import { HEIGHT, SHADOWS, ShadowKind, TUNING as T, WIDTH } from '../constants';
 import type { Point } from '../types';
 import { DEPTH } from '../layout';
 import * as rules from '../rules';
@@ -45,16 +45,8 @@ export interface Contact
 }
 
 const SPAWN_OFFSET = 60;    // px outside the screen
-const MOTH_DASH_TIME = 0.45;
-const MOTH_DASH_SPEEDUP = 2.3;
-const MOTH_DASH_RANGE = 380;
-const CLOSING_IN_SPEED = 0.35;
+const CLOSING_IN_SPEED = 0.35;    // after the light goes out
 const KNOCKBACK_DAMPING = 4;
-const COLOSSUS_HIT_COOLDOWN = 2.5;
-const COLOSSUS_BOUNCE = 620;
-const FLASH_WAVE_DURATION = 400;    // ms for the Flash to reach its full range
-const FLASH_COLOSSUS_DAMAGE = 3.5;
-const FLASH_COLOSSUS_PUSH = 380;
 
 export class ShadowHorde
 {
@@ -143,8 +135,8 @@ export class ShadowHorde
                 // Zig-zag flight, with sudden dashes when close enough
                 heading += Math.sin(time * 0.006 + s.phase) * 0.9;
                 s.dash += dt;
-                if (s.dash >= 0 && s.dash < MOTH_DASH_TIME && d < MOTH_DASH_RANGE) speed *= MOTH_DASH_SPEEDUP;
-                else if (s.dash >= MOTH_DASH_TIME) s.dash = -PMath.FloatBetween(1.6, 3);
+                if (s.dash >= 0 && s.dash < T.mothDashTime && d < T.mothDashRange) speed *= T.mothDashSpeedup;
+                else if (s.dash >= T.mothDashTime) s.dash = -PMath.FloatBetween(1.6, 3);
             }
 
             if (ctx.nightLost) speed *= CLOSING_IN_SPEED;
@@ -175,7 +167,7 @@ export class ShadowHorde
                 continue;
             }
 
-            if (ctx.alive && s.touchCd <= 0 && d < 16 + 12 * s.size) contacts.push({ shadow: s, distance: d });
+            if (ctx.alive && s.touchCd <= 0 && d < T.contactRadius + T.contactPerSize * s.size) contacts.push({ shadow: s, distance: d });
         }
 
         return { contacts, dim };
@@ -198,8 +190,8 @@ export class ShadowHorde
     // The Colossus survives touching the player: it is pushed back and waits before hitting again
     bounceOff (shadow: Shadow, from: Point, distance: number)
     {
-        shadow.touchCd = COLOSSUS_HIT_COOLDOWN;
-        this.push(shadow, from, COLOSSUS_BOUNCE + (60 - Math.min(60, distance)));
+        shadow.touchCd = T.colossusHitCooldown;
+        this.push(shadow, from, T.colossusBounce + (60 - Math.min(60, distance)));
     }
 
     // The light wave reaches the closest Shadows first; the Colossus only takes damage and recoils
@@ -210,7 +202,7 @@ export class ShadowHorde
             const d = Math.hypot(shadow.x - origin.x, shadow.y - origin.y);
             if (d >= range) continue;
 
-            this.scene.time.delayedCall((d / range) * FLASH_WAVE_DURATION, () =>
+            this.scene.time.delayedCall((d / range) * T.flashWaveDuration * 1000, () =>
             {
                 if (!this.shadows.includes(shadow)) return;
 
@@ -220,8 +212,8 @@ export class ShadowHorde
                     return;
                 }
 
-                shadow.hp -= FLASH_COLOSSUS_DAMAGE;
-                this.push(shadow, origin, FLASH_COLOSSUS_PUSH);
+                shadow.hp -= T.flashColossusDamage;
+                this.push(shadow, origin, T.flashColossusPush);
                 this.fx.purple.explode(20, shadow.x, shadow.y);
                 if (shadow.hp <= 0) this.kill(shadow, SHADOWS.colossus.flashPoints);
                 else sfx.resist();

@@ -1,6 +1,6 @@
 import { BlendModes, GameObjects, Math as PMath, Scene } from 'phaser';
 import { TEXTURES } from '../textures';
-import { HEIGHT, WIDTH } from '../constants';
+import { HEIGHT, TUNING as T, WIDTH } from '../constants';
 import type { Point } from '../types';
 import { DEPTH, HUD_BAND, MARGIN } from '../layout';
 
@@ -13,7 +13,6 @@ interface LostFly extends Point
     glow: GameObjects.Image;
 }
 
-const RESCUE_DISTANCE = 28;
 const SPEED = 45;
 
 // Fireflies wandering in the dark, waiting to be rescued (or devoured by Shadows)
@@ -71,7 +70,7 @@ export class LostFireflies
             fly.bug.scaleX = 0.8 + Math.sin(time * 0.05 + fly.phase) * 0.1;
             fly.glow.setPosition(fly.x, fly.y).setAlpha(fly.on).setScale(0.6 + fly.on * 0.9);
 
-            if (alive && Math.hypot(player.x - fly.x, player.y - fly.y) < RESCUE_DISTANCE)
+            if (alive && Math.hypot(player.x - fly.x, player.y - fly.y) < T.rescueRadius)
             {
                 rescued.push(this.remove(i));
             }

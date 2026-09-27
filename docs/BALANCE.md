@@ -8,6 +8,9 @@ change to `TUNING`/`SHADOWS` can be compared on the same nights. Try a change wi
 npm run balance -- --seeds 1,2,3,4,5,6,7,8,9,10 --tuning '{"energyDecayGrowth":0.004}'
 ```
 
+Every gameplay number (spawn timings and distances, pickup and contact radii, points, Shadow
+behaviour, shields per Shadow kind) lives in `TUNING` or `SHADOWS`, so `--tuning` can reach it.
+
 The bot collects Moon dew, then lost fireflies, then pollen (avoiding spots near Shadows), flees
 nearby Shadows and fires a Flash when one gets close and it has ≥ 28 light. It is not a human:
 it reacts instantly but never plans. Treat the numbers as relative, and confirm with real players.
