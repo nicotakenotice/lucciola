@@ -1,6 +1,7 @@
 # Roadmap
 
 Status values: `todo`, `in progress`, `done`, `blocked` (needs a decision from the owner).
+Order of work: T06 was done before T03/T04 so the refactoring is covered by end-to-end tests.
 Each task lists acceptance criteria that must be verified before it is marked `done`.
 
 | ID | Task | Status |
@@ -10,7 +11,7 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 | T03 | Extract pure game rules into `rules.ts` with unit tests | todo |
 | T04 | Split `Game.ts` into systems without changing behaviour | todo |
 | T05 | Unit tests for i18n, rich text and storage helpers | todo |
-| T06 | End-to-end tests on desktop | todo |
+| T06 | End-to-end tests on desktop | done |
 | T07 | Mobile improvements | todo |
 | T08 | End-to-end tests on mobile (touch emulation) | todo |
 | T09 | Self-host fonts, drop Google Fonts | todo |

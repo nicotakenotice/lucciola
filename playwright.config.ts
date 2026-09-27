@@ -6,6 +6,8 @@ const PORT = 5174;
 export default defineConfig({
     testDir: 'e2e',
     fullyParallel: true,
+    // WebGL is software-rendered in headless browsers: more workers only slow every game down
+    workers: 3,
     retries: 0,
     reporter: [ [ 'list' ] ],
     use: {

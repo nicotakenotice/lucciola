@@ -5,6 +5,7 @@ import { FONT_UI, HEIGHT, SHADOWS, ShadowKind, TUNING as T, WIDTH, loadBest, sav
 import { drawForest } from '../world';
 import { music, sfx } from '../audio';
 import { MessageKey, t } from '../../i18n';
+import type { GameDebugApi, GameSnapshot, Point } from '../debug';
 
 const D = { spores: 8, shadows: 5, bugs: 10, dark: 100, lights: 110, fx: 190 };
 const HUD_BAND = 125;
@@ -13,12 +14,6 @@ const ADD = BlendModes.ADD;
 const { Between, FloatBetween, Clamp } = PMath;
 
 type State = 'play' | 'over' | 'dawn';
-
-interface Point
-{
-    x: number;
-    y: number;
-}
 
 interface Follower extends Point
 {
@@ -124,7 +119,27 @@ export class Game extends Scene
 
     private keys: Keys;
     private usePointer: boolean;
+    private autopilot: Point | null = null;
     private resumedAt = 0;
+
+    readonly debug: GameDebugApi = {
+        snapshot: () => this.snapshot(),
+        set: ({ energy, elapsed }) =>
+        {
+            if (energy !== undefined) this.energy = energy;
+            if (elapsed !== undefined) this.elapsed = elapsed;
+        },
+        spawnShadow: (kind, at) =>
+        {
+            this.spawnShadow(kind);
+            if (at) Object.assign(this.shadows[this.shadows.length - 1], at);
+        },
+        steerTo: (target) =>
+        {
+            this.autopilot = target;
+        },
+        flash: () => this.flash()
+    };
 
     constructor ()
     {
@@ -160,6 +175,7 @@ export class Game extends Scene
         this.hintsShown = new Set();
         this.tutorial = loadBest() === 0;
 
+        this.autopilot = null;
         this.p = { x: WIDTH / 2, y: HEIGHT / 2, vx: 0, vy: 0 };
         this.history = Array.from({ length: 120 }, () => ({ x: this.p.x, y: this.p.y }));
         this.playerBug = this.add.image(this.p.x, this.p.y, 'bug').setDepth(D.bugs + 1);
@@ -399,6 +415,27 @@ export class Game extends Scene
         return Clamp(this.splendor / 0.5, 0, 1);
     }
 
+    private snapshot (): GameSnapshot
+    {
+        const point = ({ x, y }: Point) => ({ x, y });
+
+        return {
+            state: this.state,
+            paused: this.scene.isPaused(),
+            energy: this.energy,
+            elapsed: this.elapsed,
+            score: this.score,
+            followers: this.followers.length,
+            flashCooldown: this.flashCd,
+            player: point(this.p),
+            shadows: this.shadows.map((s) => ({ kind: s.kind, x: s.x, y: s.y })),
+            pollen: this.pollen.map(point),
+            lost: this.lost.map(point),
+            dew: this.dew ? point(this.dew) : null,
+            stats: { ...this.stats }
+        };
+    }
+
     private lightRadius ()
     {
         const r = T.baseRadius + Math.max(0, this.energy) * T.radiusPerEnergy + this.followers.length * T.radiusPerFollower;
@@ -541,11 +578,12 @@ export class Game extends Scene
                 dvx = (kx / len) * T.playerSpeed;
                 dvy = (ky / len) * T.playerSpeed;
             }
-            else if (this.usePointer)
+            else if (this.autopilot || this.usePointer)
             {
                 const ptr = this.input.activePointer;
-                const dx = ptr.worldX - p.x;
-                const dy = ptr.worldY - p.y;
+                const target = this.autopilot ?? { x: ptr.worldX, y: ptr.worldY };
+                const dx = target.x - p.x;
+                const dy = target.y - p.y;
                 const d = Math.hypot(dx, dy);
                 if (d > 4)
                 {

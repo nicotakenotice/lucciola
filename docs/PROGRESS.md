@@ -45,3 +45,24 @@ State inherited from earlier work (commits up to `2489bf4`):
   and created a non-conforming commit (`f88eeff`); it was removed with `git reset --soft` before any
   push. Lesson: never use `--no-verify` to test hooks.
 
+## 2026-09-27 — T06 desktop end-to-end tests
+
+- Done before T03/T04 on purpose: the tests pin current behaviour before refactoring `Game.ts`.
+- Added a typed debug surface (`src/game/debug.ts`, `Game.debug`): `snapshot()`, `set()`,
+  `spawnShadow()`, `steerTo()`, `flash()`. Tests use only this contract, not scene internals.
+  `window.__LUCCIOLA__` (dev only) exposes `{ game, debug() }`.
+- 14 desktop tests in `e2e/desktop/`: menu texts and best score, language toggle persistence,
+  sound button (first click starts audio, second mutes, persisted), control layout, Space to start,
+  pause freezing time, game over → restart → menu, dawn panel, arrow-key movement, Flash cost and
+  effect, Flash below the threshold, and the two focus regressions (toggle + Space, HUD pause + Space).
+- Found and fixed while writing them:
+  - Bug: the debug accessor returned `null` while the game was paused (`scene.isActive()` is false
+    for paused scenes).
+  - Flaky tests: they waited for wall time. Measured 57 fps with one browser and 25 fps with three
+    in parallel (software WebGL), so game time lagged behind. Tests now wait for game time
+    (`advanceGameTime`), end panels get a 15 s timeout, workers capped at 3.
+- Verification: desktop suite run 3 times in a row, 14/14 each; `npm run verify` green
+  (unit 2/2, check:dist clean, e2e 16/16 including the two mobile smoke tests).
+- Known limitation: the debug surface ships in production builds (a few hundred bytes); only the
+  window hook is stripped.
+

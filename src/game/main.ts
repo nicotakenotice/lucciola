@@ -30,7 +30,19 @@ const StartGame = (parent: string) => {
     const game = new Game({ ...config, parent });
 
     // Test/debug handle, compiled out of production bundles
-    if (import.meta.env.DEV) window.__LUCCIOLA__ = { game };
+    if (import.meta.env.DEV)
+    {
+        window.__LUCCIOLA__ = {
+            game,
+            debug: () =>
+            {
+                // A paused scene is not "active" for Phaser, but its state is still valid
+                const scene = game.scene.getScene('Game') as MainGame | null;
+
+                return scene && (scene.sys.isActive() || scene.sys.isPaused()) ? scene.debug : null;
+            }
+        };
+    }
 
     return game;
 
