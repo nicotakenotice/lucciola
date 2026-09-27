@@ -6,7 +6,7 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import stylistic from '@stylistic/eslint-plugin';
 
 export default tseslint.config(
-    { ignores: [ 'dist', 'coverage', 'test-results', 'playwright-report', 'log.js' ] },
+    { ignores: [ 'dist', 'coverage', 'test-results', 'playwright-report' ] },
     {
         files: [ '**/*.{ts,tsx,mjs}' ],
         extends: [ js.configs.recommended, ...tseslint.configs.recommended ],

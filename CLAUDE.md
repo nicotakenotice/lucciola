@@ -34,13 +34,13 @@ Everything needed to resume work lives in this repository, not in chat history.
 
 | Command | Purpose |
 |---|---|
-| `npm run dev-nolog` | Dev server on http://localhost:8080 (the `dev` script also pings Phaser's analytics) |
+| `npm run dev` | Dev server on http://localhost:8080 |
 | `npm run verify:fast` | Typecheck + lint + unit tests |
-| `npm run verify` | `verify:fast` + production build + end-to-end tests |
+| `npm run verify` | `verify:fast` + end-to-end tests (including the production build) + bundle check |
 | `npm run test:unit` | Vitest unit tests |
-| `npm run test:e2e` | Playwright: desktop Chromium, Android Chromium, iPhone WebKit, production build (needs `dist/`) |
+| `npm run test:e2e` | Playwright: desktop Chromium, Android Chromium, iPhone WebKit, production build (built first) |
 | `npm run balance` | Headless bot playing seeded nights; see `docs/BALANCE.md` |
-| `npm run build-nolog` | Production build into `dist/` |
+| `npm run build` | Production build into `dist/` |
 | `npm run package` | Build, check and zip `dist/` into `lucciola-web.zip` for itch.io |
 
 ## Where things are

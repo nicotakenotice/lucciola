@@ -12,7 +12,8 @@
 | Bundle check | `scripts/check-dist.mjs` | `npm run check:dist` | no dev hook or Google Fonts URLs in `dist/` |
 | Balance | `scripts/balance.mjs` | `npm run balance` | difficulty, measured on seeded nights (not a pass/fail test) |
 
-`npm run verify` runs all of them except balance. The pre-commit hook runs `verify:fast`.
+`npm run verify` runs all of them except balance (the production project builds `dist/` itself).
+The pre-commit hook runs `verify:fast`.
 
 ## Writing end-to-end tests
 
@@ -21,6 +22,8 @@
   an error.
 - Read and drive the game only through `GameDebugApi` (`src/game/debug.ts`), never through scene
   internals: the contract is what keeps refactors cheap.
+- On a machine already busy with other headless browsers, run with fewer workers:
+  `PW_WORKERS=1 npm run test:e2e`.
 - Wait for **game time** (`advanceGameTime`), not wall time. WebGL is software-rendered in headless
   browsers and slows down under load; the game clamps long frames, so game time lags wall time.
 - Prefer specific selectors (`[data-audio-toggle]`) over positional ones (`.icon-button` became
@@ -40,5 +43,5 @@ Emulation catches layout and input logic, not everything. Before publishing, on 
    notice and pauses.
 3. Both: the game keeps a smooth frame rate in the middle of a wave (many particles).
 
-Serve the dev build on the local network with `npm run dev-nolog -- --host` and open the printed
+Serve the dev build on the local network with `npm run dev -- --host` and open the printed
 address on the phone.

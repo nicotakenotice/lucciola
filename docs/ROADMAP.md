@@ -19,8 +19,9 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 | T11 | English README and technical docs | done |
 | T12 | Packaging for itch.io and deploy guide | done |
 | T13 | Choose a license for the game | blocked |
+| T14 | Final full verification and report | in progress |
 | T15 | Enforce code style with lint (brace style, spacing, quotes) | done |
-| T14 | Final full verification and report | todo |
+| T16 | Address the independent review | in progress |
 
 ## T01 — Work-tracking docs and resume protocol
 
@@ -110,6 +111,35 @@ license the game (open source or not, under whose name) is the owner's decision.
   spacing) are enforced by ESLint and auto-fixed once across the codebase; `npm run lint` stays clean.
 - Found during T07: the same files mixed brace styles, and nothing enforced consistency.
 
+## T15 — Enforced code style
+
+- Style rules (Allman braces as used by the Phaser template, 4-space indent, single quotes, semicolons,
+  spacing) are enforced by ESLint and auto-fixed once across the codebase; `npm run lint` stays clean.
+- Found during T07: the same files mixed brace styles, and nothing enforced consistency.
+
 ## T14 — Final verification
 
 - `npm run verify` green, balance run recorded, docs consistent with the code.
+- Independent review (T16) addressed.
+
+## T16 — Address the independent review (2026-09-27)
+
+A read-only review by a separate agent found no high-severity issue and 14 medium/low ones,
+all verified before fixing:
+
+- Bugs: last hint replays after every pause; end result frozen before delayed Flash kills add
+  points; one `destroy` listener leaked per scene restart; the mute button cannot mute if audio
+  never reaches `running`; a Flash could be accepted while paused; `matchMedia` listeners re-added
+  ~12 times per second.
+- Hygiene: wrong Node requirement in docs and no `engines`; template leftovers (`log.js` analytics
+  ping, `phasermsg` build banner, dangling `tsconfig.node.json`, Italian package description, stale
+  keywords/fields); e2e fails on a fresh clone without `dist/`.
+- Structure: gameplay numbers outside `TUNING`/`SHADOWS`; inconsistent low-light thresholds (25/30);
+  untyped EventBus and docs claiming React and Phaser share only events; Menu duplicating the
+  darkness layer and raw depths; implicit texture-size coupling; `Point`/`RunState` placement;
+  Italian-derived `splendor` naming and an ambiguous `lost` flag.
+- Tests: a test that could not fail; positional selectors; audio tests racing `resume()`;
+  missing coverage (swarm shields, rescue, combo, Radiance, Colossus bounce, new record, blur pause);
+  no director test for the double-spawn cap.
+- Process: last PROGRESS entry without verification results; wrong e2e count; a `docs:` commit that
+  also added tooling (recorded, not rewritten).

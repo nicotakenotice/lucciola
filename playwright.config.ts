@@ -7,9 +7,11 @@ const PREVIEW_PORT = 5176;
 export default defineConfig({
     testDir: 'e2e',
     fullyParallel: true,
+    forbidOnly: !!process.env.CI,
     // WebGL is software-rendered in headless browsers: more workers only slow every game down,
     // and a busy machine can slow a frame a lot, hence the generous timeouts
-    workers: 3,
+    // PW_WORKERS=1 helps when other heavy processes share the machine
+    workers: Number(process.env.PW_WORKERS ?? 3),
     timeout: 60_000,
     expect: { timeout: 10_000 },
     retries: 0,
@@ -26,11 +28,11 @@ export default defineConfig({
             timeout: 60_000
         },
         {
-            // Serves the production build: run `npm run build-nolog` first (`npm run verify` does)
-            command: `npx vite preview --config vite/config.prod.mjs --port ${PREVIEW_PORT} --strictPort`,
+            // Builds, then serves the production build, so e2e works on a fresh clone
+            command: `npm run build && npx vite preview --config vite/config.prod.mjs --port ${PREVIEW_PORT} --strictPort`,
             url: `http://localhost:${PREVIEW_PORT}`,
             reuseExistingServer: false,
-            timeout: 60_000
+            timeout: 120_000
         }
     ],
     projects: [

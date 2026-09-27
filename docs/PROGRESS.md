@@ -202,3 +202,29 @@ State inherited from earlier work (commits up to `2489bf4`):
 - Numbers re-measured instead of reused: a browser downloads ~465 KB (gzip, woff2) — the older
   "~420 KB" predates the self-hosted fonts; corrected in DEPLOY and DECISIONS.
 
+## 2026-09-27 — T11/T12 verification (missing from the previous entry)
+
+- The T11/T12 entry did not record its verification: `npm run verify` was green with unit 173/173,
+  check:dist clean and e2e 36/36 (not 35: the production-build test was added in that step).
+- The T11/T12 commit was typed `docs:` although it also added tooling (`npm run package`, the
+  production e2e project); history not rewritten, noted here. Later commits are split by type.
+
+## 2026-09-27 — T16 part 1: repository hygiene (from the independent review)
+
+- Removed template leftovers: `log.js` (analytics ping to gryzor.co on every dev/build), the
+  `phasermsg` build banner, the dangling `tsconfig.node.json` (it pointed to a missing
+  `vite.config.ts`) and its reference, the Vite docs comment.
+- Scripts: `dev`/`build` are now the plain commands (the `-nolog` variants are gone).
+  `verify` = `verify:fast` → `test:e2e` → `check:dist`; the production e2e server builds `dist/` itself,
+  so `npm run test:e2e` works on a fresh clone.
+- `package.json`: English description, `private: true`, `engines` matching the strictest tool
+  (jsdom: `^22.22.2 || ^24.15.0 || >=26`; Node 20 does not work), updated keywords, dropped the
+  non-standard `licenseUrl`. `.nvmrc` pins 24. `index.html` defaults to `lang="en"`.
+- Playwright: `forbidOnly` on CI, `PW_WORKERS` override. Docs updated (Node version, `zip` needed
+  by `npm run package`, renamed scripts).
+- Verification: a first `npm run verify` had 4 desktop e2e failures (27–40 s each) while the
+  `lol-2d` project ran 4 headless browsers at ~200% CPU each (load average ~30). Each of the 4 passed
+  when rerun alone, the full desktop suite passed (15/15), and `npm run verify` then passed at load
+  average 31: unit 173/173, e2e 36/36, check:dist clean. No retries were added; `PW_WORKERS=1` is
+  documented for busy machines.
+

@@ -32,18 +32,17 @@ The game pauses by itself when the window loses focus or a phone is turned to po
 
 ## Development
 
-Requires Node.js 20+.
+Requires Node.js 22.22+, 24.15+ or 26+ (see `engines`; `.nvmrc` pins 24).
 
 ```bash
 npm install            # also enables the git hooks in .githooks/
-npm run dev-nolog      # http://localhost:8080
+npm run dev            # http://localhost:8080
 npm run verify         # typecheck, lint, unit tests, build, end-to-end tests
 ```
 
 | Command | Purpose |
 |---|---|
-| `npm run dev-nolog` / `npm run build-nolog` | Dev server / production build without Phaser's usage ping |
-| `npm run dev` / `npm run build` | Same, plus the template's anonymous ping to Phaser (`log.js`) |
+| `npm run dev` / `npm run build` | Dev server / production build into `dist/` |
 | `npm run verify:fast` | Typecheck, lint, unit tests (also run by the pre-commit hook) |
 | `npm run verify` | Everything, including end-to-end tests on desktop, Android and iPhone emulation |
 | `npm run balance` | Seeded bot nights to measure difficulty ([docs/BALANCE.md](docs/BALANCE.md)) |
