@@ -270,3 +270,14 @@ State inherited from earlier work (commits up to `2489bf4`):
 - Verification: `npm run verify` green — unit 174/174, e2e 45/45 (24 desktop, 20 mobile, 1 production),
   check:dist clean.
 
+## 2026-09-27 — T14 final verification (and T16 closed)
+
+- Balance re-run after all T16 changes: the 10 seeded nights match the documented reference row by
+  row (4/10 dawns, median 137.4 s), so `docs/BALANCE.md` still holds.
+- One more test defect found by the final verify: the new "faded hint" test failed because
+  first-night tutorial hints (a legitimate "lost firefly" hint) queued behind the Moth hint. The game
+  was right; the test did not isolate its case. Hint tests now run in their own `describe` with a saved
+  best score (tutorial off). The older "new kind of Shadow shows a hint" test had the same hidden
+  dependency on timing and got the same isolation. The gameplay group then passed 3/3 runs.- Verification: `npm run verify` green — unit 174/174, e2e 45/45 (24 desktop, 20 mobile,
+  1 production), check:dist clean (load average ~16 at the time).
+

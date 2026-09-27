@@ -19,9 +19,9 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 | T11 | English README and technical docs | done |
 | T12 | Packaging for itch.io and deploy guide | done |
 | T13 | Choose a license for the game | blocked |
-| T14 | Final full verification and report | in progress |
+| T14 | Final full verification and report | done |
 | T15 | Enforce code style with lint (brace style, spacing, quotes) | done |
-| T16 | Address the independent review | in progress |
+| T16 | Address the independent review | done |
 
 ## T01 — Work-tracking docs and resume protocol
 

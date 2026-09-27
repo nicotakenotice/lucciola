@@ -26,6 +26,7 @@ src/
     ├── director.ts            NightDirector: what spawns and when — pure, unit tested
     ├── debug.ts               GameSnapshot / GameDebugApi contract used by tests and bots
     ├── layout.ts              Draw depths, HUD band, random spawn spots
+    ├── lifecycle.ts           onSceneExit(): cleanup on scene shutdown or destroy
     ├── world.ts               Procedural forest-floor texture
     ├── scenes/
     │   ├── Boot.ts            Generates every texture in code

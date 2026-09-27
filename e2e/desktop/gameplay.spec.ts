@@ -110,6 +110,17 @@ test.describe('gameplay', () =>
         await expect(page.locator('.overlay.pause')).toBeVisible();
         expect((await snapshot(page)).paused).toBe(true);
     });
+});
+
+test.describe('hints', () =>
+{
+    test.beforeEach(async ({ page }) =>
+    {
+        // A saved best score turns the first-night tutorial hints off: only the hint under test shows
+        await page.addInitScript(() => localStorage.setItem('lucciola.best', '1'));
+        await openMenu(page);
+        await startGame(page);
+    });
 
     test('a hint that has faded does not come back after a pause', async ({ page }) =>
     {

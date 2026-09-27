@@ -57,6 +57,13 @@ Tooling lives in `scripts/` (`balance.mjs`, `check-dist.mjs`, `package.mjs`) and
 - Chrome throttles `requestAnimationFrame` and timers in background tabs: when driving the game from
   automation, step it manually (`game.step`) and yield with `MessageChannel`, not `setTimeout`.
 - Browsers start audio only after a user gesture; iOS needs `touchend`/`click`, not `pointerdown`.
-- In dev builds `window.__LUCCIOLA__` exposes the game for tests and debugging (stripped in production).
+- In dev builds `window.__LUCCIOLA__` exposes the game, the debug API and `TUNING` for tests, the balance
+  bot and debugging (stripped in production). Tests use only `GameDebugApi` (`src/game/debug.ts`).
+- Clean up EventBus subscriptions with `onSceneExit()` (`src/game/lifecycle.ts`), not `once('destroy')`.
+- Gameplay numbers belong in `TUNING`/`SHADOWS`; after changing one, run `npm run balance` and record it.
+- Shell pitfalls seen here: zsh does not split unquoted variables into words and macOS `grep -Z` means
+  "decompress"; prefer a short Python script for bulk edits, and re-grep to confirm.
+- Other projects in `~/Repos/games` may run headless browsers and load the CPU: if e2e timings look
+  flaky, check `uptime` and run with `PW_WORKERS=1` before changing tests.
 - The player's real best score lives in `localStorage` (`lucciola.best`): tests must use isolated
   browser contexts and never touch the user's own browser profile.

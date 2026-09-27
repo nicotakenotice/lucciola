@@ -6,7 +6,7 @@
 |---|---|---|---|
 | Types and style | `tsc`, ESLint (`@stylistic`) | `npm run typecheck`, `npm run lint` | app code, tests, scripts |
 | Unit | Vitest (jsdom) | `src/**/*.test.ts(x)` | pure rules, NightDirector, i18n, storage, best score, `<Rich>` |
-| End-to-end, desktop | Playwright, Chromium 1280×800 | `e2e/desktop/` | menu, language, sound, pause, game over, dawn, controls, fonts |
+| End-to-end, desktop | Playwright, Chromium 1280×800 | `e2e/desktop/` | menu, language, sound, pause, game over, dawn, controls, fonts; gameplay: rescue, swarm shields, Colossus, Radiance, combo, new best, blur pause, hints |
 | End-to-end, mobile | Playwright, Pixel 7 (Chromium) and iPhone 14 (WebKit), landscape, touch | `e2e/mobile/` | layout fit, text sizes, touch controls, audio unlock, portrait notice |
 | End-to-end, production | Playwright against `vite preview` of `dist/` | `e2e/production/` | the shipped build runs, no dev hook, no external requests |
 | Bundle check | `scripts/check-dist.mjs` | `npm run check:dist` | no dev hook or Google Fonts URLs in `dist/` |

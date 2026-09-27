@@ -74,6 +74,8 @@ test.describe('controls', () =>
 
     test('a new kind of Shadow shows a hint in the current language', async ({ page }) =>
     {
+        // No tutorial hints (they would queue ahead of this one)
+        await page.addInitScript(() => localStorage.setItem('lucciola.best', '1'));
         await openMenu(page, 'en');
         await startGame(page);
         await page.evaluate(() => window.__LUCCIOLA__!.debug()!.spawnShadow('moth'));
