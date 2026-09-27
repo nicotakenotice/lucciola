@@ -1,7 +1,8 @@
 # Architecture
 
 Phaser draws and simulates the world; React draws the interface on top of the canvas.
-They share nothing but typed events on the template's `EventBus`.
+At runtime they talk only through typed events (`EventBus`, payloads in `EventMap`). Both sides also
+import a few Phaser-free modules at the root of `src/`: `audio`, `score`, `storage`, `i18n`.
 
 ```
 src/
@@ -17,7 +18,7 @@ src/
 ├── storage.ts                 Safe localStorage access and the keys used by the game
 └── game/
     ├── main.ts                Phaser config; dev-only window.__LUCCIOLA__ test hook
-    ├── EventBus.ts, events.ts Event bus and typed event names/payloads between React and Phaser
+    ├── EventBus.ts, events.ts Typed event bus: event names, payload types (EventMap), subscribe()
     ├── constants.ts           Screen size, TUNING (balance), SHADOWS (per-kind specs)
     ├── types.ts               Point, RunState
     ├── textures.ts            Keys and sizes of the textures generated at boot
@@ -53,6 +54,8 @@ Outside `src/`: `e2e/` (Playwright), `scripts/` (balance bot, bundle check, pack
 Entities never call each other; the scene is the only place where cross-entity rules live.
 
 ## React ↔ Phaser events (`src/game/events.ts`)
+
+Emitting an event with a wrong or missing payload is a compile error.
 
 | Event | Direction | Payload |
 |---|---|---|

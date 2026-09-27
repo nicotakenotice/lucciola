@@ -50,15 +50,13 @@ function App ()
             setScreen(paused ? 'paused' : 'game');
         };
         const onHint = (h: Hint) => setHint({ ...h, id: Date.now() });
-        const handlers: [ string, (payload: never) => void ][] = [
-            [ Events.Hud, onHud ],
-            [ Events.GameEnd, onEnd ],
-            [ Events.Paused, onPaused ],
-            [ Events.Hint, onHint ]
-        ];
-        handlers.forEach(([ event, handler ]) => EventBus.on(event, handler));
 
-        return () => handlers.forEach(([ event, handler ]) => EventBus.off(event, handler));
+        return EventBus.subscribe({
+            [Events.Hud]: onHud,
+            [Events.GameEnd]: onEnd,
+            [Events.Paused]: onPaused,
+            [Events.Hint]: onHint
+        });
     }, []);
 
     const start = useCallback(() =>

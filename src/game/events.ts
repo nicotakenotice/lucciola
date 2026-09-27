@@ -1,3 +1,5 @@
+import type { Scene } from 'phaser';
+
 export const Events = {
     SceneReady: 'current-scene-ready',
     Hud: 'hud',
@@ -55,4 +57,20 @@ export interface GameEndResult
     seconds: number;
     bonus: number;
     stats: GameStats;
+}
+
+// The payload of every event (void: no payload)
+export interface EventMap
+{
+    [Events.SceneReady]: Scene;
+    [Events.Hud]: HudState;
+    [Events.Hint]: Hint;
+    [Events.GameEnd]: GameEndResult;
+    [Events.Paused]: boolean;
+    [Events.UiStart]: void;
+    [Events.UiRestart]: void;
+    [Events.UiMenu]: void;
+    [Events.UiPause]: void;
+    [Events.UiResume]: void;
+    [Events.UiFlash]: void;
 }

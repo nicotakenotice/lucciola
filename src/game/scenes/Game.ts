@@ -167,21 +167,17 @@ export class Game extends Scene
             this.scene.resume();
             EventBus.emit(Events.Paused, false);
         };
-        const flash = () => this.flash();
-        const restart = () => this.scene.restart();
-        const menu = () => this.scene.start('Menu');
-        const handlers: [ string, () => void ][] = [
-            [ Events.UiPause, pause ],
-            [ Events.UiResume, resume ],
-            [ Events.UiFlash, flash ],
-            [ Events.UiRestart, restart ],
-            [ Events.UiMenu, menu ]
-        ];
-        handlers.forEach(([ event, handler ]) => EventBus.on(event, handler));
+        const unsubscribe = EventBus.subscribe({
+            [Events.UiPause]: pause,
+            [Events.UiResume]: resume,
+            [Events.UiFlash]: () => this.flash(),
+            [Events.UiRestart]: () => this.scene.restart(),
+            [Events.UiMenu]: () => this.scene.start('Menu')
+        });
 
         const cleanup = () =>
         {
-            handlers.forEach(([ event, handler ]) => EventBus.off(event, handler));
+            unsubscribe();
             music.setTension(0);
         };
         this.events.once('shutdown', cleanup);

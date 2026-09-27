@@ -10,7 +10,8 @@ Consequence: `RenderTexture` needs explicit `render()` calls; FX/masks are filte
 ## D02 — React for UI, Phaser for gameplay (2026-09-27)
 
 Menu, HUD, pause and end panels are React components over the canvas; Phaser owns the world.
-They talk through the template's `EventBus` with typed event names and payloads (`src/game/events.ts`).
+They talk through a typed `EventBus` (event names and payload types in `src/game/events.ts`); both
+also use a few Phaser-free shared modules (`audio`, `score`, `storage`, `i18n`).
 Reason: accessible, styleable UI with CSS and simpler text handling than canvas text.
 
 ## D03 — Everything generated in code (2026-09-27)
