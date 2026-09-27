@@ -157,3 +157,13 @@ State inherited from earlier work (commits up to `2489bf4`):
   `src/game/main.ts`) plus two extra blank lines at end of file; fixed with `eslint --fix`.
 - Verification: `npm run verify` green — lint 0 problems, unit 173/173, e2e 34/34.
 
+## 2026-09-27 — T09 self-hosted fonts
+
+- Cinzel Decorative 700 and Quicksand 500/700 from `@fontsource/*`, Latin subset only (enough for
+  Italian and English), imported in `src/main.tsx`; Google Fonts links removed from `index.html`.
+- `check:dist` now also fails on `fonts.googleapis.com` / `fonts.gstatic.com` in the bundle.
+- New e2e test: no request leaves localhost and both fonts report as loaded. Mutation check: putting
+  a Google Fonts link back made it fail.
+- `index.html`: added description and theme-color meta tags.
+- Verification: `npm run verify` green — unit 173/173, check:dist clean, e2e 35/35.
+

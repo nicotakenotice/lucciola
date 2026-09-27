@@ -3,7 +3,9 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const forbidden = [
-    { pattern: '__LUCCIOLA__', reason: 'dev-only test hook' }
+    { pattern: '__LUCCIOLA__', reason: 'dev-only test hook' },
+    { pattern: 'fonts.googleapis.com', reason: 'fonts must be self-hosted' },
+    { pattern: 'fonts.gstatic.com', reason: 'fonts must be self-hosted' }
 ];
 
 const files = [];
