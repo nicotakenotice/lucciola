@@ -11,21 +11,21 @@ export interface LightInput
 {
     energy: number;
     followers: number;
-    splendor: number;       // seconds of Radiance left
+    radiance: number;       // seconds of Radiance left
     dim: number;            // 0..1 multiplier from nearby Colossi
     scale: number;          // 0..1, shrinks the light when the night is lost
 }
 
-export function splendorFactor (splendorLeft: number): number
+export function radianceFactor (radianceLeft: number): number
 {
-    return clamp(splendorLeft / T.splendorFade, 0, 1);
+    return clamp(radianceLeft / T.radianceFade, 0, 1);
 }
 
-export function lightRadius ({ energy, followers, splendor, dim, scale }: LightInput): number
+export function lightRadius ({ energy, followers, radiance, dim, scale }: LightInput): number
 {
     const base = T.baseRadius + Math.max(0, energy) * T.radiusPerEnergy + followers * T.radiusPerFollower;
 
-    return base * (1 + splendorFactor(splendor) * T.splendorRadius) * dim * scale;
+    return base * (1 + radianceFactor(radiance) * T.radianceRadius) * dim * scale;
 }
 
 export function energyDecayRate (elapsed: number): number
@@ -91,10 +91,10 @@ export function isInLight (distance: number, radius: number): boolean
 }
 
 // Damage per second a Shadow takes inside the light
-export function burnRate (distance: number, radius: number, followers: number, kind: ShadowKind, splendorLeft: number): number
+export function burnRate (distance: number, radius: number, followers: number, kind: ShadowKind, radianceLeft: number): number
 {
     const closeness = 1 - distance / radius;
-    const radiance = 1 + splendorFactor(splendorLeft) * (T.splendorBurn - 1);
+    const radiance = 1 + radianceFactor(radianceLeft) * (T.radianceBurn - 1);
 
     return (T.burnBase + closeness * T.burnHeat) * (1 + followers * T.burnPerFollower) * SHADOWS[kind].burn * radiance;
 }

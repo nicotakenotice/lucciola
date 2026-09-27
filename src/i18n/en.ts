@@ -25,7 +25,7 @@ export const en: Record<keyof typeof it, string> = {
     'lang.toggle': 'Language: English. Click to switch to Italian',
 
     'hud.light': 'Light',
-    'hud.splendor': 'Radiance',
+    'hud.radiance': 'Radiance',
     'hud.swarm': 'Swarm',
     'hud.dawnIn': 'Dawn in {time}',
     'hud.dawn': 'Dawn',
@@ -61,7 +61,7 @@ export const en: Record<keyof typeof it, string> = {
     'key.esc': 'Esc',
 
     'game.newFirefly': 'New firefly! +{n}',
-    'game.splendor': 'Radiance! +{n}',
+    'game.radiance': 'Radiance! +{n}',
     'game.tooWeak': 'Light too weak',
     'game.savedOne': 'A firefly shielded you',
     'game.savedTwo': 'Two fireflies shielded you',
@@ -74,7 +74,7 @@ export const en: Record<keyof typeof it, string> = {
     'hint.moth': 'Shadow moths: fast and unpredictable',
     'hint.colossus': 'A Shadow Colossus… your light dims near it',
     'hint.dew': 'Moon dew! Collect it for Radiance',
-    'hint.splendor': 'Radiance: your light won\'t fade and it burns the Shadows',
+    'hint.radiance': 'Radiance: your light won\'t fade and it burns the Shadows',
     'hint.wave': 'The Shadows are stirring…',
     'hint.predawn': 'Dawn is near… hold on!',
     'hint.fullSwarm': 'Full swarm!'

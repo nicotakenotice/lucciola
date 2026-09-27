@@ -26,23 +26,23 @@ export function Hud ({ hud, muted, touch, onPause, onToggleMute, onFlash }: IPro
 
     return (
         <div className="overlay hud">
-            <div className={`vignette${danger ? ' danger' : ''}${hud.splendor > 0 ? ' splendor' : ''}`} />
+            <div className={`vignette${danger ? ' danger' : ''}${hud.radiance > 0 ? ' radiance' : ''}`} />
 
             <div className="hud-left">
                 <div className="label">{t('hud.light')}</div>
                 <div className="bar-row">
-                    <div className={`bar${danger ? ' low' : ''}${hud.splendor > 0 ? ' shining' : ''}`}>
+                    <div className={`bar${danger ? ' low' : ''}${hud.radiance > 0 ? ' shining' : ''}`}>
                         <div className="bar-fill" style={{ width: `${hud.energy}%` }} />
                         <div className="bar-mark" style={{ left: `${hud.flashMin}%` }} />
                     </div>
                     <div className={`flash-dot${hud.flashReady ? ' ready' : ''}`} title={t('hud.flash')} />
                 </div>
 
-                {hud.splendor > 0 && (
-                    <div className="splendor">
-                        <span>{t('hud.splendor')}</span>
-                        <div className="splendor-track">
-                            <div className="splendor-fill" style={{ width: `${hud.splendor * 100}%` }} />
+                {hud.radiance > 0 && (
+                    <div className="radiance">
+                        <span>{t('hud.radiance')}</span>
+                        <div className="radiance-track">
+                            <div className="radiance-fill" style={{ width: `${hud.radiance * 100}%` }} />
                         </div>
                     </div>
                 )}

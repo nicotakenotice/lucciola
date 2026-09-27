@@ -33,9 +33,9 @@ export interface HordeContext
     player: Point;
     lightRadius: number;
     alive: boolean;         // the night is being played
-    lost: boolean;          // the light went out: Shadows close in slowly
+    nightLost: boolean;     // the light went out: Shadows close in slowly
     swarm: number;
-    splendor: number;       // seconds of Radiance left
+    radiance: number;       // seconds of Radiance left
 }
 
 export interface Contact
@@ -147,7 +147,7 @@ export class ShadowHorde
                 else if (s.dash >= MOTH_DASH_TIME) s.dash = -PMath.FloatBetween(1.6, 3);
             }
 
-            if (ctx.lost) speed *= CLOSING_IN_SPEED;
+            if (ctx.nightLost) speed *= CLOSING_IN_SPEED;
             s.x += Math.cos(heading) * speed * dt + s.kvx * dt;
             s.y += Math.sin(heading) * speed * dt + s.kvy * dt;
             const damping = Math.exp(-dt * KNOCKBACK_DAMPING);
@@ -158,7 +158,7 @@ export class ShadowHorde
             s.lit += ((inLight ? 1 : 0) - s.lit) * (1 - Math.exp(-dt * 8));
             if (inLight)
             {
-                s.hp -= dt * rules.burnRate(d, ctx.lightRadius, ctx.swarm, s.kind, ctx.splendor);
+                s.hp -= dt * rules.burnRate(d, ctx.lightRadius, ctx.swarm, s.kind, ctx.radiance);
                 if (Math.random() < dt * 10 * s.size)
                 {
                     this.fx.purple.emitParticle(1, s.x + PMath.Between(-14, 14) * s.size, s.y + PMath.Between(-14, 14) * s.size);

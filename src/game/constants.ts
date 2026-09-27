@@ -35,10 +35,10 @@ export const TUNING = {
     flashMin: 22,
     flashRange: 300,
     flashCooldown: 1.1,
-    splendorDuration: 7,        // seconds of Radiance after collecting Moon dew
-    splendorFade: 0.5,          // seconds over which Radiance fades out
-    splendorRadius: 0.5,        // +50% light radius during Radiance
-    splendorBurn: 2.5,          // Shadows burn 2.5 times faster
+    radianceDuration: 7,        // seconds of Radiance after collecting Moon dew
+    radianceFade: 0.5,          // seconds over which Radiance fades out
+    radianceRadius: 0.5,        // +50% light radius during Radiance
+    radianceBurn: 2.5,          // Shadows burn 2.5 times faster
 
     // Shadow population
     maxShadows: 12,             // hard cap (waves may exceed it)...

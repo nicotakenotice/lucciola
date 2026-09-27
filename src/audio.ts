@@ -182,7 +182,7 @@ export const sfx = {
         noise(0.9, { vol: 0.05, freq: 7000, sweep: 12000, q: 2 });
     },
 
-    splendorEnd ()
+    radianceEnd ()
     {
         [ 12, 7, 0 ].forEach((n, i) => tone(semi(659, n), 0.35, { vol: 0.06, delay: i * 0.07 }));
     },

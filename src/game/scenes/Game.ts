@@ -39,7 +39,7 @@ export class Game extends Scene
     private energy: number;
     private score: number;
     private elapsed: number;
-    private splendor: number;
+    private radiance: number;
     private dim: number;
     private lightScale: number;
     private flashCd: number;
@@ -99,7 +99,7 @@ export class Game extends Scene
         this.energy = 100;
         this.score = 0;
         this.elapsed = 0;
-        this.splendor = 0;
+        this.radiance = 0;
         this.dim = 1;
         this.lightScale = 1;
         this.flashCd = 0;
@@ -201,7 +201,7 @@ export class Game extends Scene
 
         this.firefly.update(dt, time, this.desiredVelocity(), {
             energy: this.energy,
-            radiance: rules.splendorFactor(this.splendor),
+            radiance: rules.radianceFactor(this.radiance),
             lowLight: alive && this.energy < LOW_LIGHT,
             scale: this.lightScale
         });
@@ -217,9 +217,9 @@ export class Game extends Scene
             player,
             lightRadius: radius,
             alive,
-            lost: this.state === 'over',
+            nightLost: this.state === 'over',
             swarm: this.swarm.size,
-            splendor: this.splendor
+            radiance: this.radiance
         });
         this.afterShadowsMoved(contacts);
         // The Colossus dims the light gradually, not abruptly
@@ -280,7 +280,7 @@ export class Game extends Scene
         return rules.lightRadius({
             energy: this.energy,
             followers: this.swarm.size,
-            splendor: this.splendor,
+            radiance: this.radiance,
             dim: this.dim,
             scale: this.lightScale
         });
@@ -305,13 +305,13 @@ export class Game extends Scene
 
     private updateEnergy (dt: number)
     {
-        if (this.splendor > 0)
+        if (this.radiance > 0)
         {
-            this.splendor -= dt;
-            if (this.splendor <= 0)
+            this.radiance -= dt;
+            if (this.radiance <= 0)
             {
-                this.splendor = 0;
-                sfx.splendorEnd();
+                this.radiance = 0;
+                sfx.radianceEnd();
             }
         }
         else
@@ -454,14 +454,14 @@ export class Game extends Scene
 
     private collectDew (spot: Point)
     {
-        this.splendor = T.splendorDuration;
+        this.radiance = T.radianceDuration;
         this.energy = Math.min(100, this.energy + T.dewEnergy);
         this.score += DEW_POINTS;
         this.stats.dew++;
         sfx.dew();
         this.fx.cyan.explode(36, spot.x, spot.y);
-        this.fx.floatText(spot.x, spot.y - 20, t('game.splendor', { n: DEW_POINTS }), '#dff4ff', 22);
-        this.hint('splendor', 'hint.splendor', 'gift');
+        this.fx.floatText(spot.x, spot.y - 20, t('game.radiance', { n: DEW_POINTS }), '#dff4ff', 22);
+        this.hint('radiance', 'hint.radiance', 'gift');
         this.fx.screenFlash('white', 0.12, 500);
     }
 
@@ -564,7 +564,7 @@ export class Game extends Scene
             maxFollowers: T.maxFollowers,
             score: this.score,
             combo: this.comboTimer > 0 && this.comboStep > 0 ? this.comboStep + 1 : 0,
-            splendor: Clamp(this.splendor / T.splendorDuration, 0, 1),
+            radiance: Clamp(this.radiance / T.radianceDuration, 0, 1),
             flashReady: this.state === 'play' && this.flashCd <= 0 && this.energy >= T.flashMin,
             flashMin: T.flashMin,
             nightProgress: Clamp(this.elapsed / T.nightLength, 0, 1),
@@ -627,7 +627,7 @@ export class Game extends Scene
     {
         this.state = 'over';
         this.energy = 0;
-        this.splendor = 0;
+        this.radiance = 0;
         this.fx.stopTrail();
         sfx.gameOver();
 

@@ -3,7 +3,7 @@ import { SHADOWS, TUNING as T } from './constants';
 import * as rules from './rules';
 
 const fixed = (value: number): rules.Random => () => value;
-const noLight = { energy: 0, followers: 0, splendor: 0, dim: 1, scale: 1 };
+const noLight = { energy: 0, followers: 0, radiance: 0, dim: 1, scale: 1 };
 
 describe('light', () =>
 {
@@ -22,16 +22,16 @@ describe('light', () =>
     it('is widened by Radiance and shrunk by a Colossus and by the end of the night', () =>
     {
         const base = rules.lightRadius({ ...noLight, energy: 50 });
-        expect(rules.lightRadius({ ...noLight, energy: 50, splendor: T.splendorDuration })).toBeCloseTo(base * (1 + T.splendorRadius));
+        expect(rules.lightRadius({ ...noLight, energy: 50, radiance: T.radianceDuration })).toBeCloseTo(base * (1 + T.radianceRadius));
         expect(rules.lightRadius({ ...noLight, energy: 50, dim: 0.5 })).toBeCloseTo(base / 2);
         expect(rules.lightRadius({ ...noLight, energy: 50, scale: 0 })).toBe(0);
     });
 
     it('fades Radiance out over its last moments', () =>
     {
-        expect(rules.splendorFactor(0)).toBe(0);
-        expect(rules.splendorFactor(T.splendorFade / 2)).toBeCloseTo(0.5);
-        expect(rules.splendorFactor(T.splendorDuration)).toBe(1);
+        expect(rules.radianceFactor(0)).toBe(0);
+        expect(rules.radianceFactor(T.radianceFade / 2)).toBeCloseTo(0.5);
+        expect(rules.radianceFactor(T.radianceDuration)).toBe(1);
     });
 
     it('drains faster as the night goes on', () =>
@@ -115,7 +115,7 @@ describe('light versus Shadows', () =>
         const near = rules.burnRate(20, 200, 0, 'shade', 0);
         expect(near).toBeGreaterThan(far);
         expect(rules.burnRate(20, 200, 10, 'shade', 0)).toBeGreaterThan(near);
-        expect(rules.burnRate(20, 200, 0, 'shade', T.splendorDuration)).toBeCloseTo(near * T.splendorBurn);
+        expect(rules.burnRate(20, 200, 0, 'shade', T.radianceDuration)).toBeCloseTo(near * T.radianceBurn);
         expect(rules.burnRate(20, 200, 0, 'colossus', 0)).toBeLessThan(near);
     });
 

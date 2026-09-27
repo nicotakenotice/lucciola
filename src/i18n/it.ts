@@ -25,7 +25,7 @@ export const it = {
     'lang.toggle': 'Lingua: italiano. Clicca per passare all\'inglese',
 
     'hud.light': 'Luce',
-    'hud.splendor': 'Splendore',
+    'hud.radiance': 'Splendore',
     'hud.swarm': 'Sciame',
     'hud.dawnIn': 'Alba tra {time}',
     'hud.dawn': 'Alba',
@@ -61,7 +61,7 @@ export const it = {
     'key.esc': 'Esc',
 
     'game.newFirefly': 'Nuova lucciola! +{n}',
-    'game.splendor': 'Splendore! +{n}',
+    'game.radiance': 'Splendore! +{n}',
     'game.tooWeak': 'Luce troppo debole',
     'game.savedOne': 'Una lucciola ti ha protetto',
     'game.savedTwo': 'Due lucciole ti hanno protetto',
@@ -74,7 +74,7 @@ export const it = {
     'hint.moth': 'Falene d\'ombra: veloci e imprevedibili',
     'hint.colossus': 'Un Colosso d\'ombra… vicino a lui la tua luce si affievolisce',
     'hint.dew': 'Rugiada lunare! Raccoglila per lo Splendore',
-    'hint.splendor': 'Splendore: la tua luce non si consuma e brucia le Ombre',
+    'hint.radiance': 'Splendore: la tua luce non si consuma e brucia le Ombre',
     'hint.wave': 'Le Ombre si risvegliano…',
     'hint.predawn': 'L\'alba è vicina… resisti!',
     'hint.fullSwarm': 'Sciame completo!'

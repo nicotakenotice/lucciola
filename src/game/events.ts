@@ -21,7 +21,7 @@ export interface HudState
     maxFollowers: number;
     score: number;
     combo: number;          // consecutive pollen pickups (0 = no combo)
-    splendor: number;       // 0..1, remaining Radiance time
+    radiance: number;       // 0..1, remaining Radiance time
     flashReady: boolean;
     flashMin: number;
     nightProgress: number;  // 0..1

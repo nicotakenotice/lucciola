@@ -454,7 +454,7 @@ html, body {
 }
 
 /* Radiance */
-.splendor {
+.radiance {
     display: flex;
     align-items: center;
     gap: 0.8cqw;
@@ -467,7 +467,7 @@ html, body {
     text-shadow: 0 0 0.8cqw var(--dew);
 }
 
-.splendor-track {
+.radiance-track {
     width: 10cqw;
     height: 0.4cqw;
     border-radius: 999px;
@@ -475,7 +475,7 @@ html, body {
     overflow: hidden;
 }
 
-.splendor-fill {
+.radiance-fill {
     height: 100%;
     background: var(--dew);
     box-shadow: 0 0 0.8cqw var(--dew);
@@ -500,7 +500,7 @@ html, body {
     animation: danger-pulse 1.1s ease-in-out infinite;
 }
 
-.vignette.splendor {
+.vignette.radiance {
     opacity: 1;
     background: radial-gradient(ellipse at center, transparent 60%, rgba(191, 232, 255, 0.16) 100%);
 }
