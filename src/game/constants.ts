@@ -7,7 +7,7 @@ export const TUNING = {
     // Night and light
     nightLength: 150,           // seconds until dawn
     energyDecay: 3.0,           // light lost per second...
-    energyDecayGrowth: 0.005,   // ...plus this amount for every second of night elapsed
+    energyDecayGrowth: 0.004,   // ...plus this amount for every second of night elapsed
     baseRadius: 70,             // px of light with no energy and no swarm
     radiusPerEnergy: 1.7,
     radiusPerFollower: 7,

@@ -2,7 +2,7 @@ import { AUTO, Game, Scale } from 'phaser';
 import { Boot } from './scenes/Boot';
 import { Menu } from './scenes/Menu';
 import { Game as MainGame } from './scenes/Game';
-import { HEIGHT, WIDTH } from './constants';
+import { HEIGHT, TUNING, WIDTH } from './constants';
 
 const config: Phaser.Types.Core.GameConfig = {
     type: AUTO,
@@ -34,6 +34,8 @@ const StartGame = (parent: string) =>
     {
         window.__LUCCIOLA__ = {
             game,
+            // Balance experiments mutate this live (see scripts/balance.mjs --tuning)
+            tuning: TUNING as unknown as Record<string, unknown>,
             debug: () =>
             {
                 // A paused scene is not "active" for Phaser, but its state is still valid

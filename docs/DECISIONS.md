@@ -50,3 +50,11 @@ should confirm it.
 - Git hooks keep `verify:fast` and the commit message rules from being forgotten; the slower
   `verify` (build + e2e) runs at the end of each task.
 
+## D09 — Difficulty target, measured (2026-09-27)
+
+Target: the balance bot reaches dawn in 3–5 of 10 seeded nights with a median survival ≥ 125 s.
+The deterministic balance script showed the previous tuning at 1/10 (median 104.6 s); raising the
+energy decay more slowly over the night (`energyDecayGrowth` 0.005 → 0.004) gives 4/10 (137.4 s).
+Supersedes the bot estimate in D07, which came from three non-deterministic runs. Details in
+`docs/BALANCE.md`. If real players find it too easy or too hard, move the target and re-measure.
+

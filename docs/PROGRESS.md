@@ -167,3 +167,24 @@ State inherited from earlier work (commits up to `2489bf4`):
 - `index.html`: added description and theme-color meta tags.
 - Verification: `npm run verify` green — unit 173/173, check:dist clean, e2e 35/35.
 
+## 2026-09-27 — T10 balance script and baseline
+
+- `npm run balance` (`scripts/balance.mjs`): starts its own Vite server (port 5175), plays seeded
+  nights in headless Chromium with a bot driving the debug API, prints a Markdown table.
+  `--tuning '{...}'` overrides TUNING for one run (dev hook now exposes `tuning`).
+- Determinism, found and fixed on the way (a same-seed run first gave 132 s vs dawn):
+  the menu consumed random numbers in real time before the night, music timers consumed them in
+  real time, and the absolute clock fed heading oscillations. Now: re-seed when the night starts,
+  no WebAudio in the balance page, fixed clock, logic stepped with `scene.update` (no rendering,
+  ~10× faster). Same seed → identical result, also across parallel workers and page reuse.
+- Reliability: opening a new page per night timed out under load (exit code 1, and an empty output
+  that I first mistook for a pipe issue). Workers now reuse one page and restart the scene.
+- Results: baseline 1/10 dawns, median 104.6 s (my earlier "2 of 3" estimate was wrong).
+  Experiments on the same seeds: smaller waves 0/10 (123.7 s); decay growth 0.003 → 5/10 (150 s);
+  0.004 → 4/10 (137.4 s), adopted. Recorded in `docs/BALANCE.md`, target in D09.
+- During the final verify, 3 desktop tests timed out while another project in `~/Repos/games`
+  (`lol-2d`, a different session) was running headless Chromium at ~650% CPU (load average 30+).
+  They passed on rerun. Made the suite sturdier rather than retrying blindly: Playwright timeouts
+  raised to 60 s per test and 10 s per assertion (software WebGL on a contended CPU).
+- Verification: `npm run verify` green at load average 36 — unit 173/173, e2e 35/35.
+

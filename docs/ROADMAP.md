@@ -15,7 +15,7 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 | T07 | Mobile improvements | done |
 | T08 | End-to-end tests on mobile (touch emulation) | done |
 | T09 | Self-host fonts, drop Google Fonts | done |
-| T10 | Seeded headless balance script and baseline report | todo |
+| T10 | Seeded headless balance script and baseline report | done |
 | T11 | English README and technical docs | todo |
 | T12 | Packaging for itch.io and deploy guide | todo |
 | T13 | Choose a license for the game | blocked |

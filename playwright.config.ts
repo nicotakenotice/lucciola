@@ -6,8 +6,11 @@ const PORT = 5174;
 export default defineConfig({
     testDir: 'e2e',
     fullyParallel: true,
-    // WebGL is software-rendered in headless browsers: more workers only slow every game down
+    // WebGL is software-rendered in headless browsers: more workers only slow every game down,
+    // and a busy machine can slow a frame a lot, hence the generous timeouts
     workers: 3,
+    timeout: 60_000,
+    expect: { timeout: 10_000 },
     retries: 0,
     reporter: [ [ 'list' ] ],
     use: {
