@@ -132,3 +132,20 @@ State inherited from earlier work (commits up to `2489bf4`):
   `[data-audio-toggle]`.
 - Verification: unit 173/173, `npm run verify` green, e2e 16/16. Mobile behaviour itself is verified in T08.
 
+## 2026-09-27 — T08 mobile end-to-end tests
+
+- Projects now use landscape devices: `android` = Pixel 7 landscape (863×360, Chromium, touch),
+  `iphone` = iPhone 14 landscape (750×340, WebKit, touch). Portrait is tested by rotating the viewport.
+- 10 tests per device (20 total) in `e2e/mobile/`: menu fits the stage, minimum text sizes (menu, HUD),
+  touch instructions and no keyboard hints, fullscreen button only where supported, tap-to-move without
+  firing a Flash, the Flash button, audio unlocked by a first tap, end panel on touch, rotate notice in
+  portrait, auto-pause when rotating mid-game and pause panel when rotating back.
+- All 20 passed on the first run, so I checked they can fail (mutation check, then restored):
+  removing the menu text minimum → 1 failure; letting a tap fire a Flash → 1 failure; disabling the
+  rotate notice → 2 failures.
+- Visual check with WebKit iPhone landscape screenshots (menu, HUD, pause, portrait): all readable and
+  inside the screen; the fullscreen button is absent in WebKit, as intended.
+- Limitation: this is emulation. Real iOS audio policy, notches/safe areas and real touch latency are
+  still unverified on a physical phone (manual check listed in `docs/TESTING.md`).
+- Verification: `npm run verify` green — unit 173/173, e2e 34/34 (14 desktop + 20 mobile).
+

@@ -61,3 +61,18 @@ export function setGame (page: Page, values: { energy?: number; elapsed?: number
 {
     return page.evaluate((v) => window.__LUCCIOLA__!.debug()!.set(v), values);
 }
+
+// Converts game coordinates (1280×720) to page coordinates on the scaled canvas
+export async function gameToPage (page: Page, point: { x: number; y: number })
+{
+    const box = (await page.locator('#game-container canvas').boundingBox())!;
+    const scale = box.width / 1280;
+
+    return { x: box.x + point.x * scale, y: box.y + point.y * scale };
+}
+
+export async function fontSize (page: Page, selector: string): Promise<number>
+{
+    return page.locator(selector).first().evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
+}
+

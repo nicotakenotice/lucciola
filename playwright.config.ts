@@ -29,12 +29,12 @@ export default defineConfig({
         {
             name: 'android',
             testMatch: /mobile\/.*\.spec\.ts/,
-            use: { ...devices['Pixel 7'] }
+            use: { ...devices['Pixel 7 landscape'] }
         },
         {
             name: 'iphone',
             testMatch: /mobile\/.*\.spec\.ts/,
-            use: { ...devices['iPhone 14'] }
+            use: { ...devices['iPhone 14 landscape'] }
         }
     ]
 });
