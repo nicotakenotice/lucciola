@@ -18,7 +18,7 @@ export const it = {
     'audio.unmute': 'Attiva audio (M)',
     'audio.on': 'Audio attivo',
     'audio.off': 'Audio disattivato',
-    'lang.label': 'Lingua',
+    'lang.toggle': 'Lingua: italiano. Clicca per passare all\'inglese',
 
     'hud.light': 'Luce',
     'hud.splendor': 'Splendore',

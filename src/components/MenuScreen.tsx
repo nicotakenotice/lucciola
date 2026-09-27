@@ -2,7 +2,8 @@ import { loadBest } from '../game/constants';
 import { t } from '../i18n';
 import { useLang } from '../i18n/useLang';
 import { SoundIcon } from './Icons';
-import { LangSwitch } from './LangSwitch';
+import { keepFocus } from './keepFocus';
+import { LangToggle } from './LangToggle';
 import { Rich } from './Rich';
 
 interface IProps
@@ -28,10 +29,12 @@ export function MenuScreen ({ muted, touch, onStart, onToggleMute }: IProps)
 
     return (
         <div className="overlay menu">
-            <LangSwitch className="corner-left" />
-            <button className="icon-button corner" onClick={onToggleMute} data-audio-toggle title={muted ? t('audio.unmute') : t('audio.mute')}>
-                <SoundIcon muted={muted} />
-            </button>
+            <div className="menu-corner">
+                <button className="icon-button" onClick={onToggleMute} onMouseDown={keepFocus} data-audio-toggle title={muted ? t('audio.unmute') : t('audio.mute')}>
+                    <SoundIcon muted={muted} />
+                </button>
+                <LangToggle />
+            </div>
 
             <h1 className="title">Lucciola</h1>
             <p className="subtitle">{t('menu.subtitle')}</p>

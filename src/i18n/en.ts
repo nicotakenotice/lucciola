@@ -18,7 +18,7 @@ export const en: Record<keyof typeof it, string> = {
     'audio.unmute': 'Unmute (M)',
     'audio.on': 'Sound on',
     'audio.off': 'Sound off',
-    'lang.label': 'Language',
+    'lang.toggle': 'Language: English. Click to switch to Italian',
 
     'hud.light': 'Light',
     'hud.splendor': 'Radiance',

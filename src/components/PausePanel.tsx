@@ -1,7 +1,7 @@
 import { t } from '../i18n';
 import { useLang } from '../i18n/useLang';
 import { SoundIcon } from './Icons';
-import { LangSwitch } from './LangSwitch';
+import { LangToggle } from './LangToggle';
 
 interface IProps
 {
@@ -32,7 +32,7 @@ export function PausePanel ({ muted, onResume, onRestart, onMenu, onToggleMute }
                     </button>
                 </div>
 
-                <LangSwitch className="in-panel" />
+                <LangToggle className="in-panel" />
             </div>
         </div>
     );

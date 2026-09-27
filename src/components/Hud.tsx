@@ -2,6 +2,7 @@ import type { HudState } from '../game/events';
 import { t } from '../i18n';
 import { useLang } from '../i18n/useLang';
 import { PauseIcon, SoundIcon } from './Icons';
+import { keepFocus } from './keepFocus';
 import { Rich } from './Rich';
 
 interface IProps
@@ -68,10 +69,10 @@ export function Hud ({ hud, muted, touch, onPause, onToggleMute, onFlash }: IPro
                 <div className="hud-score">{hud.score}</div>
                 {hud.combo > 1 && <div key={hud.combo} className="combo">{t('hud.combo', { n: hud.combo })}</div>}
                 <div className="hud-buttons">
-                    <button className="icon-button" onClick={onToggleMute} data-audio-toggle title={muted ? t('audio.unmute') : t('audio.mute')}>
+                    <button className="icon-button" onClick={onToggleMute} onMouseDown={keepFocus} data-audio-toggle title={muted ? t('audio.unmute') : t('audio.mute')}>
                         <SoundIcon muted={muted} />
                     </button>
-                    <button className="icon-button" onClick={onPause} title={t('hud.pause')}>
+                    <button className="icon-button" onClick={onPause} onMouseDown={keepFocus} title={t('hud.pause')}>
                         <PauseIcon />
                     </button>
                 </div>

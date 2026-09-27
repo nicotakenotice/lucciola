@@ -18,7 +18,7 @@ Sei una lucciola in un sottobosco immerso nel buio: la tua luce è sia la tua vi
 
 Durante la prima partita compaiono dei suggerimenti contestuali; a fine partita un riepilogo mostra le statistiche della notte.
 
-Il gioco è in **italiano e inglese**: la lingua iniziale segue quella del browser e si cambia dal selettore IT / EN nel menu o nella pausa (la scelta viene ricordata).
+Il gioco è in **italiano e inglese**: la lingua iniziale segue quella del browser e si cambia dal toggle IT / EN in alto a destra nel menu (accanto al volume) o nella pausa (la scelta viene ricordata).
 
 Tutta la grafica e l'audio sono generati via codice: il progetto non ha asset esterni.
 
@@ -48,7 +48,7 @@ src/
 ├── App.tsx               # macchina a stati della UI (menu / gioco / fine)
 ├── PhaserGame.tsx        # ponte React ↔ Phaser (dal template)
 ├── i18n/                 # dizionari it/en, t() e hook useLang()
-├── components/           # MenuScreen, Hud, Toast, PausePanel, EndPanel, LangSwitch, Rich, Icons
+├── components/           # MenuScreen, Hud, Toast, PausePanel, EndPanel, LangToggle, Rich, Icons
 └── game/
     ├── main.ts           # configurazione Phaser
     ├── constants.ts      # dimensioni, bilanciamento, tipi di Ombra, record
