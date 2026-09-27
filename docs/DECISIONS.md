@@ -66,3 +66,12 @@ The owner chose MIT. `LICENSE` holds the owner's copyright and keeps the Phaser 
 parts of the project (e.g. `PhaserGame.tsx`, the event bus origin, the Vite configs) come from the
 MIT-licensed `phaserjs/template-react-ts`. `package.json` already declares `"license": "MIT"`.
 
+## D11 — The game stays 16:9 on every screen (2026-09-28)
+
+On phones in landscape (about 2.2:1 full screen, 2.5:1 with the browser bars) the 16:9 game leaves
+side bars. A wider world was prototyped: always 720 tall, growing on both sides of the 16:9 core up
+to 2.6:1, live on resize. It worked visually, but it changes the game: with the balance bot on the
+same 10 seeds, 16:9 stayed at 4/10 dawns (median 137.4 s), while 2.6:1 fell to 0/10 (median 56.1 s),
+and still 0/10 (55 s) with pollen scaled to the larger area. Difficulty would depend on the screen,
+so the owner and Claude kept the fixed 16:9 game. Side bars on wide screens are accepted.
+
