@@ -359,3 +359,24 @@ State inherited from earlier work (commits up to `2489bf4`):
 - Verified in the iOS Simulator on a local production build: the menu, sound button and IT/EN toggle
   appear.
 
+
+## T21 — Installable app (PWA) (2026-09-28)
+
+- Before: D11 records a prototype of a world that widens with the screen, rejected after measuring
+  it (0/10 dawns at 2.6:1 against 4/10 at 16:9, same seeds). All its code was discarded.
+- `vite-plugin-pwa` 1.3.0 (dev dependency, supports Vite 6; `npm audit`: 0 vulnerabilities):
+  manifest (fullscreen, landscape, colors, icons) and a Workbox service worker precaching 14 files.
+  Registered by `src/pwa.ts` in production, top-level page only.
+- `npm run images` also renders `icon-192.png`, `icon-512.png` and `icon-maskable-512.png`; the
+  existing icons came out byte-identical. The maskable icon was checked under a circular 40% mask.
+- `check:dist` now fails when a manifest icon is missing or a loaded file is not precached
+  (checked by removing woff2 from the glob: 3 errors, then restored).
+- e2e production: the manifest is served; after the first visit the page is controlled by the
+  service worker and, offline, reloads and starts a night with its fonts; inside an iframe nothing is
+  registered (the test fails when the iframe guard is removed). The offline test first failed without
+  `clientsClaim` (first visit not controlled), which is now set.
+- Chromium `Page.getInstallabilityErrors` on the production build: none; manifest parse errors: none.
+- `npm run verify`: unit 188/188, e2e 48/48, check:dist clean (14 files precached).
+  `npm run package`: 991 KB zip, includes manifest and service worker (unused inside itch.io's iframe).
+- Not checked: installing on a real phone (Add to Home Screen on iOS, Install on Android); the iOS
+  Simulator cannot be driven through that menu from here.

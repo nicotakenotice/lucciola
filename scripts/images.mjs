@@ -1,4 +1,5 @@
-// Regenerates the images derived from the game: icon PNGs from public/logo.svg and the README
+// Regenerates the images derived from the game: icon PNGs (favicon, iOS, installed app) from
+// public/logo.svg and the README
 // screenshots (home screen, and a night played by the bot for 30 seconds).
 // Usage: npm run images -- [--seed 3] [--out docs/images]
 
@@ -23,15 +24,20 @@ const GAMEPLAY_SECONDS = 30;
 async function renderIcons (browser)
 {
     const svg = readFileSync('public/logo.svg', 'utf8');
-    const src = `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
+    const toSrc = (text) => `data:image/svg+xml;base64,${Buffer.from(text).toString('base64')}`;
     const icons = [
         { path: 'public/favicon.png', size: 32, background: 'transparent' },
         // iOS masks the corners itself and expects an opaque square
-        { path: 'public/apple-touch-icon.png', size: 180, background: '#020308' }
+        { path: 'public/apple-touch-icon.png', size: 180, background: '#020308' },
+        { path: 'public/icon-192.png', size: 192, background: 'transparent' },
+        { path: 'public/icon-512.png', size: 512, background: 'transparent' },
+        // Android crops maskable icons to its own shape: fill the whole square, without the rounded tile
+        { path: 'public/icon-maskable-512.png', size: 512, background: '#020308', fullBleed: true }
     ];
 
-    for (const { path, size, background } of icons)
+    for (const { path, size, background, fullBleed } of icons)
     {
+        const src = toSrc(fullBleed ? svg.replace(' clip-path="url(#tile)"', '') : svg);
         const page = await browser.newPage({ viewport: { width: size, height: size } });
         await page.setContent(`<body style="margin:0;background:${background}"><img src="${src}" width="${size}" height="${size}"></body>`);
         await page.locator('img').evaluate((img) => img.decode());

@@ -36,6 +36,17 @@ and `actions/deploy-pages`. Pages uses the "GitHub Actions" source (set once thr
 `.github/workflows/ci.yml` runs the full `npm run verify` (including end-to-end tests on Chromium and
 WebKit) on pushes and pull requests; Playwright traces are uploaded when it fails.
 
+## Installable app (PWA)
+
+`vite-plugin-pwa` (in `vite/config.prod.mjs`) writes `manifest.webmanifest` and a Workbox
+service worker (`sw.js`) that precaches the whole game (page, code, CSS, woff2 fonts, icons), so an
+installed game starts offline. `src/pwa.ts` registers it only in production and only when the game
+is the top-level page: inside the itch.io iframe there is no service worker. A new deployment is
+downloaded in the background and used from the next launch, never in the middle of a night; the
+very first visit is controlled at once (`clientsClaim`), so it is ready for offline play without a
+reload. Icons (192, 512, maskable 512) come from `public/logo.svg` via `npm run images`.
+`npm run check:dist` fails if a manifest icon is missing or a loaded file is not precached.
+
 ## Before any public release
 
 - Run `npm run verify` and the manual device checks.

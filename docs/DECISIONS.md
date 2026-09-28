@@ -75,3 +75,12 @@ same 10 seeds, 16:9 stayed at 4/10 dawns (median 137.4 s), while 2.6:1 fell to 0
 and still 0/10 (55 s) with pollen scaled to the larger area. Difficulty would depend on the screen,
 so the owner and Claude kept the fixed 16:9 game. Side bars on wide screens are accepted.
 
+## D12 — Installable app with vite-plugin-pwa (2026-09-28)
+
+The standard Vite plugin (Workbox `generateSW`) instead of a hand-written service worker: the
+precache list must follow hashed file names on every build, which the plugin does and
+`check:dist` verifies. Updates wait for the next launch (no `skipWaiting`), because swapping the code
+under a running night could break it; the first visit is claimed at once. `display: fullscreen` and
+`orientation: landscape`, as the game is 16:9 only (D11); iOS ignores both and opens it standalone.
+No service worker inside frames: on itch.io it would cache the game on itch's domain for no benefit.
+

@@ -69,6 +69,8 @@ and `.githooks/`.
 - Subscribe to the EventBus before the event can fire: `PhaserGame` subscribes to `scene-ready`
   before `StartGame`, because iOS Safari readies the Menu before React's passive effects run.
 - Playwright's WebKit is not iOS Safari: check mobile changes in the iOS Simulator too (`verify` skill).
+- The production build installs a service worker: a browser profile that opened `vite preview` may
+  keep serving the previous build until the next launch. Use a fresh context (tests do) or unregister it.
 - Clean up EventBus subscriptions with `onSceneExit()` (`src/game/lifecycle.ts`), not `once('destroy')`.
 - Gameplay numbers belong in `TUNING`/`SHADOWS`; after changing one, run `npm run balance` and record it.
 - Shell pitfalls seen here: zsh does not split unquoted variables into words and macOS `grep -Z` means

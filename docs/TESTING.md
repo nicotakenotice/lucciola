@@ -8,8 +8,8 @@
 | Unit | Vitest (jsdom) | `src/**/*.test.ts(x)`, `scripts/**/*.test.mjs` | pure rules, NightDirector, i18n, storage, best score, `<Rich>`, balance CLI arguments |
 | End-to-end, desktop | Playwright, Chromium 1280×800 | `e2e/desktop/` | menu, language, sound, pause, game over, dawn, controls, fonts; gameplay: rescue, swarm shields, Colossus, Radiance, combo, new best, blur pause, hints |
 | End-to-end, mobile | Playwright, Pixel 7 (Chromium) and iPhone 14 (WebKit), landscape, touch | `e2e/mobile/` | layout fit, text sizes, touch controls, audio unlock, portrait notice |
-| End-to-end, production | Playwright against `vite preview` of `dist/` | `e2e/production/` | the shipped build runs, no dev hook, no external requests |
-| Bundle check | `scripts/check-dist.mjs` | `npm run check:dist` | no dev hook or Google Fonts URLs in `dist/` |
+| End-to-end, production | Playwright against `vite preview` of `dist/` | `e2e/production/` | the shipped build runs, no dev hook, no external requests; installable manifest, starts offline after the first visit, no service worker inside an iframe |
+| Bundle check | `scripts/check-dist.mjs` | `npm run check:dist` | no dev hook or Google Fonts URLs in `dist/`; manifest icons exist; every loaded file is precached |
 | Balance | `scripts/balance.mjs` | `npm run balance` | difficulty, measured on seeded nights (not a pass/fail test) |
 
 `npm run verify` runs all of them except balance (the production project builds `dist/` itself).

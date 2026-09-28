@@ -26,6 +26,7 @@ Each task lists acceptance criteria that must be verified before it is marked `d
 | T18 | App logo and README images | done |
 | T19 | Public repository and GitHub Pages hosting | done |
 | T20 | Fix the menu missing on iOS Safari | done |
+| T21 | Installable app (PWA) with offline play | done |
 
 ## T01 — Work-tracking docs and resume protocol
 
@@ -178,4 +179,10 @@ Found by driving the game and the CLIs (`/verify`), not by tests:
 - React subscribes to `scene-ready` before the Phaser game boots, so a scene that is ready early is
   never missed.
 - Regression test for the ordering; checked on iOS Safari in the Simulator, not only in Playwright.
+
+## T21 — Installable app (PWA) (2026-09-28)
+
+- Web app manifest, icons (192, 512, maskable 512) and a service worker that precaches the game.
+- Plays offline after the first visit; updates apply at the next launch; no service worker in iframes.
+- Tests: offline start and iframe guard (production e2e), manifest and precache checks (`check:dist`).
 

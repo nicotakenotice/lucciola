@@ -13,6 +13,7 @@ src/
 │                              FullscreenButton, RotateNotice, Rich (inline tags), Icons, keepFocus
 ├── i18n/                      Dictionaries (it = source of keys, en), t(), useLang()
 ├── hooks/                     useMediaQuery (portrait, touch), useFullscreen, useAudioUnlock, useAutoPause
+├── pwa.ts                     Service worker registration (production, top-level page only)
 ├── audio.ts                   Synthesized sound effects and generative music (WebAudio)
 ├── score.ts                   Best score persistence
 ├── storage.ts                 Safe localStorage access and the keys used by the game

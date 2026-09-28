@@ -32,6 +32,7 @@ as the night goes on. Survive until dawn.
   much faster.
 
 Italian and English, generative music, no external assets: every texture and sound is made in code.
+Install it from the browser ("Add to Home Screen" or "Install app") to play full screen and offline.
 
 <p align="center">
   <img src="docs/images/gameplay.png" width="800" alt="Thirty seconds into a night: the firefly and a swarm of three light up the forest floor, a Shadow burns at the edge of the light and red eyes wait in the dark">
